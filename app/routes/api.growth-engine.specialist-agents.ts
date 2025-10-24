@@ -8,16 +8,8 @@ import type { LoaderFunctionArgs, ActionFunctionArgs } from "react-router";
 import { SpecialistAgentOrchestrator } from "~/lib/growth-engine/specialist-agents";
 import { createActionItem } from "~/lib/growth-engine/action-queue";
 
-// Helper to create db shim for prisma.query calls
-function createDbShim(prisma: any) {
-  return {
-    query: async (sql: string, params?: any[]) => {
-      const result = await prisma.$queryRawUnsafe(sql, ...(params ?? []));
-      const rows = Array.isArray(result) ? result : [];
-      return { rows } as { rows: any[] };
-    },
-  };
-}
+// SECURITY FIX: Removed unsafe createDbShim function that used $queryRawUnsafe
+// Use Prisma's type-safe query methods or $queryRaw with template literals instead
 
 // ============================================================================
 // GET /api/growth-engine/specialist-agents
@@ -25,7 +17,7 @@ function createDbShim(prisma: any) {
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const prisma = (await import("~/db.server")).default;
-  const db = createDbShim(prisma);
+  const { Prisma } = await import("@prisma/client");
 
   const url = new URL(request.url);
   const agent = url.searchParams.get('agent');
@@ -33,27 +25,26 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
   try {
     if (agent) {
-      // Get specific agent runs
-      const { rows } = await db.query(
-        `SELECT * FROM specialist_agent_runs
-         WHERE agent_name = $1
-         ORDER BY start_time DESC
-         LIMIT 10`,
-        [agent]
-      );
+      // Get specific agent runs - SECURITY FIX: Use $queryRaw with template literals
+      const rows = await prisma.$queryRaw<any[]>`
+        SELECT * FROM specialist_agent_runs
+        WHERE agent_name = ${agent}
+        ORDER BY start_time DESC
+        LIMIT 10
+      `;
 
       return Response.json({
         success: true,
         data: rows
       });
     } else {
-      // Get all agent runs
-      const { rows } = await db.query(
-        `SELECT * FROM specialist_agent_runs
-         ORDER BY start_time DESC
-         LIMIT 50`
-      );
-      
+      // Get all agent runs - SECURITY FIX: Use $queryRaw with template literals
+      const rows = await prisma.$queryRaw<any[]>`
+        SELECT * FROM specialist_agent_runs
+        ORDER BY start_time DESC
+        LIMIT 50
+      `;
+
       return Response.json({
         success: true,
         data: rows
@@ -74,7 +65,6 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
 export async function action({ request }: ActionFunctionArgs) {
   const prisma = (await import("~/db.server")).default;
-  const db = createDbShim(prisma);
 
   if (request.method !== 'POST') {
     return Response.json({ error: 'Method not allowed' }, { status: 405 });
@@ -86,9 +76,9 @@ export async function action({ request }: ActionFunctionArgs) {
 
     switch (action) {
       case 'run':
-        return await runSpecialistAgent(db, agent, runType);
+        return await runSpecialistAgent(prisma, agent, runType);
       case 'run_all':
-        return await runAllSpecialistAgents(db);
+        return await runAllSpecialistAgents(prisma);
       default:
         return Response.json({ error: 'Invalid action' }, { status: 400 });
     }
@@ -101,46 +91,45 @@ export async function action({ request }: ActionFunctionArgs) {
   }
 }
 
-async function runSpecialistAgent(db: any, agentName: string, runType: string = 'manual') {
+async function runSpecialistAgent(prisma: any, agentName: string, runType: string = 'manual') {
+  const { Prisma } = await import("@prisma/client");
+
   try {
-    // Start agent run
-    const { rows: runRows } = await db.query(
-      `INSERT INTO specialist_agent_runs (agent_name, run_type, status, start_time)
-       VALUES ($1, $2, 'running', NOW())
-       RETURNING *`,
-      [agentName, runType]
-    );
-    
+    // Start agent run - SECURITY FIX: Use $queryRaw with template literals
+    const runRows = await prisma.$queryRaw<any[]>`
+      INSERT INTO specialist_agent_runs (agent_name, run_type, status, start_time)
+      VALUES (${agentName}, ${runType}, 'running', NOW())
+      RETURNING *
+    `;
+
     const runId = runRows[0].id;
-    
+
     try {
       // Run the specific agent
       const orchestrator = new SpecialistAgentOrchestrator();
       const actions = await orchestrator.runAgent(agentName);
-      
-      // Store actions in action_queue
+
+      // Store actions in action_queue - SECURITY FIX: Use $queryRaw with template literals
       for (const action of actions) {
-        await db.query(
-          `INSERT INTO action_queue (
+        await prisma.$queryRaw`
+          INSERT INTO action_queue (
             type, target, draft, evidence, expected_impact, confidence,
             ease, risk_tier, can_execute, rollback_plan, freshness_label, agent
-          ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`,
-          [
-            action.type, action.target, action.draft, JSON.stringify(action.evidence),
-            JSON.stringify(action.expected_impact), action.confidence, action.ease,
-            action.risk_tier, action.can_execute, action.rollback_plan,
-            action.freshness_label, action.agent
-          ]
-        );
+          ) VALUES (
+            ${action.type}, ${action.target}, ${action.draft}, ${JSON.stringify(action.evidence)},
+            ${JSON.stringify(action.expected_impact)}, ${action.confidence}, ${action.ease},
+            ${action.risk_tier}, ${action.can_execute}, ${action.rollback_plan},
+            ${action.freshness_label}, ${action.agent}
+          )
+        `;
       }
 
-      // Update run status
-      await db.query(
-        `UPDATE specialist_agent_runs
-         SET status = 'completed', end_time = NOW(), actions_emitted = $1
-         WHERE id = $2`,
-        [actions.length, runId]
-      );
+      // Update run status - SECURITY FIX: Use $queryRaw with template literals
+      await prisma.$queryRaw`
+        UPDATE specialist_agent_runs
+        SET status = 'completed', end_time = NOW(), actions_emitted = ${actions.length}
+        WHERE id = ${runId}
+      `;
 
       return Response.json({
         success: true,
@@ -152,15 +141,14 @@ async function runSpecialistAgent(db: any, agentName: string, runType: string = 
         },
         message: `${agentName} agent completed successfully`
       });
-    } catch (error) {
-      // Update run status to failed
-      await db.query(
-        `UPDATE specialist_agent_runs
-         SET status = 'failed', end_time = NOW(), error_message = $1
-         WHERE id = $2`,
-        [error instanceof Error ? error.message : 'Unknown error', runId]
-      );
-      
+    } catch (error: any) {
+      // Update run status to failed - SECURITY FIX: Use $queryRaw with template literals
+      await prisma.$queryRaw`
+        UPDATE specialist_agent_runs
+        SET status = 'failed', end_time = NOW(), error_message = ${error.message}
+        WHERE id = ${runId}
+      `;
+
       throw error;
     }
   } catch (error) {
@@ -172,40 +160,41 @@ async function runSpecialistAgent(db: any, agentName: string, runType: string = 
   }
 }
 
-async function runAllSpecialistAgents(db: any) {
+async function runAllSpecialistAgents(prisma: any) {
+  const { Prisma } = await import("@prisma/client");
+
   try {
     const orchestrator = new SpecialistAgentOrchestrator();
     const allActions = await orchestrator.runAllAgents();
 
-    // Store all actions in action_queue
+    // Store all actions in action_queue - SECURITY FIX: Use $queryRaw with template literals
     for (const action of allActions) {
-      await db.query(
-        `INSERT INTO action_queue (
+      await prisma.$queryRaw`
+        INSERT INTO action_queue (
           type, target, draft, evidence, expected_impact, confidence,
           ease, risk_tier, can_execute, rollback_plan, freshness_label, agent
-        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`,
-        [
-          action.type, action.target, action.draft, JSON.stringify(action.evidence),
-          JSON.stringify(action.expected_impact), action.confidence, action.ease,
-          action.risk_tier, action.can_execute, action.rollback_plan,
-          action.freshness_label, action.agent
-        ]
-      );
+        ) VALUES (
+          ${action.type}, ${action.target}, ${action.draft}, ${JSON.stringify(action.evidence)},
+          ${JSON.stringify(action.expected_impact)}, ${action.confidence}, ${action.ease},
+          ${action.risk_tier}, ${action.can_execute}, ${action.rollback_plan},
+          ${action.freshness_label}, ${action.agent}
+        )
+      `;
     }
-    
-  return Response.json({
-    success: true,
-    data: {
-      totalActions: allActions.length,
-      agentsRun: ['analytics', 'inventory', 'content-seo-perf', 'risk']
-    },
-    message: 'All specialist agents completed successfully'
-  });
+
+    return Response.json({
+      success: true,
+      data: {
+        totalActions: allActions.length,
+        agentsRun: ['analytics', 'inventory', 'content-seo-perf', 'risk']
+      },
+      message: 'All specialist agents completed successfully'
+    });
   } catch (error) {
     console.error('Error running all specialist agents:', error);
-  return Response.json({
-    success: false,
-    error: 'Failed to run all specialist agents'
-  }, { status: 500 });
+    return Response.json({
+      success: false,
+      error: 'Failed to run all specialist agents'
+    }, { status: 500 });
   }
 }

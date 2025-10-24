@@ -8,6 +8,7 @@
  */
 
 import prisma from "~/db.server";
+import { Prisma } from "@prisma/client";
 import { generateEmbedding, prepareTextForEmbedding } from "./embedding";
 import type { SearchRequest, SearchResult, KBArticle } from "./types";
 
@@ -56,12 +57,13 @@ export async function semanticSearch(
 
     const whereClause = whereConditions.join(" AND ");
 
-    // Perform vector similarity search using raw SQL
+    // Perform vector similarity search using raw SQL with parameterized queries
     // pgvector uses <=> operator for cosine distance (1 - cosine similarity)
     const embeddingVector = `[${embedding.join(",")}]`;
 
-    const results = await prisma.$queryRawUnsafe<any[]>(`
-      SELECT 
+    // SECURITY FIX: Use Prisma.sql template literal to prevent SQL injection
+    const results = await prisma.$queryRaw<any[]>`
+      SELECT
         id,
         shop_domain,
         document_key,
@@ -76,13 +78,18 @@ export async function semanticSearch(
         updated_at,
         last_indexed_at,
         metadata,
-        1 - (embedding <=> '${embeddingVector}'::vector) as similarity
+        1 - (embedding <=> ${embeddingVector}::vector) as similarity
       FROM knowledge_base
-      WHERE ${whereClause}
-        AND 1 - (embedding <=> '${embeddingVector}'::vector) >= ${minSimilarity}
-      ORDER BY embedding <=> '${embeddingVector}'::vector
+      WHERE is_current = ${filters.isCurrentOnly !== false}
+        AND project = ${filters.project || 'occ'}
+        ${filters.shopDomain ? Prisma.sql`AND shop_domain = ${filters.shopDomain}` : Prisma.empty}
+        ${filters.documentType ? Prisma.sql`AND document_type = ${filters.documentType}` : Prisma.empty}
+        ${filters.category ? Prisma.sql`AND category = ${filters.category}` : Prisma.empty}
+        ${filters.tags && filters.tags.length > 0 ? Prisma.sql`AND tags && ${filters.tags}::text[]` : Prisma.empty}
+        AND 1 - (embedding <=> ${embeddingVector}::vector) >= ${minSimilarity}
+      ORDER BY embedding <=> ${embeddingVector}::vector
       LIMIT ${limit}
-    `);
+    `;
 
     console.log(`[KB Search] ✅ Found ${results.length} results`);
 
@@ -127,8 +134,10 @@ export async function findSimilarArticles(
     }
 
     // Perform similarity search excluding the source article
-    const results = await prisma.$queryRawUnsafe<any[]>(`
-      SELECT 
+    // SECURITY FIX: Use Prisma.sql template literal to prevent SQL injection
+    const embeddingVector = sourceArticle.embedding as string;
+    const results = await prisma.$queryRaw<any[]>`
+      SELECT
         id,
         shop_domain,
         document_key,
@@ -143,16 +152,16 @@ export async function findSimilarArticles(
         updated_at,
         last_indexed_at,
         metadata,
-        1 - (embedding <=> '${sourceArticle.embedding}'::vector) as similarity
+        1 - (embedding <=> ${embeddingVector}::vector) as similarity
       FROM knowledge_base
       WHERE is_current = true
         AND project = 'occ'
-        AND id != '${articleId}'
+        AND id != ${articleId}
         AND embedding IS NOT NULL
-        AND 1 - (embedding <=> '${sourceArticle.embedding}'::vector) >= ${minSimilarity}
-      ORDER BY embedding <=> '${sourceArticle.embedding}'::vector
+        AND 1 - (embedding <=> ${embeddingVector}::vector) >= ${minSimilarity}
+      ORDER BY embedding <=> ${embeddingVector}::vector
       LIMIT ${limit}
-    `);
+    `;
 
     console.log(`[KB Search] ✅ Found ${results.length} similar articles`);
 
