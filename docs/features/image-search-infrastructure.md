@@ -119,26 +119,26 @@ const result = await processImage(photoId);
 
 ### 4. Image Search API
 
-**File:** `app/routes/api.image-search.ts`
+**File:** `app/routes/api.search.images.ts`
 
 **Endpoints:**
 
-**GET /api/image-search?q={query}**
+**GET /api/search/images?q={query}**
 - Text-to-image search
 - Find images similar to text query
 
-**POST /api/image-search**
+**POST /api/search/images**
 - Image-to-image search
 - Find images similar to uploaded image
 
 **Example:**
 ```typescript
 // Text search
-const response = await fetch('/api/image-search?q=red mug&limit=10');
+const response = await fetch('/api/search/images?q=red mug&limit=10');
 const { results } = await response.json();
 
 // Image search
-const response = await fetch('/api/image-search', {
+const response = await fetch('/api/search/images', {
   method: 'POST',
   body: JSON.stringify({ imageUrl: 'https://...', limit: 10 })
 });
@@ -147,28 +147,28 @@ const { results } = await response.json();
 
 ### 5. Image Processing Worker API
 
-**File:** `app/routes/api.image-search.process.ts`
+**File:** `app/routes/api.search.images.process.ts`
 
-**Endpoint:** POST /api/image-search/process
+**Endpoint:** POST /api/search/images/process
 
 **Purpose:** Process pending images (manual or cron)
 
 **Example:**
 ```typescript
 // Process all pending images
-await fetch('/api/image-search/process', {
+await fetch('/api/search/images/process', {
   method: 'POST',
   body: JSON.stringify({ limit: 10 })
 });
 
 // Process specific image
-await fetch('/api/image-search/process', {
+await fetch('/api/search/images/process', {
   method: 'POST',
   body: JSON.stringify({ photoId: 'uuid' })
 });
 
 // Reprocess failed image
-await fetch('/api/image-search/process', {
+await fetch('/api/search/images/process', {
   method: 'POST',
   body: JSON.stringify({ photoId: 'uuid', reprocess: true })
 });
@@ -226,13 +226,13 @@ const { data } = await response.json();
 
 ```typescript
 // Trigger processing (can be cron job)
-await fetch('/api/image-search/process', {
+await fetch('/api/search/images/process', {
   method: 'POST',
   body: JSON.stringify({ limit: 10 })
 });
 
 // Or process specific image immediately after upload
-await fetch('/api/image-search/process', {
+await fetch('/api/search/images/process', {
   method: 'POST',
   body: JSON.stringify({ photoId: data.id })
 });
@@ -242,7 +242,7 @@ await fetch('/api/image-search/process', {
 
 ```typescript
 // Text search
-const response = await fetch('/api/image-search?q=damaged product&limit=10&minSimilarity=0.7');
+const response = await fetch('/api/search/images?q=damaged product&limit=10&minSimilarity=0.7');
 const { results } = await response.json();
 
 results.forEach(result => {
@@ -252,7 +252,7 @@ results.forEach(result => {
 });
 
 // Image search
-const response = await fetch('/api/image-search', {
+const response = await fetch('/api/search/images', {
   method: 'POST',
   body: JSON.stringify({
     imageUrl: 'https://example.com/image.jpg',
@@ -370,9 +370,9 @@ await fetch('/api/image-search/process', {
 - Image Description: `app/services/image-search/image-description.ts`
 - Image Embedding: `app/services/image-search/image-embedding.ts`
 - Image Processor: `app/services/image-search/image-processor.ts`
-- Search API: `app/routes/api.image-search.ts`
-- Processing Worker: `app/routes/api.image-search.process.ts`
+- Search API: `app/routes/api.search.images.ts`
+- Processing Worker: `app/routes/api.search.images.process.ts`
 - Database Schema: `supabase/migrations/20251025000021_create_image_search_tables.sql`
 - Upload API: `app/routes/api.customer-photos.upload.ts`
-- Task: BLOCKER-003 in TaskAssignment table
+- Tasks: BLOCKER-003, ENG-IMAGE-SEARCH-003 in TaskAssignment table
 
