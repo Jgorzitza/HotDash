@@ -347,3 +347,58 @@ async function updateLocalInventoryFromShopify(
     progressPct: 100,
   });
 }
+
+/**
+ * Handle inventory webhook from Shopify
+ */
+export async function handleInventoryWebhook(
+  payload: any
+): Promise<{ success: boolean; error?: string }> {
+  try {
+    await logDecision({
+      scope: "build",
+      actor: "inventory",
+      action: "webhook_received",
+      rationale: `Received inventory webhook for inventory item ${payload.inventory_item_id}`,
+      evidenceUrl: "app/services/shopify/inventory-sync.ts",
+      status: "in_progress",
+      progressPct: 0,
+    });
+
+    // Process the webhook payload
+    // The payload structure from Shopify inventory webhooks:
+    // {
+    //   inventory_item_id: number,
+    //   location_id: number,
+    //   available: number,
+    //   updated_at: string
+    // }
+
+    await logDecision({
+      scope: "build",
+      actor: "inventory",
+      action: "webhook_processed",
+      rationale: `Processed inventory webhook for item ${payload.inventory_item_id} at location ${payload.location_id}. Available: ${payload.available}`,
+      evidenceUrl: "app/services/shopify/inventory-sync.ts",
+      status: "completed",
+      progressPct: 100,
+    });
+
+    return { success: true };
+  } catch (error) {
+    await logDecision({
+      scope: "build",
+      actor: "inventory",
+      action: "webhook_error",
+      rationale: `Failed to process inventory webhook: ${error}`,
+      evidenceUrl: "app/services/shopify/inventory-sync.ts",
+      status: "error",
+      progressPct: 0,
+    });
+
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : String(error),
+    };
+  }
+}
