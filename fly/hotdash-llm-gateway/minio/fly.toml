@@ -1,0 +1,33 @@
+app = "hotdash-langfuse-minio"
+primary_region = "ord"
+kill_signal = "SIGINT"
+kill_timeout = "30s"
+
+[build]
+  image = "minio/minio:RELEASE.2024-09-28T17-22-45Z"
+
+[env]
+  MINIO_BROWSER_REDIRECT_URL = "http://hotdash-langfuse-minio.internal:9001"
+  MINIO_SERVER_URL = "http://hotdash-langfuse-minio.internal:9000"
+
+[processes]
+  server = "minio server --address :9000 --console-address :9001 /data"
+
+[[mounts]]
+  source = "langfuse_minio_data"
+  destination = "/data"
+
+[[services]]
+  protocol = "tcp"
+  internal_port = 9000
+  auto_stop_machines = false
+  auto_start_machines = true
+
+[checks.minio]
+  type = "http"
+  method = "get"
+  path = "/minio/health/live"
+  port = 9000
+  interval = "30s"
+  timeout = "5s"
+  grace_period = "30s"
