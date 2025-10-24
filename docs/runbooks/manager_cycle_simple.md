@@ -1,9 +1,43 @@
 # Manager Cycle — Simple Task List (End-to-End)
 
-**Purpose**: Execute one complete manager coordination cycle  
-**Duration**: 30-60 minutes per cycle (was 2-3 hours with markdown reading)  
-**Time Savings**: 1.5-2.5 hours via database queries  
+**Purpose**: Execute one complete manager coordination cycle
+**Duration**: 30-60 minutes per cycle (was 2-3 hours with markdown reading)
+**Time Savings**: 1.5-2.5 hours via database queries
 **Frequency**: Daily (or when CEO requests direction update)
+
+---
+
+## 🚨 CRITICAL: DATABASE-FIRST APPROACH
+
+**Single Source of Truth**: decision_log table in database
+
+**ALWAYS:**
+- ✅ Query decision_log FIRST before making any assumptions
+- ✅ Trust database over markdown files or artifacts
+- ✅ Verify task completion status in decision_log
+- ✅ Check for blockers in decision_log
+- ✅ Review agent progress in decision_log
+
+**NEVER:**
+- ❌ Assume tasks incomplete without checking decision_log
+- ❌ Assign already-completed work
+- ❌ Rely solely on artifacts/ directory for status
+- ❌ Skip database verification
+
+**Why This Matters:**
+- Agents log ALL work to decision_log (100% compliance)
+- Agents may not create artifacts/ directories immediately
+- Database is real-time, artifacts may lag
+- Assigning completed work wastes agent time
+
+**Lesson Learned (2025-10-24):**
+- Manager assigned BLOCKER-003, BLOCKER-005, SQL fixes
+- All were already complete in decision_log
+- Agents had logged everything correctly
+- Manager did NOT check database first
+- **Result**: Wasted time, incorrect assignments
+
+**Golden Rule**: When in doubt, query decision_log!
 
 ---
 
@@ -17,9 +51,11 @@
 
 ---
 
-## 1) QUERY STATUS (< 1 min) [DATABASE-DRIVEN - NEW]
+## 1) QUERY STATUS (< 1 min) [DATABASE-DRIVEN - CRITICAL]
 
-**Objective**: Get instant snapshot of all 17 agents (replaces 30min feedback reading)
+**Objective**: Get instant snapshot of all 17 agents from decision_log (replaces 30min feedback reading)
+
+**🚨 CRITICAL**: ALWAYS query decision_log FIRST - it is the single source of truth. Do NOT assume task status without checking database.
 
 **Steps**:
 
@@ -30,23 +66,29 @@ cd ~/HotDash/hot-dash
 mkdir -p artifacts/manager/$(date +%Y-%m-%d)
 DATE=$(date +%Y-%m-%d)
 
-# Query 1: Blocked tasks (< 1 sec)
+# Query 1: Completed work (< 1 sec) - CHECK THIS FIRST!
+echo "🔍 CRITICAL: Querying completed work from decision_log..."
+npx tsx --env-file=.env scripts/manager/query-completed-today.ts > artifacts/manager/$DATE/completed.txt
+echo "✅ Found completed work - review BEFORE assigning tasks"
+
+# Query 2: Blocked tasks (< 1 sec)
 echo "Querying blocked tasks..."
 npx tsx --env-file=.env scripts/manager/query-blocked-tasks.ts > artifacts/manager/$DATE/blocked-tasks.txt
 
-# Query 2: Agent status (< 1 sec)
+# Query 3: Agent status (< 1 sec)
 echo "Querying agent status..."
 npx tsx --env-file=.env scripts/manager/query-agent-status.ts > artifacts/manager/$DATE/agent-status.txt
 
-# Query 3: Completed today (< 1 sec)
-echo "Querying completed work..."
-npx tsx --env-file=.env scripts/manager/query-completed-today.ts > artifacts/manager/$DATE/completed.txt
-
+echo ""
 echo "✅ Status queries complete (< 10 seconds total)"
 echo "📊 Results:"
+echo "   ⚠️  REVIEW FIRST: artifacts/manager/$DATE/completed.txt"
 echo "   Blocked: artifacts/manager/$DATE/blocked-tasks.txt"
 echo "   Status: artifacts/manager/$DATE/agent-status.txt"
-echo "   Completed: artifacts/manager/$DATE/completed.txt"
+echo ""
+echo "🚨 CRITICAL: Review completed.txt BEFORE assigning any tasks!"
+echo "   Agents log ALL work to decision_log (100% compliance)"
+echo "   Do NOT assume tasks incomplete without checking database"
 ```
 
 **Output**: 3 query result files (instant status of all agents)
@@ -55,10 +97,17 @@ echo "   Completed: artifacts/manager/$DATE/completed.txt"
 
 **Acceptance**:
 
-- All 3 queries run successfully
-- Blocked tasks identified
-- Agent status shows current work
-- Completed tasks listed with metrics
+- ✅ All 3 queries run successfully
+- ✅ **Completed work reviewed FIRST** (decision_log is source of truth)
+- ✅ Blocked tasks identified
+- ✅ Agent status shows current work
+- ✅ No assumptions made without database verification
+
+**⚠️ LESSON LEARNED (2025-10-24):**
+- Manager assigned already-completed tasks (BLOCKER-003, BLOCKER-005, SQL fixes)
+- Agents had logged ALL work to decision_log correctly (100% compliance)
+- Manager did NOT check decision_log before assigning
+- **ALWAYS query decision_log FIRST - trust the database!**
 
 ---
 
@@ -210,48 +259,121 @@ rm artifacts/manager/$DATE/design_conflicts.md 2>/dev/null
 
 ---
 
-## 4) MARK DONE & CLEAN PLAN (30 min)
+## 4) MARK DONE & CLEAN PLAN (10 min) [DATABASE-DRIVEN]
 
-**Objective**: Check off completed tasks with evidence; remove duplicates; update statuses
+**Objective**: Mark completed tasks in database based on decision_log queries
+
+**🚨 CRITICAL**: Use decision_log as source of truth, NOT markdown files or assumptions
 
 **Steps**:
 
-For each agent direction file (`docs/directions/<agent>.md`):
-
 ```bash
-# Read current direction
-AGENT="engineer"  # Replace for each agent
+DATE=$(date +%Y-%m-%d)
 
-# Check feedback_consolidated.md for completed tasks
-# Example: If feedback shows "ENG-029: PII redaction utility COMPLETE ✅"
+# Step 1: Review completed work from decision_log
+echo "📋 Reviewing completed work from decision_log..."
+cat artifacts/manager/$DATE/completed.txt
 
-# Update direction file:
-# 1. Add ✅ to completed task
-# 2. Move to "COMPLETED" section
-# 3. Update status line
-# 4. Keep acceptance criteria (don't delete until validated)
+# Step 2: Identify tasks to mark complete
+echo ""
+echo "🔍 Identifying tasks to mark complete in database..."
+
+# Step 3: Mark tasks complete in database
+# Create script to update task_assignment table
+cat > scripts/manager/mark-completed-$DATE.ts << 'EOF'
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient();
+
+const completedTasks = [
+  // Add task IDs from completed.txt
+  // Example: { taskId: 'BLOCKER-003', agent: 'engineer' }
+];
+
+async function markCompleted() {
+  for (const task of completedTasks) {
+    await prisma.taskAssignment.updateMany({
+      where: { taskId: task.taskId },
+      data: {
+        status: 'completed',
+        completedAt: new Date()
+      }
+    });
+    console.log(`✅ ${task.taskId} marked complete`);
+  }
+  await prisma.$disconnect();
+}
+
+markCompleted();
+EOF
+
+# Run the script
+npx tsx --env-file=.env scripts/manager/mark-completed-$DATE.ts
+
+echo "✅ All completed tasks marked in database"
 ```
 
-**Manual Step**: For each agent:
+**Manual Step**:
 
-1. Read their completed work from `feedback_consolidated.md`
-2. Update their direction file:
-   - ✅ Mark completed tasks
-   - Keep acceptance criteria
-   - Update status line (e.g., "Phase 9: 2/3 complete")
-3. Do NOT delete tasks until fully validated by QA/Designer
+1. **Review** `artifacts/manager/$DATE/completed.txt` (from decision_log)
+2. **Extract** task IDs that show status='completed' or action contains 'complete'
+3. **Update** task_assignment table to mark tasks as completed
+4. **Verify** no tasks marked complete without decision_log evidence
 
-**Acceptance**: All completed tasks marked ✅ with evidence links
+**⚠️ DO NOT:**
+- Assume tasks incomplete without checking decision_log
+- Mark tasks complete based on markdown files only
+- Skip database verification
+
+**Acceptance**:
+- ✅ All completed tasks from decision_log marked in task_assignment table
+- ✅ No tasks marked complete without decision_log evidence
+- ✅ Database is single source of truth
 
 ---
 
-## 5) BLOCKERS FIRST (30 min)
+## 5) BLOCKERS FIRST (30 min) [DATABASE-DRIVEN]
 
-**Objective**: Verify each blocker (5/5 checks); PRESENT to CEO for assignment
+**Objective**: Verify each blocker (5/5 checks); CHECK decision_log for resolution; PRESENT to CEO for assignment
 
-**5-Point Blocker Verification**:
+**🚨 CRITICAL**: Check decision_log BEFORE verifying blockers - they may already be resolved!
 
-For each blocker, verify:
+**Pre-Verification Step**:
+
+```bash
+DATE=$(date +%Y-%m-%d)
+
+# Check if blockers already resolved in decision_log
+echo "🔍 Checking decision_log for blocker resolutions..."
+npx tsx --env-file=.env -e "
+import { PrismaClient } from '@prisma/client';
+const prisma = new PrismaClient();
+
+const blockers = await prisma.decisionLog.findMany({
+  where: {
+    createdAt: { gte: new Date('$DATE 00:00:00') },
+    OR: [
+      { taskId: { contains: 'BLOCKER' } },
+      { action: { contains: 'blocker' } },
+      { rationale: { contains: 'BLOCKER' } }
+    ]
+  },
+  orderBy: { createdAt: 'desc' }
+});
+
+console.log('Blocker-related decisions today:', blockers.length);
+for (const b of blockers) {
+  console.log(\`\${b.taskId}: \${b.action} (status: \${b.status})\`);
+}
+
+await prisma.\$disconnect();
+"
+
+echo "✅ Check complete - review output before proceeding"
+```
+
+**5-Point Blocker Verification** (ONLY for unresolved blockers):
+
+For each blocker NOT resolved in decision_log, verify:
 
 1. ✅ **Access**: Do we have credentials/permissions? (Check vault, env vars)
 2. ✅ **Flags**: Are feature flags/env vars set correctly?
@@ -259,7 +381,7 @@ For each blocker, verify:
 4. ✅ **Workaround**: Can we proceed with alternative approach?
 5. ✅ **Repro**: Can blocker be reproduced with minimal steps?
 
-**Document Blockers**:
+**Document Blockers** (ONLY unresolved ones):
 
 ```bash
 DATE=$(date +%Y-%m-%d)
