@@ -12,8 +12,8 @@
  * - Quality trends and history
  */
 
-import { json, type LoaderFunctionArgs } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import type { LoaderFunctionArgs } from "react-router";
+import { useLoaderData } from "react-router";
 import {
   Page,
   Layout,
@@ -48,7 +48,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   // Calculate overall quality score
   const overallScore = qualityMetrics.reduce((sum, m) => sum + m.qualityScore, 0) / qualityMetrics.length;
 
-  return json({
+  return Response.json({
     validationResults,
     qualityMetrics,
     anomalies,

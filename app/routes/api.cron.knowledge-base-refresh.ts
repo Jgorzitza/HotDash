@@ -14,8 +14,7 @@
  * @module app/routes/api.cron.knowledge-base-refresh
  */
 
-import type { ActionFunctionArgs } from '@remix-run/node';
-import { json } from '@remix-run/node';
+import type { ActionFunctionArgs } from 'react-router';
 import { getRefreshService } from '~/workers/knowledge-base-refresh';
 import { logDecision } from '~/services/decisions.server';
 
@@ -40,7 +39,7 @@ export async function action({ request }: ActionFunctionArgs) {
   try {
     // Verify this is a POST request
     if (request.method !== 'POST') {
-      return json(
+      return Response.json(
         { success: false, error: 'Method not allowed' },
         { status: 405 }
       );
@@ -64,7 +63,7 @@ export async function action({ request }: ActionFunctionArgs) {
         },
       });
 
-      return json(
+      return Response.json(
         {
           success: false,
           error: 'Unauthorized cron request',
@@ -104,7 +103,7 @@ export async function action({ request }: ActionFunctionArgs) {
         },
       });
 
-      return json(
+      return Response.json(
         {
           success: false,
           error: 'MCP server not reachable',
@@ -135,7 +134,7 @@ export async function action({ request }: ActionFunctionArgs) {
         },
       });
 
-      return json({
+      return Response.json({
         success: true,
         requestId: result.requestId,
         durationMs: result.durationMs,
@@ -157,7 +156,7 @@ export async function action({ request }: ActionFunctionArgs) {
         },
       });
 
-      return json(
+      return Response.json(
         {
           success: false,
           requestId: result.requestId,
@@ -182,7 +181,7 @@ export async function action({ request }: ActionFunctionArgs) {
       },
     });
 
-    return json(
+    return Response.json(
       {
         success: false,
         error: (error as Error).message,

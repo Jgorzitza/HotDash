@@ -10,8 +10,7 @@
  * @module app/routes/api.knowledge-base.refresh
  */
 
-import type { ActionFunctionArgs } from '@remix-run/node';
-import { json } from '@remix-run/node';
+import type { ActionFunctionArgs } from 'react-router';
 import { getRefreshService } from '~/workers/knowledge-base-refresh';
 import { logDecision } from '~/services/decisions.server';
 
@@ -38,7 +37,7 @@ export async function action({ request }: ActionFunctionArgs) {
   try {
     // Verify this is a POST request
     if (request.method !== 'POST') {
-      return json(
+      return Response.json(
         { success: false, error: 'Method not allowed' },
         { status: 405 }
       );
@@ -86,7 +85,7 @@ export async function action({ request }: ActionFunctionArgs) {
         requestId,
       });
 
-      return json({
+      return Response.json({
         success: true,
         requestId,
         message: 'Refresh queued for async processing',
@@ -100,7 +99,7 @@ export async function action({ request }: ActionFunctionArgs) {
       });
 
       if (result.success) {
-        return json({
+        return Response.json({
           success: true,
           requestId: result.requestId,
           durationMs: result.durationMs,
@@ -108,7 +107,7 @@ export async function action({ request }: ActionFunctionArgs) {
           message: 'Knowledge base refreshed successfully',
         });
       } else {
-        return json(
+        return Response.json(
           {
             success: false,
             requestId: result.requestId,
@@ -133,7 +132,7 @@ export async function action({ request }: ActionFunctionArgs) {
       },
     });
 
-    return json(
+    return Response.json(
       {
         success: false,
         error: (error as Error).message,
@@ -164,13 +163,13 @@ export async function loader() {
     const refreshService = getRefreshService();
     const status = refreshService.getStatus();
 
-    return json({
+    return Response.json({
       ...status,
       lastRefresh: status.lastRefresh?.toISOString(),
     });
   } catch (error) {
     console.error('[KB Refresh API] Error getting status:', error);
-    return json(
+    return Response.json(
       {
         error: (error as Error).message,
         message: 'Failed to get refresh status',
