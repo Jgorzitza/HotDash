@@ -5,7 +5,7 @@
  * Provides DAU/MAU, product health score, and key performance indicators.
  */
 
-import { db } from "~/lib/db.server";
+import { db } from "~/lib/prisma.server";
 import { productAnalyticsService } from "./product-analytics";
 import { userSegmentationService } from "./user-segmentation";
 
@@ -70,7 +70,7 @@ export class ProductMetricsService {
     const dayEnd = new Date(date);
     dayEnd.setHours(23, 59, 59, 999);
 
-    const users = await db.dashboardFact.findMany({
+    const users = await prisma.dashboardFact.findMany({
       where: {
         timestamp: {
           gte: dayStart,
@@ -95,7 +95,7 @@ export class ProductMetricsService {
   async calculateWAU(endDate: Date = new Date()): Promise<number> {
     const weekStart = new Date(endDate.getTime() - 7 * 24 * 60 * 60 * 1000);
 
-    const users = await db.dashboardFact.findMany({
+    const users = await prisma.dashboardFact.findMany({
       where: {
         timestamp: {
           gte: weekStart,
@@ -120,7 +120,7 @@ export class ProductMetricsService {
   async calculateMAU(endDate: Date = new Date()): Promise<number> {
     const monthStart = new Date(endDate.getTime() - 30 * 24 * 60 * 60 * 1000);
 
-    const users = await db.dashboardFact.findMany({
+    const users = await prisma.dashboardFact.findMany({
       where: {
         timestamp: {
           gte: monthStart,

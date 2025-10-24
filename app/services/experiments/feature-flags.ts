@@ -12,7 +12,7 @@
  */
 
 import { createHash } from "crypto";
-import { db } from "~/lib/db.server";
+import { db } from "~/lib/prisma.server";
 
 // ============================================================================
 // Types & Interfaces

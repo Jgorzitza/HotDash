@@ -12,7 +12,7 @@
  */
 
 import { createHash } from "crypto";
-import prisma from "~/db.server";
+import prisma from "~/prisma.server";
 
 const db = prisma; // Alias for compatibility
 
@@ -318,7 +318,7 @@ export class ABTestingService {
    */
   private async trackEvent(event: ABTestEvent): Promise<void> {
     // Store in DashboardFact table
-    await db.dashboardFact.create({
+    await prisma.dashboardFact.create({
       data: {
         shop: event.user_id,
         category: "ab_test",
@@ -343,7 +343,7 @@ export class ABTestingService {
     experimentId: string,
   ): Promise<ExperimentData> {
     // Query DashboardFact for experiment events
-    const events = await db.dashboardFact.findMany({
+    const events = await prisma.dashboardFact.findMany({
       where: {
         category: "ab_test",
         metadata: {

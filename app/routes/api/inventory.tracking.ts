@@ -2,7 +2,7 @@ import { type ActionFunctionArgs, type LoaderFunctionArgs } from "react-router";
 import { json } from "~/utils/http.server";
 import { InventoryTrackingService } from "~/services/inventory/inventory-tracking";
 import { logDecision } from "~/services/decisions.server";
-import { prisma } from "~/db.server";
+import { prisma } from "~/prisma.server";
 
 // This would be initialized elsewhere in the app
 let inventoryTracking: InventoryTrackingService | null = null;

@@ -8,7 +8,7 @@
  * - Handle publishing failures and retries
  */
 
-import { db } from "~/db.server";
+import prisma from "~/prisma.server";
 
 export interface ScheduledContent {
   id: string;
@@ -74,7 +74,7 @@ export class SchedulingService {
         JSON.stringify(input.metadata || {})
       ];
       
-      const { rows } = await db.query(query, params);
+      const { rows } = await prisma.query(query, params);
       return this.mapDbRowToScheduledContent(rows[0]);
     } catch (error) {
       console.error('Error scheduling content:', error);
@@ -87,7 +87,7 @@ export class SchedulingService {
    */
   static async getScheduledContentById(id: string): Promise<ScheduledContent | null> {
     try {
-      const { rows } = await db.query(
+      const { rows } = await prisma.query(
         'SELECT * FROM scheduled_content WHERE id = $1',
         [id]
       );
@@ -162,14 +162,14 @@ export class SchedulingService {
       
       // Get total count
       const countQuery = query.replace('SELECT *', 'SELECT COUNT(*)');
-      const { rows: countRows } = await db.query(countQuery, params);
+      const { rows: countRows } = await prisma.query(countQuery, params);
       const total = parseInt(countRows[0].count);
       
       // Get paginated results
       query += ` ORDER BY scheduled_for ASC LIMIT $${paramIndex} OFFSET $${paramIndex + 1}`;
       params.push(limit, offset);
       
-      const { rows } = await db.query(query, params);
+      const { rows } = await prisma.query(query, params);
       return {
         items: rows.map(row => this.mapDbRowToScheduledContent(row)),
         total
@@ -188,7 +188,7 @@ export class SchedulingService {
     endDate: string
   ): Promise<ScheduledContent[]> {
     try {
-      const { rows } = await db.query(
+      const { rows } = await prisma.query(
         `SELECT * FROM scheduled_content 
          WHERE scheduled_for >= $1 AND scheduled_for <= $2
          ORDER BY scheduled_for ASC`,
@@ -276,7 +276,7 @@ export class SchedulingService {
         RETURNING *
       `;
 
-      const { rows } = await db.query(query, params);
+      const { rows } = await prisma.query(query, params);
       
       if (rows.length === 0) {
         throw new Error('Scheduled content not found');
@@ -311,7 +311,7 @@ export class SchedulingService {
       weekStart.setDate(weekStart.getDate() - weekStart.getDay());
       const weekStartStr = weekStart.toISOString().split('T')[0];
 
-      const { rows } = await db.query(`
+      const { rows } = await prisma.query(`
         SELECT 
           COUNT(*) FILTER (WHERE status = 'scheduled') as total_scheduled,
           COUNT(*) FILTER (WHERE status = 'scheduled' AND scheduled_for::date = $1) as scheduled_today,
@@ -322,7 +322,7 @@ export class SchedulingService {
       `, [today, weekStartStr]);
 
       // Get by platform
-      const { rows: platformRows } = await db.query(`
+      const { rows: platformRows } = await prisma.query(`
         SELECT platform, COUNT(*) as count
         FROM scheduled_content
         WHERE status = 'scheduled' AND platform IS NOT NULL
@@ -330,7 +330,7 @@ export class SchedulingService {
       `);
 
       // Get by status
-      const { rows: statusRows } = await db.query(`
+      const { rows: statusRows } = await prisma.query(`
         SELECT status, COUNT(*) as count
         FROM scheduled_content
         GROUP BY status

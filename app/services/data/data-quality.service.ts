@@ -11,7 +11,7 @@
  * - Alert generation
  */
 
-import prisma from "~/db.server";
+import prisma from "~/prisma.server";
 import { logDecision } from "~/services/decisions.server";
 
 // ============================================================================

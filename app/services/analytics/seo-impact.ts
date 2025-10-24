@@ -7,7 +7,7 @@
  * Stores in DashboardFact table with factType="seo_ranking"
  */
 
-import prisma from "~/db.server";
+import prisma from "~/prisma.server";
 
 export interface KeywordRanking {
   keyword: string;

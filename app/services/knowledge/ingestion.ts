@@ -7,7 +7,7 @@
  * Growth Engine: HITL Learning System
  */
 
-import { prisma } from "~/db.server";
+import { prisma } from "~/prisma.server";
 import { generateEmbedding, combineQuestionAnswer, prepareTextForEmbedding } from "./embedding";
 import type { IngestionRequest, IngestionResult, KBArticle } from "./types";
 

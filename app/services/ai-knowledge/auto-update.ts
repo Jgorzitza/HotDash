@@ -10,7 +10,7 @@
  */
 
 import { OpenAI } from "openai";
-import { prisma } from "~/db.server";
+import { prisma } from "~/prisma.server";
 import { updateArticle, getArticleById } from "~/services/knowledge";
 import { logDecision } from "~/services/decisions.server";
 

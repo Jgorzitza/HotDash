@@ -11,7 +11,7 @@
  * - Churned Users: No activity in 30+ days
  */
 
-import { db } from "~/lib/db.server";
+import { db } from "~/lib/prisma.server";
 
 // ============================================================================
 // Types & Interfaces
@@ -101,7 +101,7 @@ export class UserSegmentationService {
     startDate: Date,
   ): Promise<EngagementScoreFactors> {
     // Get user activity data
-    const facts = await db.dashboardFact.findMany({
+    const facts = await prisma.dashboardFact.findMany({
       where: {
         shop: userId,
         timestamp: {
@@ -153,7 +153,7 @@ export class UserSegmentationService {
     const depth = uniqueFeatures.size / Math.max(1, daysActive); // Features per session
 
     // Value: Approvals made
-    const approvals = await db.decisionLog.count({
+    const approvals = await prisma.decisionLog.count({
       where: {
         shop: userId,
         timestamp: {
@@ -225,7 +225,7 @@ export class UserSegmentationService {
     const factors = await this.getEngagementFactors(userId, startDate);
 
     // Get last active date
-    const lastFact = await db.dashboardFact.findFirst({
+    const lastFact = await prisma.dashboardFact.findFirst({
       where: { shop: userId },
       orderBy: { timestamp: "desc" },
       select: { timestamp: true },
@@ -235,7 +235,7 @@ export class UserSegmentationService {
     const signupDate = await this.getUserFirstActivity(userId);
 
     // Get total sessions (unique days)
-    const facts = await db.dashboardFact.findMany({
+    const facts = await prisma.dashboardFact.findMany({
       where: {
         shop: userId,
         timestamp: { gte: startDate },
@@ -248,7 +248,7 @@ export class UserSegmentationService {
     const totalSessions = uniqueDays.size;
 
     // Get unique features used
-    const featureFacts = await db.dashboardFact.findMany({
+    const featureFacts = await prisma.dashboardFact.findMany({
       where: {
         shop: userId,
         category: "product_analytics",
@@ -263,7 +263,7 @@ export class UserSegmentationService {
     );
 
     // Get approval count
-    const approvalCount = await db.decisionLog.count({
+    const approvalCount = await prisma.decisionLog.count({
       where: {
         shop: userId,
         timestamp: { gte: startDate },
@@ -271,7 +271,7 @@ export class UserSegmentationService {
     });
 
     // Calculate avg tile clicks per session
-    const tileClicks = await db.dashboardFact.count({
+    const tileClicks = await prisma.dashboardFact.count({
       where: {
         shop: userId,
         category: "tile_analytics",
@@ -305,7 +305,7 @@ export class UserSegmentationService {
    */
   async getSegmentAnalytics(): Promise<SegmentAnalytics[]> {
     // Get all unique users
-    const users = await db.dashboardFact.findMany({
+    const users = await prisma.dashboardFact.findMany({
       select: { shop: true },
       distinct: ["shop"],
     });
@@ -444,7 +444,7 @@ export class UserSegmentationService {
    * @returns First activity date or null
    */
   private async getUserFirstActivity(userId: string): Promise<Date | null> {
-    const firstFact = await db.dashboardFact.findFirst({
+    const firstFact = await prisma.dashboardFact.findFirst({
       where: { shop: userId },
       orderBy: { timestamp: "asc" },
       select: { timestamp: true },

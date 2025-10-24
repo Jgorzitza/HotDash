@@ -12,7 +12,7 @@
  * - Engagement analytics
  */
 
-import { db } from "~/lib/db.server";
+import { db } from "~/lib/prisma.server";
 
 // ============================================================================
 // Types & Interfaces
@@ -76,7 +76,7 @@ export class ProductAnalyticsService {
    * @param event - Feature usage event data
    */
   async trackFeatureUsage(event: FeatureUsageEvent): Promise<void> {
-    await db.dashboardFact.create({
+    await prisma.dashboardFact.create({
       data: {
         shop: event.userId,
         category: "product_analytics",
@@ -109,7 +109,7 @@ export class ProductAnalyticsService {
     endDate: Date,
   ): Promise<FeatureAdoptionMetrics[]> {
     // Get all unique users in period
-    const totalUsersResult = await db.dashboardFact.findMany({
+    const totalUsersResult = await prisma.dashboardFact.findMany({
       where: {
         timestamp: {
           gte: startDate,
@@ -124,7 +124,7 @@ export class ProductAnalyticsService {
     const totalUsers = totalUsersResult.length;
 
     // Get feature usage data
-    const featureEvents = await db.dashboardFact.findMany({
+    const featureEvents = await prisma.dashboardFact.findMany({
       where: {
         category: "product_analytics",
         metric: {
@@ -218,7 +218,7 @@ export class ProductAnalyticsService {
     endDate: Date,
   ): Promise<TileEngagementMetrics[]> {
     // Get tile events
-    const tileEvents = await db.dashboardFact.findMany({
+    const tileEvents = await prisma.dashboardFact.findMany({
       where: {
         category: "tile_analytics",
         timestamp: {
@@ -317,7 +317,7 @@ export class ProductAnalyticsService {
     endDate: Date,
   ): Promise<ModalActionMetrics[]> {
     // Query decision_log for approval actions
-    const decisions = await db.decisionLog.findMany({
+    const decisions = await prisma.decisionLog.findMany({
       where: {
         timestamp: {
           gte: startDate,
@@ -416,7 +416,7 @@ export class ProductAnalyticsService {
     endDate: Date,
   ): Promise<SettingsChangeMetrics[]> {
     // Query user_preferences table for changes
-    const settingsEvents = await db.dashboardFact.findMany({
+    const settingsEvents = await prisma.dashboardFact.findMany({
       where: {
         category: "settings",
         timestamp: {

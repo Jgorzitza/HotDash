@@ -16,7 +16,7 @@
  */
 
 import { type LoaderFunctionArgs } from "react-router";
-import prisma from "~/db.server";
+import prisma from "~/prisma.server";
 import { getDashboardMetrics } from "~/lib/monitoring/dashboard";
 
 export interface RealtimeMetrics {

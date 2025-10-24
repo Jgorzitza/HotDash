@@ -8,7 +8,7 @@
  * - Integration with scheduling service
  */
 
-import { db } from "~/db.server";
+import prisma from "~/prisma.server";
 import { SchedulingService } from "./scheduling.service";
 
 export interface ContentApproval {
@@ -56,7 +56,7 @@ export class ContentApprovalWorkflowService {
       let previous_version_id = null;
 
       if (input.content_entry_id) {
-        const { rows } = await db.query(
+        const { rows } = await prisma.query(
           `SELECT id, version FROM content_approvals 
            WHERE content_entry_id = $1 
            ORDER BY version DESC LIMIT 1`,
@@ -89,7 +89,7 @@ export class ContentApprovalWorkflowService {
         JSON.stringify(input.metadata || {})
       ];
 
-      const { rows } = await db.query(query, params);
+      const { rows } = await prisma.query(query, params);
       return this.mapDbRowToContentApproval(rows[0]);
     } catch (error) {
       console.error('Error submitting content for approval:', error);
@@ -102,7 +102,7 @@ export class ContentApprovalWorkflowService {
    */
   static async getApprovalById(id: string): Promise<ContentApproval | null> {
     try {
-      const { rows } = await db.query(
+      const { rows } = await prisma.query(
         'SELECT * FROM content_approvals WHERE id = $1',
         [id]
       );
@@ -141,14 +141,14 @@ export class ContentApprovalWorkflowService {
 
       // Get total count
       const countQuery = query.replace('SELECT *', 'SELECT COUNT(*)');
-      const { rows: countRows } = await db.query(countQuery, params);
+      const { rows: countRows } = await prisma.query(countQuery, params);
       const total = parseInt(countRows[0].count);
 
       // Get paginated results
       query += ` ORDER BY submitted_at ASC LIMIT $${paramIndex} OFFSET $${paramIndex + 1}`;
       params.push(limit, offset);
 
-      const { rows } = await db.query(query, params);
+      const { rows } = await prisma.query(query, params);
       return {
         items: rows.map(row => this.mapDbRowToContentApproval(row)),
         total
@@ -172,7 +172,7 @@ export class ContentApprovalWorkflowService {
   ): Promise<ContentApproval> {
     try {
       // Update approval status
-      const { rows } = await db.query(
+      const { rows } = await prisma.query(
         `UPDATE content_approvals 
          SET status = 'approved', reviewed_by = $1, reviewed_at = NOW()
          WHERE id = $2
@@ -225,7 +225,7 @@ export class ContentApprovalWorkflowService {
     rejection_reason: string
   ): Promise<ContentApproval> {
     try {
-      const { rows } = await db.query(
+      const { rows } = await prisma.query(
         `UPDATE content_approvals 
          SET status = 'rejected', reviewed_by = $1, reviewed_at = NOW(), rejection_reason = $2
          WHERE id = $3
@@ -253,7 +253,7 @@ export class ContentApprovalWorkflowService {
     requested_changes: string
   ): Promise<ContentApproval> {
     try {
-      const { rows } = await db.query(
+      const { rows } = await prisma.query(
         `UPDATE content_approvals 
          SET status = 'changes_requested', reviewed_by = $1, reviewed_at = NOW(), requested_changes = $2
          WHERE id = $3
@@ -277,7 +277,7 @@ export class ContentApprovalWorkflowService {
    */
   static async getApprovalHistory(content_entry_id: string): Promise<ContentApproval[]> {
     try {
-      const { rows } = await db.query(
+      const { rows } = await prisma.query(
         `SELECT * FROM content_approvals 
          WHERE content_entry_id = $1 
          ORDER BY version DESC`,
@@ -298,7 +298,7 @@ export class ContentApprovalWorkflowService {
     try {
       const today = new Date().toISOString().split('T')[0];
 
-      const { rows } = await db.query(`
+      const { rows } = await prisma.query(`
         SELECT 
           COUNT(*) FILTER (WHERE status = 'pending_review') as pending_review,
           COUNT(*) FILTER (WHERE status = 'approved' AND reviewed_at::date = $1) as approved_today,

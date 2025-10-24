@@ -7,7 +7,7 @@
  * Stores in DashboardFact table with factType="growth_metrics"
  */
 
-import prisma from "~/db.server";
+import prisma from "~/prisma.server";
 
 export interface GrowthMetrics {
   totalImpressions: number;

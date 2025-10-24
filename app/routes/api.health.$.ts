@@ -20,7 +20,7 @@
  */
 
 import { type LoaderFunctionArgs } from "react-router";
-import prisma from "~/db.server";
+import prisma from "~/prisma.server";
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   const url = new URL(request.url);

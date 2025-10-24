@@ -6,7 +6,7 @@
  * Stores in DashboardFact table with factType="social_performance"
  */
 
-import prisma from "~/db.server";
+import prisma from "~/prisma.server";
 
 export interface SocialMetrics {
   impressions: number;

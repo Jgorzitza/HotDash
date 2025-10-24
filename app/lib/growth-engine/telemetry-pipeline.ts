@@ -15,7 +15,7 @@
 import { getTopQueries, getLandingPages } from "~/lib/seo/search-console";
 import { createDirectGaClient } from "~/services/ga/directClient";
 import { getGaConfig } from "~/config/ga.server";
-import prisma from "~/db.server";
+import prisma from "~/prisma.server";
 import { logDecision } from "~/services/decisions.server";
 
 export interface TelemetryData {

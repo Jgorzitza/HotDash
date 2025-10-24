@@ -16,7 +16,7 @@
  * - Search Console API: app/lib/seo/search-console.ts (already working)
  */
 
-import prisma from "~/db.server";
+import prisma from "~/prisma.server";
 import {
   getSearchAnalytics,
   getTopQueries,

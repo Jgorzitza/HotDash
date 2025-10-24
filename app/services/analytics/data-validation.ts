@@ -6,7 +6,7 @@
  * Calculates data quality score (0-100)
  */
 
-import prisma from "~/db.server";
+import prisma from "~/prisma.server";
 
 export interface ValidationIssue {
   type: "missing_data" | "outlier" | "inconsistency" | "stale_data";

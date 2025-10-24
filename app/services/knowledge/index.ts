@@ -135,7 +135,7 @@ export async function checkKnowledgeBaseHealth(): Promise<{
   timestamp: Date;
 }> {
   const { checkEmbeddingHealth } = await import("./embedding");
-  const { prisma } = await import("~/db.server");
+  const { prisma } = await import("~/prisma.server");
 
   const health = {
     healthy: true,
@@ -184,7 +184,7 @@ export async function getKnowledgeBaseStats(): Promise<{
   recentArticles: number;
   timestamp: Date;
 }> {
-  const { prisma } = await import("~/db.server");
+  const { prisma } = await import("~/prisma.server");
 
   try {
     // Total articles

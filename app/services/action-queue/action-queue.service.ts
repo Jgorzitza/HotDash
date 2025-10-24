@@ -5,7 +5,7 @@
  * Implements standardized contract with Top-10 ranking and operator approval workflow
  */
 
-import { db } from "~/db.server";
+import prisma from "~/prisma.server";
 import type { ActionQueueItem } from "~/lib/growth-engine/action-queue";
 
 export interface ActionQueueCreateInput {
@@ -69,7 +69,7 @@ export class ActionQueueService {
         input.agent
       ];
       
-      const { rows } = await db.query(query, params);
+      const { rows } = await prisma.query(query, params);
       return this.mapDbRowToActionQueueItem(rows[0]);
     } catch (error) {
       console.error('Error creating action:', error);
@@ -130,7 +130,7 @@ export class ActionQueueService {
       query += ` ORDER BY score DESC LIMIT $${paramIndex}`;
       params.push(limit);
       
-      const { rows } = await db.query(query, params);
+      const { rows } = await prisma.query(query, params);
       return rows.map(row => this.mapDbRowToActionQueueItem(row));
     } catch (error) {
       console.error('Error fetching actions:', error);
@@ -150,7 +150,7 @@ export class ActionQueueService {
    */
   static async getActionById(id: string): Promise<ActionQueueItem | null> {
     try {
-      const { rows } = await db.query(
+      const { rows } = await prisma.query(
         'SELECT * FROM action_queue WHERE id = $1',
         [id]
       );
@@ -225,7 +225,7 @@ export class ActionQueueService {
         RETURNING *
       `;
 
-      const { rows } = await db.query(query, params);
+      const { rows } = await prisma.query(query, params);
       
       if (rows.length === 0) {
         throw new Error('Action not found');
@@ -311,7 +311,7 @@ export class ActionQueueService {
     rejected: number;
   }> {
     try {
-      const { rows } = await db.query(`
+      const { rows } = await prisma.query(`
         SELECT 
           status,
           COUNT(*) as count

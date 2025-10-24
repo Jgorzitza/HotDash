@@ -8,7 +8,7 @@
  */
 
 import type { LoaderFunctionArgs, ActionFunctionArgs } from "react-router";
-import prisma from "~/db.server";
+import prisma from "~/prisma.server";
 import {
   getActionAttribution,
   updateActionROI,

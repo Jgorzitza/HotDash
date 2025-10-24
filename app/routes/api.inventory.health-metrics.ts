@@ -10,7 +10,7 @@
 
 import type { LoaderFunctionArgs } from 'react-router';
 import { json } from '~/utils/http.server';
-import { prisma } from '~/db.server';
+import { prisma } from '~/prisma.server';
 import { logDecision } from '~/services/decisions.server';
 
 export async function loader({ request }: LoaderFunctionArgs) {

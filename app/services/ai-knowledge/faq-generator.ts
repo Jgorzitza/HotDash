@@ -8,7 +8,7 @@
  */
 
 import { OpenAI } from "openai";
-import { prisma } from "~/db.server";
+import { prisma } from "~/prisma.server";
 import { ingestDocument } from "~/services/knowledge";
 import { sanitizeConversation } from "./pii-sanitizer";
 

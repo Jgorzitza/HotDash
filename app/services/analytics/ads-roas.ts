@@ -7,7 +7,7 @@
  * Stores in DashboardFact table with factType="ads_roas"
  */
 
-import prisma from "~/db.server";
+import prisma from "~/prisma.server";
 
 export interface CampaignPerformance {
   campaignId: string;

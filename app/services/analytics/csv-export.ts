@@ -7,7 +7,7 @@
  * Large dataset streaming support
  */
 
-import prisma from "~/db.server";
+import prisma from "~/prisma.server";
 
 export type ExportType = "social" | "seo" | "ads" | "growth" | "all";
 

@@ -6,7 +6,7 @@
  * Report templates with key metrics and insights
  */
 
-import prisma from "~/db.server";
+import prisma from "~/prisma.server";
 import { getGrowthMetrics } from "./growth-metrics";
 import { detectAllAnomalies } from "./anomaly-detection";
 import { forecastMetric } from "./trend-forecast";

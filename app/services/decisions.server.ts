@@ -1,5 +1,5 @@
 import { Prisma } from "@prisma/client";
-import prisma from "../db.server";
+import prisma from "../prisma.server";
 import { getSupabaseConfig } from "../config/supabase.server";
 import { supabaseMemory } from "../../packages/memory/supabase";
 import type { DecisionLog as MemoryDecision } from "../../packages/memory";

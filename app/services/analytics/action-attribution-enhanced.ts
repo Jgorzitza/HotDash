@@ -6,7 +6,7 @@
  */
 
 import { BetaAnalyticsDataClient } from "@google-analytics/data";
-import prisma from "~/db.server";
+import prisma from "~/prisma.server";
 import { logDecision } from "~/services/decisions.server";
 import type { ActionAttributionResult, AttributionSummary } from './action-attribution';
 

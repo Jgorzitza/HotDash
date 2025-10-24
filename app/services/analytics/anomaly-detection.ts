@@ -7,7 +7,7 @@
  * Provides recommendations for detected anomalies
  */
 
-import prisma from "~/db.server";
+import prisma from "~/prisma.server";
 
 export interface Anomaly {
   type: "spike" | "drop" | "unusual";

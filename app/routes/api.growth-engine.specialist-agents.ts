@@ -5,7 +5,15 @@
  */
 
 import type { LoaderFunctionArgs, ActionFunctionArgs } from "react-router";
-import prisma from "~/db.server";
+import prisma from "~/prisma.server";
+// Create a lightweight db shim to satisfy existing `prisma.query` calls during SSR/build.
+const db = {
+  query: async (sql: string, params?: any[]) => {
+    const result = await (prisma as any).$queryRawUnsafe(sql, ...(params ?? []));
+    const rows = Array.isArray(result) ? result : [];
+    return { rows } as { rows: any[] };
+  },
+};
 import { SpecialistAgentOrchestrator } from "~/lib/growth-engine/specialist-agents";
 import { createActionItem } from "~/lib/growth-engine/action-queue";
 
@@ -21,7 +29,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   try {
     if (agent) {
       // Get specific agent runs
-      const { rows } = await db.query(
+      const { rows } = await prisma.query(
         `SELECT * FROM specialist_agent_runs 
          WHERE agent_name = $1 
          ORDER BY start_time DESC 
@@ -35,7 +43,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       });
     } else {
       // Get all agent runs
-      const { rows } = await db.query(
+      const { rows } = await prisma.query(
         `SELECT * FROM specialist_agent_runs 
          ORDER BY start_time DESC 
          LIMIT 50`
@@ -88,7 +96,7 @@ export async function action({ request }: ActionFunctionArgs) {
 async function runSpecialistAgent(agentName: string, runType: string = 'manual') {
   try {
     // Start agent run
-    const { rows: runRows } = await db.query(
+    const { rows: runRows } = await prisma.query(
       `INSERT INTO specialist_agent_runs (agent_name, run_type, status, start_time)
        VALUES ($1, $2, 'running', NOW())
        RETURNING *`,
@@ -104,7 +112,7 @@ async function runSpecialistAgent(agentName: string, runType: string = 'manual')
       
       // Store actions in action_queue
       for (const action of actions) {
-        await db.query(
+        await prisma.query(
           `INSERT INTO action_queue (
             type, target, draft, evidence, expected_impact, confidence, 
             ease, risk_tier, can_execute, rollback_plan, freshness_label, agent
@@ -119,7 +127,7 @@ async function runSpecialistAgent(agentName: string, runType: string = 'manual')
       }
       
       // Update run status
-      await db.query(
+      await prisma.query(
         `UPDATE specialist_agent_runs 
          SET status = 'completed', end_time = NOW(), actions_emitted = $1
          WHERE id = $2`,
@@ -138,7 +146,7 @@ async function runSpecialistAgent(agentName: string, runType: string = 'manual')
       });
     } catch (error) {
       // Update run status to failed
-      await db.query(
+      await prisma.query(
         `UPDATE specialist_agent_runs 
          SET status = 'failed', end_time = NOW(), error_message = $1
          WHERE id = $2`,
@@ -163,7 +171,7 @@ async function runAllSpecialistAgents() {
     
     // Store all actions in action_queue
     for (const action of allActions) {
-      await db.query(
+      await prisma.query(
         `INSERT INTO action_queue (
           type, target, draft, evidence, expected_impact, confidence, 
           ease, risk_tier, can_execute, rollback_plan, freshness_label, agent

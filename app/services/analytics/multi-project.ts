@@ -7,7 +7,7 @@
  * Project comparison capabilities
  */
 
-import prisma from "~/db.server";
+import prisma from "~/prisma.server";
 
 export interface ProjectMetrics {
   project: string;

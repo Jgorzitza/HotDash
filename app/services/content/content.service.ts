@@ -9,7 +9,7 @@
  * - Content type management
  */
 
-import { db } from "~/db.server";
+import prisma from "~/prisma.server";
 
 export interface ContentType {
   id: string;
@@ -87,7 +87,7 @@ export class ContentService {
         JSON.stringify(input.fields)
       ];
       
-      const { rows } = await db.query(query, params);
+      const { rows } = await prisma.query(query, params);
       return this.mapDbRowToContentType(rows[0]);
     } catch (error) {
       console.error('Error creating content type:', error);
@@ -100,7 +100,7 @@ export class ContentService {
    */
   static async getContentTypes(): Promise<ContentType[]> {
     try {
-      const { rows } = await db.query(
+      const { rows } = await prisma.query(
         'SELECT * FROM content_types ORDER BY created_at DESC'
       );
       return rows.map(row => this.mapDbRowToContentType(row));
@@ -115,7 +115,7 @@ export class ContentService {
    */
   static async getContentTypeById(id: string): Promise<ContentType | null> {
     try {
-      const { rows } = await db.query(
+      const { rows } = await prisma.query(
         'SELECT * FROM content_types WHERE id = $1',
         [id]
       );
@@ -152,7 +152,7 @@ export class ContentService {
         input.created_by
       ];
       
-      const { rows } = await db.query(query, params);
+      const { rows } = await prisma.query(query, params);
       return this.mapDbRowToContentEntry(rows[0]);
     } catch (error) {
       console.error('Error creating content entry:', error);
@@ -209,14 +209,14 @@ export class ContentService {
       
       // Get total count
       const countQuery = query.replace('SELECT ce.*, ct.name as content_type_name', 'SELECT COUNT(*)');
-      const { rows: countRows } = await db.query(countQuery, params);
+      const { rows: countRows } = await prisma.query(countQuery, params);
       const total = parseInt(countRows[0].count);
       
       // Get paginated results
       query += ` ORDER BY ce.updated_at DESC LIMIT $${paramIndex} OFFSET $${paramIndex + 1}`;
       params.push(limit, offset);
       
-      const { rows } = await db.query(query, params);
+      const { rows } = await prisma.query(query, params);
       return {
         entries: rows.map(row => this.mapDbRowToContentEntry(row)),
         total
@@ -232,7 +232,7 @@ export class ContentService {
    */
   static async getContentEntryById(id: string): Promise<ContentEntry | null> {
     try {
-      const { rows } = await db.query(
+      const { rows } = await prisma.query(
         'SELECT * FROM content_entries WHERE id = $1',
         [id]
       );
@@ -303,7 +303,7 @@ export class ContentService {
         RETURNING *
       `;
 
-      const { rows } = await db.query(query, params);
+      const { rows } = await prisma.query(query, params);
       
       if (rows.length === 0) {
         throw new Error('Content entry not found');
@@ -321,7 +321,7 @@ export class ContentService {
    */
   static async deleteContentEntry(id: string): Promise<void> {
     try {
-      const { rows } = await db.query(
+      const { rows } = await prisma.query(
         'DELETE FROM content_entries WHERE id = $1 RETURNING id',
         [id]
       );
@@ -350,7 +350,7 @@ export class ContentService {
    */
   static async getContentEntryVersions(id: string): Promise<ContentEntry[]> {
     try {
-      const { rows } = await db.query(
+      const { rows } = await prisma.query(
         'SELECT * FROM content_entry_versions WHERE content_entry_id = $1 ORDER BY version DESC',
         [id]
       );
@@ -372,7 +372,7 @@ export class ContentService {
     total_content_types: number;
   }> {
     try {
-      const { rows } = await db.query(`
+      const { rows } = await prisma.query(`
         SELECT 
           (SELECT COUNT(*) FROM content_entries) as total_entries,
           (SELECT COUNT(*) FROM content_entries WHERE status = 'published') as published_entries,
