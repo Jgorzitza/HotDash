@@ -1,6 +1,6 @@
 {
-  "buildTime": "2025-10-21T03:54:06.534Z",
-  "documentCount": 6,
+  "buildTime": "2025-10-24T16:45:58.121Z",
+  "documentCount": 7,
   "persistDir": "/home/justin/HotDash/hot-dash/packages/memory/indexes/operator_knowledge",
   "useMock": false,
   "chunkConfig": {
@@ -10,6 +10,10 @@
     "note": "No overlap - improves faithfulness by reducing contradictions"
   },
   "sources": [
+    {
+      "fileName": "warranty-policy.md",
+      "size": 11531
+    },
     {
       "fileName": "shipping-policy.md",
       "size": 3786
@@ -32,7 +36,7 @@
     },
     {
       "fileName": "common-questions-faq.md",
-      "size": 12291
+      "size": 25883
     }
   ]
 }

@@ -94,6 +94,12 @@
       "id": "data",
       "human_review": false,
       "reviewers": []
+    },
+    {
+      "id": "specialagent001",
+      "human_review": false,
+      "reviewers": [],
+      "description": "LLM Infrastructure Specialist - Builds and maintains LiteLLM + Langfuse + Valkey stack for production agents"
     }
   ]
 }

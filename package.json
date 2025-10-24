@@ -87,6 +87,7 @@
     "@types/pg": "^8.15.5",
     "ai": "^5.0.72",
     "chart.js": "^4.5.1",
+    "chokidar": "^4.0.3",
     "csv-parser": "^3.2.0",
     "google-ads-api": "^21.0.1",
     "isbot": "^5.1.0",

@@ -1,0 +1,280 @@
+{
+  "summary": {
+    "totalTests": 20,
+    "passed": 0,
+    "failed": 20,
+    "accuracy": 0,
+    "avgResponseTime": 395.05,
+    "answerRate": 0,
+    "avgKeywordMatch": 0,
+    "categoryCoverage": {
+      "returns": {
+        "passed": 0,
+        "total": 4
+      },
+      "shipping": {
+        "passed": 0,
+        "total": 4
+      },
+      "tracking": {
+        "passed": 0,
+        "total": 3
+      },
+      "exchanges": {
+        "passed": 0,
+        "total": 3
+      },
+      "troubleshooting": {
+        "passed": 0,
+        "total": 2
+      },
+      "faq": {
+        "passed": 0,
+        "total": 4
+      }
+    }
+  },
+  "results": [
+    {
+      "query": "What is your return policy for damaged items?",
+      "category": "returns",
+      "passed": false,
+      "responseTime": 432,
+      "hasAnswer": false,
+      "confidence": "low",
+      "keywordsFound": 0,
+      "keywordsTotal": 4,
+      "sources": 0,
+      "answer": "Empty Response"
+    },
+    {
+      "query": "How long do I have to return an item?",
+      "category": "returns",
+      "passed": false,
+      "responseTime": 266,
+      "hasAnswer": false,
+      "confidence": "low",
+      "keywordsFound": 0,
+      "keywordsTotal": 3,
+      "sources": 0,
+      "answer": "Empty Response"
+    },
+    {
+      "query": "Do you charge a restocking fee for returns?",
+      "category": "returns",
+      "passed": false,
+      "responseTime": 245,
+      "hasAnswer": false,
+      "confidence": "low",
+      "keywordsFound": 0,
+      "keywordsTotal": 4,
+      "sources": 0,
+      "answer": "Empty Response"
+    },
+    {
+      "query": "Can I get a refund without a receipt?",
+      "category": "returns",
+      "passed": false,
+      "responseTime": 259,
+      "hasAnswer": false,
+      "confidence": "low",
+      "keywordsFound": 0,
+      "keywordsTotal": 3,
+      "sources": 0,
+      "answer": "Empty Response"
+    },
+    {
+      "query": "How long does standard shipping take?",
+      "category": "shipping",
+      "passed": false,
+      "responseTime": 234,
+      "hasAnswer": false,
+      "confidence": "low",
+      "keywordsFound": 0,
+      "keywordsTotal": 3,
+      "sources": 0,
+      "answer": "Empty Response"
+    },
+    {
+      "query": "Do you offer expedited shipping?",
+      "category": "shipping",
+      "passed": false,
+      "responseTime": 304,
+      "hasAnswer": false,
+      "confidence": "low",
+      "keywordsFound": 0,
+      "keywordsTotal": 3,
+      "sources": 0,
+      "answer": "Empty Response"
+    },
+    {
+      "query": "What are your shipping costs?",
+      "category": "shipping",
+      "passed": false,
+      "responseTime": 239,
+      "hasAnswer": false,
+      "confidence": "low",
+      "keywordsFound": 0,
+      "keywordsTotal": 3,
+      "sources": 0,
+      "answer": "Empty Response"
+    },
+    {
+      "query": "Do you ship internationally?",
+      "category": "shipping",
+      "passed": false,
+      "responseTime": 367,
+      "hasAnswer": false,
+      "confidence": "low",
+      "keywordsFound": 0,
+      "keywordsTotal": 3,
+      "sources": 0,
+      "answer": "Empty Response"
+    },
+    {
+      "query": "How can I track my order?",
+      "category": "tracking",
+      "passed": false,
+      "responseTime": 293,
+      "hasAnswer": false,
+      "confidence": "low",
+      "keywordsFound": 0,
+      "keywordsTotal": 3,
+      "sources": 0,
+      "answer": "Empty Response"
+    },
+    {
+      "query": "My tracking number doesn't work, what should I do?",
+      "category": "tracking",
+      "passed": false,
+      "responseTime": 274,
+      "hasAnswer": false,
+      "confidence": "low",
+      "keywordsFound": 0,
+      "keywordsTotal": 4,
+      "sources": 0,
+      "answer": "Empty Response"
+    },
+    {
+      "query": "How do I know when my order has shipped?",
+      "category": "tracking",
+      "passed": false,
+      "responseTime": 329,
+      "hasAnswer": false,
+      "confidence": "low",
+      "keywordsFound": 0,
+      "keywordsTotal": 3,
+      "sources": 0,
+      "answer": "Empty Response"
+    },
+    {
+      "query": "Can I exchange an item for a different size?",
+      "category": "exchanges",
+      "passed": false,
+      "responseTime": 232,
+      "hasAnswer": false,
+      "confidence": "low",
+      "keywordsFound": 0,
+      "keywordsTotal": 4,
+      "sources": 0,
+      "answer": "Empty Response"
+    },
+    {
+      "query": "How do I start an exchange?",
+      "category": "exchanges",
+      "passed": false,
+      "responseTime": 365,
+      "hasAnswer": false,
+      "confidence": "low",
+      "keywordsFound": 0,
+      "keywordsTotal": 4,
+      "sources": 0,
+      "answer": "Empty Response"
+    },
+    {
+      "query": "Is there a fee for exchanges?",
+      "category": "exchanges",
+      "passed": false,
+      "responseTime": 176,
+      "hasAnswer": false,
+      "confidence": "low",
+      "keywordsFound": 0,
+      "keywordsTotal": 3,
+      "sources": 0,
+      "answer": "Empty Response"
+    },
+    {
+      "query": "My product isn't working correctly, what should I do?",
+      "category": "troubleshooting",
+      "passed": false,
+      "responseTime": 204,
+      "hasAnswer": false,
+      "confidence": "low",
+      "keywordsFound": 0,
+      "keywordsTotal": 3,
+      "sources": 0,
+      "answer": "Empty Response"
+    },
+    {
+      "query": "How do I clean and maintain my product?",
+      "category": "troubleshooting",
+      "passed": false,
+      "responseTime": 205,
+      "hasAnswer": false,
+      "confidence": "low",
+      "keywordsFound": 0,
+      "keywordsTotal": 3,
+      "sources": 0,
+      "answer": "Empty Response"
+    },
+    {
+      "query": "What payment methods do you accept?",
+      "category": "faq",
+      "passed": false,
+      "responseTime": 2688,
+      "hasAnswer": false,
+      "confidence": "low",
+      "keywordsFound": 0,
+      "keywordsTotal": 3,
+      "sources": 0,
+      "answer": "Empty Response"
+    },
+    {
+      "query": "Do you have a customer service phone number?",
+      "category": "faq",
+      "passed": false,
+      "responseTime": 322,
+      "hasAnswer": false,
+      "confidence": "low",
+      "keywordsFound": 0,
+      "keywordsTotal": 4,
+      "sources": 0,
+      "answer": "Empty Response"
+    },
+    {
+      "query": "Can I cancel my order?",
+      "category": "faq",
+      "passed": false,
+      "responseTime": 267,
+      "hasAnswer": false,
+      "confidence": "low",
+      "keywordsFound": 0,
+      "keywordsTotal": 3,
+      "sources": 0,
+      "answer": "Empty Response"
+    },
+    {
+      "query": "How secure is my personal information?",
+      "category": "faq",
+      "passed": false,
+      "responseTime": 200,
+      "hasAnswer": false,
+      "confidence": "low",
+      "keywordsFound": 0,
+      "keywordsTotal": 3,
+      "sources": 0,
+      "answer": "Empty Response"
+    }
+  ],
+  "timestamp": "2025-10-24T16:47:17.549Z"
+}

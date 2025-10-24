@@ -1,0 +1,38 @@
+name: Growth Engine - Risk Agent (Every 15 minutes)
+
+on:
+  schedule:
+    # Run every 15 minutes
+    - cron: '*/15 * * * *'
+  workflow_dispatch: # Allow manual triggering
+
+jobs:
+  risk-agent:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Trigger Risk Agent
+        run: |
+          curl -X POST "${{ secrets.APP_URL }}/api/cron/growth-engine/risk" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            -H "Content-Type: application/json" \
+            -w "\nHTTP Status: %{http_code}\n" \
+            -o response.json
+          
+          echo "Response:"
+          cat response.json
+          
+          # Check if request was successful
+          if [ $(jq -r '.success' response.json) != "true" ]; then
+            echo "Risk agent failed"
+            exit 1
+          fi
+          
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: risk-agent-results-${{ github.run_id }}
+          path: response.json
+          retention-days: 3
+

@@ -374,4 +374,447 @@ We'll provide a detailed quote, often with volume discounts for 10+ items.
 
 ---
 
+## Product Care & Maintenance
+
+### Q31: How do I clean my PTFE hose and fittings?
+**A:**
+- **Hose exterior:** Wipe with damp cloth and mild soap
+- **Fittings:** Use degreaser and soft brush
+- **Avoid:** Harsh chemicals, abrasive cleaners, pressure washers
+- **Frequency:** Clean during regular maintenance or when visibly dirty
+
+For show cars, use aluminum polish on fittings for mirror finish.
+
+---
+
+### Q32: How often should I inspect my fuel system?
+**A:** Recommended inspection schedule:
+- **After installation:** First 100 miles
+- **Regular:** Every oil change or 3,000 miles
+- **Annual:** Complete fuel system inspection
+- **Before racing:** Check all connections before track days
+
+Look for leaks, loose fittings, hose wear, and proper routing.
+
+---
+
+### Q33: Can I reuse AN fittings?
+**A:** Yes! AN fittings are designed to be reusable:
+- Can be removed and reinstalled multiple times
+- Inspect threads and flare seat before reuse
+- Replace if damaged, cross-threaded, or worn
+- Clean thoroughly before reinstallation
+
+This is a major advantage over crimp-style fittings!
+
+---
+
+### Q34: How long does PTFE hose last?
+**A:** With proper installation and maintenance:
+- **Typical lifespan:** 5-10 years
+- **Racing applications:** 3-5 years (more stress)
+- **Show cars (limited use):** 10+ years
+
+Replace if you see: braiding damage, hose stiffness changes, leaks, or visible wear.
+
+---
+
+### Q35: What maintenance do fuel pumps require?
+**A:**
+- **Fuel filter:** Replace every 10,000 miles or annually
+- **Pre-filter/sock:** Clean or replace every 20,000 miles
+- **Electrical connections:** Check annually for corrosion
+- **Pump output:** Test pressure annually
+- **Fuel quality:** Use fresh fuel, avoid contamination
+
+Proper maintenance extends pump life significantly!
+
+---
+
+## Advanced Technical Questions
+
+### Q36: What's the difference between -6 AN and 3/8" hose?
+**A:** They're similar but NOT identical:
+- **AN-6:** 3/8" (0.375") inner diameter, uses AN fittings
+- **3/8" hose:** May be 3/8" ID but uses different fittings
+- **Key difference:** AN is a complete system (hose + fittings)
+- **Not interchangeable:** AN fittings only work with AN hose
+
+Always use matching AN components for proper fit!
+
+---
+
+### Q37: Can I use PTFE hose for nitrous oxide?
+**A:** Yes! PTFE is compatible with nitrous oxide:
+- Use minimum -4 AN for nitrous feed lines
+- Ensure fittings are rated for nitrous pressure
+- Follow nitrous system manufacturer recommendations
+- Use proper safety equipment and installation
+
+PTFE's chemical resistance makes it ideal for nitrous!
+
+---
+
+### Q38: What's the maximum pressure rating for PTFE hose?
+**A:** Depends on hose size and construction:
+- **AN-6:** Typically 1,500 PSI working pressure
+- **AN-8:** Typically 1,200 PSI working pressure
+- **AN-10:** Typically 1,000 PSI working pressure
+- **Burst pressure:** 4x working pressure
+
+Most fuel systems operate at 40-100 PSI, well within limits!
+
+---
+
+### Q39: Do I need a fuel pressure regulator?
+**A:** Depends on your system:
+- **EFI (return style):** YES - required for proper fuel pressure
+- **EFI (returnless):** Usually built into pump module
+- **Carbureted:** YES - most carbs need 5-9 PSI
+- **High-performance pumps:** Almost always need regulator
+
+We can help you select the right regulator for your application!
+
+---
+
+### Q40: What's the difference between EFI and carb fuel systems?
+**A:**
+- **EFI (Electronic Fuel Injection):**
+  - Higher pressure (40-60 PSI typical)
+  - Return line recommended
+  - Requires fuel pressure regulator
+  - More consistent fuel delivery
+
+- **Carbureted:**
+  - Lower pressure (5-9 PSI typical)
+  - May not need return line
+  - Requires low-pressure regulator
+  - Simpler installation
+
+Choose components based on your engine type!
+
+---
+
+## Installation Planning
+
+### Q41: How much hose do I need for my project?
+**A:** Typical requirements:
+- **Basic fuel system:** 10-15 feet total
+- **Return-style EFI:** 15-20 feet
+- **Engine bay dress-up:** 5-10 feet
+- **Complete fuel system:** 20-30 feet
+
+**Tip:** Measure your routing, add 20% for bends and fittings, round up to nearest foot.
+
+---
+
+### Q42: Can I install AN fittings myself or do I need a professional?
+**A:** Most DIY mechanics can install AN fittings:
+- **Skill level:** Intermediate (basic mechanical skills)
+- **Time required:** 2-4 hours for complete fuel system
+- **Tools needed:** Cutting shears, wrenches, torque wrench
+- **Difficulty:** Moderate - follow instructions carefully
+
+We provide detailed instructions and support. Professional installation available if preferred.
+
+---
+
+### Q43: What tools do I absolutely need?
+**A:** Essential tools:
+1. **AN hose cutting shears** (Part #: HRA-CUT-001) - $29.95
+2. **Adjustable wrenches** or **AN wrench set**
+3. **Torque wrench** (recommended but not required)
+
+Optional but helpful:
+- Vice with soft jaws
+- Thread sealant (for NPT adapters only)
+- Fuel pressure gauge (for testing)
+
+Total investment: $30-100 depending on what you have.
+
+---
+
+### Q44: How do I plan my fuel system routing?
+**A:** Follow these steps:
+1. **Map the route:** From tank to engine and back
+2. **Avoid heat sources:** Keep away from exhaust, headers
+3. **Protect from damage:** Route away from moving parts
+4. **Minimize bends:** Use angled fittings for tight turns
+5. **Support the lines:** Use clamps every 12-18 inches
+6. **Allow for movement:** Engine mounts flex - leave slack
+
+We offer free routing consultation - email photos of your engine bay!
+
+---
+
+### Q45: What size fittings do I need for my fuel pump?
+**A:** Check your pump's port type:
+- **Most EFI pumps:** -6 AN or -8 AN outlet
+- **Carb pumps:** Usually -6 AN
+- **High-flow pumps:** -8 AN or -10 AN
+
+**Port types vary:**
+- AN (most common)
+- NPT (need adapter)
+- ORB (need adapter)
+- Barb (need adapter)
+
+Email us your pump model number for specific recommendations!
+
+---
+
+## Ordering & Product Selection
+
+### Q46: What's included in your bundle deals?
+**A:** Our bundles typically include:
+- **Hose:** 10-20 feet (your choice of color)
+- **Hose ends:** 8 fittings (mix of straight, 45°, 90°)
+- **Adapters:** Based on your application
+- **Installation guide:** PDF and video links
+- **Cutting shears:** Some bundles include tools
+
+**Savings:** 15-20% vs. buying items separately!
+
+See bundle options at hotrodan.com/bundles
+
+---
+
+### Q47: Can you help me choose the right parts?
+**A:** Absolutely! We offer free consultation:
+- **Email:** support@hotrodan.com with your engine specs
+- **Phone:** Call during business hours for immediate help
+- **Live chat:** Quick questions during business hours
+
+**Include in your request:**
+- Engine type and horsepower
+- Fuel system type (EFI or carb)
+- Fuel pump model
+- Any special requirements
+
+We'll recommend exactly what you need!
+
+---
+
+### Q48: Do you offer custom hose lengths?
+**A:** Yes and no:
+- **Hose sold by the foot:** Cut to any length you need
+- **Pre-cut lengths:** Not available
+- **Custom-cut hose:** Non-returnable (safety policy)
+
+**Recommendation:** Order slightly more than you think you need. Extra hose is better than too short!
+
+---
+
+### Q49: What's the difference between your hose and cheaper alternatives?
+**A:** Quality differences:
+
+**Our PTFE Hose:**
+- True PTFE (Teflon) inner liner
+- High-quality stainless or nylon braiding
+- Consistent sizing and quality
+- Tested for pressure and compatibility
+- Lifetime warranty on fittings
+
+**Cheaper alternatives:**
+- May use rubber inner liner (not E85 compatible)
+- Lower-quality braiding
+- Inconsistent sizing
+- No warranty or support
+- May fail prematurely
+
+**Bottom line:** Our hose costs more upfront but lasts longer and performs better!
+
+---
+
+### Q50: Can I mix brands of hose and fittings?
+**A:** Generally yes, but with caution:
+- **AN standards:** Most AN components are interchangeable
+- **Quality varies:** Cheap fittings may not seal properly
+- **Sizing tolerance:** Some brands have tighter/looser fits
+- **Warranty:** Mixing brands may void warranties
+
+**Recommendation:** Use matching brand components for best results and warranty coverage.
+
+---
+
+## Shipping & Delivery
+
+### Q51: Can I pick up my order locally?
+**A:** Currently we don't offer local pickup:
+- All orders ship from our warehouse
+- Fast shipping available (next day, 2-day)
+- Free shipping on orders $75+
+
+**Tip:** Order early in the day for same-day shipping!
+
+---
+
+### Q52: Do you ship to APO/FPO addresses?
+**A:** Yes! We ship to military addresses:
+- **Method:** USPS only (required for APO/FPO)
+- **Speed:** Standard shipping (10-21 days typical)
+- **Cost:** Same as domestic ($8.95 or free over $75)
+- **Restrictions:** Some items may have shipping restrictions
+
+Thank you for your service!
+
+---
+
+### Q53: What if my package is lost or stolen?
+**A:** We've got you covered:
+1. **Report immediately:** Contact us within 10 days
+2. **We'll investigate:** File claim with carrier
+3. **Resolution:** Replacement or refund
+4. **No cost to you:** All shipments are insured
+
+**Prevention tip:** Require signature confirmation for high-value orders ($5.95)
+
+---
+
+### Q54: Can I change my order after placing it?
+**A:** Depends on timing:
+- **Before shipping:** Yes! Contact us immediately
+- **After shipping:** Contact carrier to redirect
+- **After delivery:** Use our return/exchange process
+
+**Best practice:** Double-check your order before checkout!
+
+---
+
+### Q55: Do you offer expedited production for rush orders?
+**A:** Most orders ship same day if ordered before 2PM EST:
+- **Standard processing:** 1-2 business days
+- **Rush processing:** Not needed - we ship fast!
+- **Expedited shipping:** Available (2-day or next day)
+
+**For true emergencies:** Call us and we'll do our best to help!
+
+---
+
+## Warranty & Support
+
+### Q56: What if I'm not satisfied with my purchase?
+**A:** We want you to be 100% satisfied:
+- **30-day return window:** For unused items
+- **Easy exchanges:** No restocking fee
+- **Store credit option:** Get 110% value as store credit
+- **Defect warranty:** 60 days for defective items
+
+See our [Refund Policy](refund-policy.md) for complete details.
+
+---
+
+### Q57: Do you offer technical support after purchase?
+**A:** Yes! Ongoing support included:
+- **Email support:** Free, unlimited
+- **Installation help:** Free guides and videos
+- **Troubleshooting:** Free assistance
+- **Phone consultation:** $50/hour (credited to future purchase)
+
+We're here to help you succeed!
+
+---
+
+### Q58: What if I damage a part during installation?
+**A:** Depends on the situation:
+- **Manufacturing defect:** Covered under warranty
+- **Installation error:** Not covered, but we can help
+- **Damaged during shipping:** Covered - report within 48 hours
+
+**We can help you:**
+- Troubleshoot the issue
+- Provide replacement parts at cost
+- Offer installation tips to prevent future issues
+
+---
+
+## Special Situations
+
+### Q59: Can I use your products for marine applications?
+**A:** PTFE hose works for marine use:
+- **Fuel systems:** Yes, PTFE is marine-grade
+- **Saltwater exposure:** Stainless braiding resists corrosion
+- **Considerations:** Use marine-grade fittings and adapters
+- **Regulations:** Check local marine fuel system requirements
+
+Contact us for marine-specific recommendations!
+
+---
+
+### Q60: Do you offer products for diesel engines?
+**A:** Yes! PTFE hose works great with diesel:
+- **Compatibility:** PTFE handles diesel fuel perfectly
+- **Sizing:** May need larger sizes for high-flow diesel systems
+- **Pressure:** Diesel systems vary - check your requirements
+- **Recommendations:** Email your diesel engine specs for sizing help
+
+---
+
+### Q61: Can I use this for alcohol-based racing fuels?
+**A:** Absolutely! PTFE is ideal for racing fuels:
+- **Methanol:** 100% compatible
+- **E85:** 100% compatible
+- **Racing gas:** 100% compatible
+- **Nitromethane:** Compatible (check pressure ratings)
+
+PTFE's chemical resistance makes it the gold standard for racing!
+
+---
+
+### Q62: What about motorcycle or ATV applications?
+**A:** Perfect for powersports:
+- **Motorcycles:** Great for custom fuel systems
+- **ATVs/UTVs:** Ideal for performance builds
+- **Sizing:** Usually -4 AN or -6 AN for smaller engines
+- **Vibration:** PTFE hose handles vibration well
+
+Many customers use our products for powersports builds!
+
+---
+
+### Q63: Do you have products for classic car restoration?
+**A:** Yes! Popular for classic cars:
+- **Show quality:** Stainless braided hose looks great
+- **Reliability:** Modern performance with classic looks
+- **Color options:** Match your build theme
+- **Period correct:** Can be hidden for stock appearance
+
+We love classic car projects - share photos with us!
+
+---
+
+## Business & Bulk Orders
+
+### Q64: Do you offer wholesale pricing?
+**A:** Yes, for qualified businesses:
+- **Requirements:** Valid business license, resale certificate
+- **Minimum:** Varies by product category
+- **Discounts:** Volume-based pricing
+- **Application:** Email support@hotrodan.com with business info
+
+---
+
+### Q65: Can I become a dealer or distributor?
+**A:** We're always looking for quality partners:
+- **Requirements:** Established business, automotive focus
+- **Benefits:** Wholesale pricing, marketing support, priority shipping
+- **Application:** Email support@hotrodan.com with:
+  - Business information
+  - Current product lines
+  - Expected volume
+  - Geographic area
+
+---
+
+### Q66: Do you offer shop/installer discounts?
+**A:** Yes! Professional installer program:
+- **Discount:** 10-15% for qualified shops
+- **Requirements:** Proof of business, minimum annual volume
+- **Benefits:** Priority support, technical resources
+- **Apply:** Email support@hotrodan.com
+
+---
+
+---
+
 **Didn't find your answer?** We're here to help! Contact us at support@hotrodan.com or call during business hours. No question is too basic or too technical - we're happy to assist!

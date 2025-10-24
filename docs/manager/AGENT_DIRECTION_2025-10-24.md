@@ -48,10 +48,11 @@
 - **Owner:** TBD (assign to engineer)
 
 **2. LlamaIndex Integration**
-- **Issue:** Two implementations (direct + MCP)
-- **Decision needed:** Consolidate to MCP or direct?
-- **Blockers:** MCP server suspended
-- **Action:** Resume server, test integration
+- **Decision:** ✅ MCP-first pattern (all agents use MCP server)
+- **Status:** Customer agents use MCP (correct), CEO agent needs migration
+- **MCP Server:** hotdash-llamaindex-mcp.fly.dev (currently SUSPENDED)
+- **Action:** Resume server, migrate CEO agent to MCP pattern
+- **Reference:** `docs/manager/LLAMAINDEX_MCP_ALIGNMENT_2025-10-24.md`
 
 **3. Chatwoot Integration**
 - **Issue:** Not accessible
@@ -61,10 +62,11 @@
 ### P1 - Important
 
 **4. Agent SDK Integration**
-- **Status:** Partially implemented
-- **CEO Agent:** Uses direct LlamaIndex.TS
-- **Customer Agent:** Uses MCP server (currently down)
-- **Action:** Align implementations
+- **Status:** ✅ Architecture correct (OpenAI Agents SDK with handoffs)
+- **CEO Agent:** ⚠️ Needs migration to LlamaIndex MCP (currently uses direct LlamaIndex.TS)
+- **Customer Agents:** ✅ Already use LlamaIndex MCP (correct pattern)
+- **Action:** Migrate CEO agent to MCP pattern (see task ENG-LLAMAINDEX-MCP-001)
+- **Reference:** `docs/manager/LLAMAINDEX_MCP_ALIGNMENT_2025-10-24.md`
 
 **5. Growth Engine**
 - **Status:** Design complete

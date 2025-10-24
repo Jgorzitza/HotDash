@@ -32,7 +32,7 @@ The CEO Agent is an AI assistant that helps the CEO make informed operational de
 - **Shopify**: Orders, products, customers, inventory levels
 - **Supabase**: Analytics queries, revenue analysis, decision logs
 - **Chatwoot**: Customer support insights, SLA metrics, ticket trends
-- **LlamaIndex**: Knowledge base queries, policy documentation
+- **LlamaIndex MCP**: Knowledge base queries via MCP server, policy documentation
 - **Google Analytics**: Traffic analysis, conversions, user behavior
 
 **Key Features**:
@@ -52,11 +52,13 @@ CEO Query
     ↓
 AI CEO Agent (OpenAI SDK)
     ↓
-5 Tools (Shopify, Supabase, Chatwoot, LlamaIndex, GA)
+5 Tools (Shopify, Supabase, Chatwoot, LlamaIndex MCP, GA)
     ↓
 Backend API Routes (/api/ceo-agent/*)
     ↓
-External Services (with credentials from vault)
+External Services (Shopify, Supabase, Chatwoot, GA)
+    ↓
+LlamaIndex MCP Server (https://hotdash-llamaindex-mcp.fly.dev)
     ↓
 Response + Evidence
     ↓
@@ -239,16 +241,19 @@ requireApproval: (args) => args.query === "custom_sql";
 
 ---
 
-### Tool 4: LlamaIndex Knowledge Base (`llamaindex.query`)
+### Tool 4: LlamaIndex MCP Knowledge Base (`llamaindex.query`)
 
-**Purpose**: Search indexed documents and policies
+**Purpose**: Search indexed documents and policies via LlamaIndex MCP server
+
+**MCP Server**: `https://hotdash-llamaindex-mcp.fly.dev`
 
 **Features**:
 
-- Natural language queries
+- Natural language queries via MCP server
 - Metadata filters for targeted search
 - Configurable top-K results (1-10)
 - Semantic search with relevance scores
+- Centralized knowledge base (shared across all agents)
 
 **Schema**:
 
@@ -260,7 +265,9 @@ requireApproval: (args) => args.query === "custom_sql";
 }
 ```
 
-**Backend Route**: `POST /api/ceo-agent/llamaindex/query`
+**MCP Tool Call**: The agent calls the LlamaIndex MCP server's `query_knowledge_base` tool
+
+**Backend Route**: Tool handler makes HTTP POST to `${LLAMAINDEX_MCP_URL}/tools/call`
 
 **Example Query**: "Find policy documentation for returns"
 
@@ -276,6 +283,8 @@ requireApproval: (args) => args.query === "custom_sql";
   }
 }
 ```
+
+**MCP Pattern**: All agents use the same LlamaIndex MCP server for consistency
 
 ---
 
@@ -807,16 +816,17 @@ Once backend routes are implemented:
 3. Restart Chatwoot service if needed
 4. See `docs/integrations/chatwoot.md` for troubleshooting
 
-### Issue: LlamaIndex query returns empty results
+### Issue: LlamaIndex MCP query returns empty results
 
-**Cause**: Documents not indexed or index not initialized.
+**Cause**: MCP server suspended or documents not indexed.
 
 **Solution**:
 
-1. Create LlamaIndex vector store index
-2. Index documents from `data/` directory
-3. Verify embeddings generated (OpenAI embeddings)
+1. Resume MCP server: `fly apps resume hotdash-llamaindex-mcp`
+2. Check server health: `curl https://hotdash-llamaindex-mcp.fly.dev/health`
+3. Verify index status via MCP server metrics endpoint
 4. Test query with known document content
+5. See `docs/manager/LLAMAINDEX_MCP_ALIGNMENT_2025-10-24.md` for details
 
 ### Issue: Google Analytics returns "Forbidden"
 
@@ -841,10 +851,12 @@ Once backend routes are implemented:
 2. Implement Shopify Admin GraphQL queries (orders, products, customers)
 3. Implement Supabase RPC analytics queries
 4. Implement Chatwoot insights queries
-5. Implement LlamaIndex knowledge base queries (set up index if needed)
+5. Implement LlamaIndex MCP tool handler (calls MCP server at `${LLAMAINDEX_MCP_URL}/tools/call`)
 6. Implement Google Analytics metrics queries
 7. Add error handling and logging
 8. Test routes with curl/Postman
+
+**Note**: CEO Agent should use LlamaIndex MCP server (same pattern as customer agents). See `docs/manager/LLAMAINDEX_MCP_ALIGNMENT_2025-10-24.md` for migration details.
 
 **UI Components** (4-6 hours):
 
@@ -890,7 +902,17 @@ Once backend routes are implemented:
 - **Project Plan**: `docs/manager/PROJECT_PLAN.md` (Phase 11: CEO Agent Implementation)
 - **Chatwoot Integration**: `docs/integrations/chatwoot.md` (similar HITL pattern)
 - **OpenAI Agents SDK Docs**: Context7 MCP `/openai/openai-node` (tool registration, HITL workflow)
-- **LlamaIndex Docs**: Context7 MCP `/run-llama/llamaindexts` (query engine, index retrieval)
+- **LlamaIndex MCP Alignment**: `docs/manager/LLAMAINDEX_MCP_ALIGNMENT_2025-10-24.md` (migration plan)
+
+### Deprecated Files (To Be Archived)
+
+The following files use direct LlamaIndex.TS and will be archived once CEO agent is migrated to MCP pattern (task ENG-LLAMAINDEX-MCP-001):
+
+- `app/services/rag/ceo-knowledge-base.ts` - Direct LlamaIndex.TS query engine (replaced by MCP server)
+- `app/routes/api.ceo-agent.llamaindex.query.ts` - API route for direct LlamaIndex (replaced by MCP tool handler)
+
+**Migration Status**: Pending engineer task ENG-LLAMAINDEX-MCP-001
+**Target**: All agents use LlamaIndex MCP server for consistency
 
 ---
 
