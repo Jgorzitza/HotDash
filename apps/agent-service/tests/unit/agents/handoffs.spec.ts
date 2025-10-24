@@ -22,7 +22,7 @@ describe('Agent Handoffs', () => {
 
     // Verify handoff instructions
     expect(triageAgent.instructions).toContain('Order Support');
-    expect(triageAgent.instructions).toContain('order');
+    expect(triageAgent.instructions).toContain('Order-related');
   });
 
   it('should configure handoff from Triage to Product Q&A', () => {
@@ -33,7 +33,7 @@ describe('Agent Handoffs', () => {
 
     // Verify handoff instructions
     expect(triageAgent.instructions).toContain('Product Q&A');
-    expect(triageAgent.instructions).toContain('product');
+    expect(triageAgent.instructions).toContain('Product questions');
   });
 
   it('should preserve agent context during handoff configuration', () => {

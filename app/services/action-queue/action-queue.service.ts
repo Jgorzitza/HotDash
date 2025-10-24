@@ -164,10 +164,10 @@ export class ActionQueueService {
   }
 
   /**
-   * Get top 10 actions by score (for the main queue view)
+   * Get top N actions by score (for the main queue view)
    */
-  static async getTopActions(): Promise<ActionQueueItem[]> {
-    return this.getActions({ limit: 10, status: 'pending' });
+  static async getTopActions(limit: number = 10): Promise<ActionQueueItem[]> {
+    return this.getActions({ limit, status: 'pending' });
   }
 
   /**

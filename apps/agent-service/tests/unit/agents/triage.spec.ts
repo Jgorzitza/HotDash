@@ -33,7 +33,7 @@ describe('Triage Agent Intent Classification', () => {
     expect(hasSetIntentTool).toBe(true);
 
     // Verify instructions mention order-related routing
-    expect(triageAgent.instructions).toContain('order');
+    expect(triageAgent.instructions).toContain('Order-related');
     expect(triageAgent.instructions).toContain('Order Support');
   });
 
@@ -41,7 +41,7 @@ describe('Triage Agent Intent Classification', () => {
     const input = 'Does this widget work with Android?';
 
     // Verify agent configuration for product questions
-    expect(triageAgent.instructions).toContain('product');
+    expect(triageAgent.instructions).toContain('Product questions');
     expect(triageAgent.instructions).toContain('Product Q&A');
 
     // Verify agent can handoff to Product Q&A

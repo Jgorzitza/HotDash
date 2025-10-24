@@ -152,11 +152,20 @@ export default function LaunchMetricsDashboard() {
   
   const exportToGA = async () => {
     try {
-      // TODO: Implement GA export
-      console.log('[Launch Metrics] Exporting to Google Analytics...');
-      alert('Export to Google Analytics functionality coming soon!');
+      const response = await fetch('/api/analytics/export-to-ga', {
+        method: 'POST',
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        alert(`Successfully exported ${result.eventsExported} metrics to Google Analytics!`);
+      } else {
+        alert(`Export failed: ${result.message}`);
+      }
     } catch (error) {
       console.error('[Launch Metrics] Export failed:', error);
+      alert('Export failed. Check console for details.');
     }
   };
   
