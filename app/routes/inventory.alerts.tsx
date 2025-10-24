@@ -12,7 +12,7 @@ import type { LoaderFunctionArgs } from 'react-router';
 import { Page, Layout, Card, Badge, Text, Button, DataTable, Banner, InlineStack, BlockStack } from '@shopify/polaris';
 import { useState, useEffect } from 'react';
 import { json } from '~/utils/http.server';
-import { prisma } from '~/prisma.server';
+import prisma from '~/db.server';
 
 export async function loader({ request }: LoaderFunctionArgs) {
   try {

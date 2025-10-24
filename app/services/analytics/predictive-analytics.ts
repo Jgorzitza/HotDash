@@ -8,7 +8,7 @@
 import { logDecision } from '~/services/decisions.server';
 import { forecastMetric, forecastAllMetrics, type ForecastMetric, type TrendForecast } from './trend-forecast';
 import { generateDemandForecast, type HistoricalSalesData, type DemandForecast } from '../inventory/demand-forecast';
-import prisma from '~/prisma.server';
+import prisma from '~/db.server';
 
 // ============================================================================
 // Types

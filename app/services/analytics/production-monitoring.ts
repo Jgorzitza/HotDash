@@ -9,7 +9,7 @@ import { logDecision } from '~/services/decisions.server';
 import { detectAllAnomalies, type AnomalyAlert } from './anomaly-detection';
 import { AlertManager, type Alert } from '~/lib/monitoring/alert-manager';
 import { GrowthEnginePerformanceAnalysisService } from './growth-engine-performance-analysis';
-import prisma from '~/prisma.server';
+import prisma from '~/db.server';
 
 // ============================================================================
 // Types
