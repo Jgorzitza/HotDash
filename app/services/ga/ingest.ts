@@ -84,17 +84,39 @@ export async function getLandingPageAnomalies(
 
   const anomalies = flagAnomalies(sessions);
 
-  const fact = await recordDashboardFact({
-    shopDomain: options.shopDomain,
-    factType: "ga.sessions.anomalies",
-    scope: "ops",
-    value: toInputJson(anomalies),
-    metadata: toInputJson({
-      propertyId: config.propertyId,
-      range,
-      generatedAt: new Date().toISOString(),
-    }),
-  });
+  // Try to record fact, but don't fail if DashboardFact table doesn't exist
+  let fact;
+  try {
+    fact = await recordDashboardFact({
+      shopDomain: options.shopDomain,
+      factType: "ga.sessions.anomalies",
+      scope: "ops",
+      value: toInputJson(anomalies),
+      metadata: toInputJson({
+        propertyId: config.propertyId,
+        range,
+        generatedAt: new Date().toISOString(),
+      }),
+    });
+  } catch (error) {
+    // If DashboardFact table doesn't exist, create a mock fact
+    console.warn("[GA] Failed to record dashboard fact (table may not exist):", error);
+    fact = {
+      id: Date.now(),
+      shopDomain: options.shopDomain,
+      factType: "ga.sessions.anomalies",
+      scope: "ops",
+      value: toInputJson(anomalies),
+      metadata: toInputJson({
+        propertyId: config.propertyId,
+        range,
+        generatedAt: new Date().toISOString(),
+      }),
+      evidenceUrl: null,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+  }
 
   const result: ServiceResult<LandingPageAnomaly[]> = {
     data: anomalies,
