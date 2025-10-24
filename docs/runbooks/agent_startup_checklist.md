@@ -38,17 +38,17 @@
   git fetch origin
   ```
 
-- [ ] **Checkout Today's Branch** (Current: `agent-launch-20251023`):
+- [ ] **Checkout Today's Branch** (Current: `agent-launch-20251024`):
 
   ```bash
-  git checkout agent-launch-20251023
-  git pull origin agent-launch-20251023
+  git checkout agent-launch-20251024
+  git pull origin agent-launch-20251024
   ```
 
 - [ ] **Verify Branch**:
 
   ```bash
-  git branch --show-current  # Should show: agent-launch-20251023
+  git branch --show-current  # Should show: agent-launch-20251024
   ```
 
 - [ ] **Review File Ownership** (see `docs/RULES.md` "File Ownership" table):
@@ -61,7 +61,7 @@
 ```bash
 git add your/files
 git commit -m "feat(your-agent-name): what you did"
-git push origin agent-launch-20251023
+git push origin agent-launch-20251024
 ```
 
 ---
@@ -222,29 +222,29 @@ npx tsx --env-file=.env scripts/agent/get-my-tasks.ts support
 - [ ] **Create Evidence Directories**:
 
   ```bash
-  mkdir -p artifacts/<your-agent>/2025-10-23/mcp
-  mkdir -p artifacts/<your-agent>/2025-10-23/screenshots  # if Designer/Pilot/QA
+  mkdir -p artifacts/<your-agent>/$(date +%Y-%m-%d)/mcp
+  mkdir -p artifacts/<your-agent>/$(date +%Y-%m-%d)/screenshots  # if Designer/Pilot/QA
   ```
 
 - [ ] **Prepare MCP Evidence JSONL**:
-  - Create file: `artifacts/<your-agent>/2025-10-23/mcp/<task-name>.jsonl`
+  - Create file: `artifacts/<your-agent>/$(date +%Y-%m-%d)/mcp/<task-name>.jsonl`
   - Append after EACH MCP tool call:
     ```json
     {
       "tool": "shopify-dev|context7|web-search",
       "doc_ref": "<url>",
       "request_id": "<id>",
-      "timestamp": "2025-10-23T14:30:00Z",
+      "timestamp": "2025-10-24T14:30:00Z",
       "purpose": "Learn Polaris Card component"
     }
     ```
 
 - [ ] **Prepare Heartbeat** (if task will be >2 hours):
-  - Create file: `artifacts/<your-agent>/2025-10-23/heartbeat.ndjson`
+  - Create file: `artifacts/<your-agent>/$(date +%Y-%m-%d)/heartbeat.ndjson`
   - Append every 15 minutes:
     ```json
     {
-      "timestamp": "2025-10-23T14:00:00Z",
+      "timestamp": "2025-10-24T14:00:00Z",
       "task": "ENG-029",
       "status": "doing",
       "progress": "40%",
@@ -315,7 +315,7 @@ await logDecision({
   progressPct: 50, // 0-100
   action: "task_progress",
   rationale: "What you did + evidence",
-  evidenceUrl: "artifacts/<agent>/2025-10-23/task.md",
+  evidenceUrl: "artifacts/<agent>/$(date +%Y-%m-%d)/task.md",
   durationActual: 2.0,
   nextAction: "What you're doing next",
   payload: {
@@ -383,7 +383,7 @@ await logDecision({
   npx tsx --env-file=.env scripts/agent/complete-task.ts <TASK-ID> "<completion notes>"
 
   # Example:
-  npx tsx --env-file=.env scripts/agent/complete-task.ts ENG-060 "Security hardening complete: PII redaction enforced, ABAC validation working, store switch safety checks implemented, dev MCP ban verified. All tests passing 45/45. Evidence in artifacts/engineer/2025-10-23/security-hardening.md"
+  npx tsx --env-file=.env scripts/agent/complete-task.ts ENG-060 "Security hardening complete: PII redaction enforced, ABAC validation working, store switch safety checks implemented, dev MCP ban verified. All tests passing 45/45. Evidence in artifacts/engineer/$(date +%Y-%m-%d)/security-hardening.md"
   ```
 
 - [ ] **OR log completion via `logDecision()` directly**:
