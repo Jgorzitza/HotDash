@@ -1,4 +1,4 @@
-import prisma from "../../prisma.server";
+import prisma from "../../db.server";
 import { ServiceError, type ServiceResult } from "../types";
 
 export interface ActivationAggregate {
