@@ -1,4 +1,9 @@
-import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router";
+import { Links, Meta, Outlet, Scripts, ScrollRestoration, type HeadersFunction } from "react-router";
+import { getSecurityHeaders } from "./middleware/security-headers";
+
+export const headers: HeadersFunction = () => {
+  return getSecurityHeaders();
+};
 
 export default function App() {
   return (
