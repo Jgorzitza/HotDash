@@ -541,3 +541,41 @@ export async function updateEmergencySourcingStatus(id: string, status: string):
 
   return result;
 }
+
+/**
+ * Generate emergency sourcing action card
+ */
+export async function generateEmergencySourcingAction(input: any): Promise<any> {
+  await logDecision({
+    scope: "build",
+    actor: "inventory",
+    action: "generate_emergency_sourcing_action",
+    rationale: `Generating emergency sourcing action for variant ${input.variantId}`,
+    evidenceUrl: "app/services/inventory/emergency-sourcing.ts",
+    status: "in_progress",
+    progressPct: 0,
+  });
+
+  // For now, return mock action card
+  const action = {
+    id: `action-${Date.now()}`,
+    type: "emergency_sourcing",
+    title: "Emergency Sourcing Recommended",
+    description: `Consider emergency sourcing for variant ${input.variantId}`,
+    priority: "high",
+    estimatedImpact: 150.0,
+    createdAt: new Date().toISOString(),
+  };
+
+  await logDecision({
+    scope: "build",
+    actor: "inventory",
+    action: "generate_emergency_sourcing_action_complete",
+    rationale: `Generated emergency sourcing action ${action.id}`,
+    evidenceUrl: "app/services/inventory/emergency-sourcing.ts",
+    status: "completed",
+    progressPct: 100,
+  });
+
+  return action;
+}
