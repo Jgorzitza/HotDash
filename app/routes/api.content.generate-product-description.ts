@@ -6,21 +6,21 @@
  * Generates AI-powered product descriptions using OpenAI
  */
 
-import { json, type ActionFunctionArgs } from 'react-router';
+import { data, type ActionFunctionArgs } from 'react-router';
 import { aiContentGenerator } from '~/services/content/ai-content-generator';
 import type { ProductDescriptionRequest } from '~/services/content/ai-content-generator';
 
 export async function action({ request }: ActionFunctionArgs) {
   if (request.method !== 'POST') {
-    return json({ error: 'Method not allowed' }, { status: 405 });
+    return data({ error: 'Method not allowed' }, { status: 405 });
   }
 
   try {
     const body = await request.json();
-    
+
     // Validate required fields
     if (!body.productTitle) {
-      return json(
+      return data(
         { error: 'Product title is required' },
         { status: 400 }
       );
@@ -42,17 +42,17 @@ export async function action({ request }: ActionFunctionArgs) {
     // Generate content
     const result = await aiContentGenerator.generateProductDescription(generationRequest);
 
-    return json({
+    return {
       success: true,
       content: result.content,
       metadata: result.metadata,
       qualityScore: result.qualityScore,
       suggestions: result.suggestions,
-    });
+    };
   } catch (error) {
     console.error('Error generating product description:', error);
-    return json(
-      { 
+    return data(
+      {
         error: 'Failed to generate product description',
         details: error instanceof Error ? error.message : 'Unknown error'
       },

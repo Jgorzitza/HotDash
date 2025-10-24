@@ -6,13 +6,13 @@
  * Assesses the quality of provided content
  */
 
-import { json, type ActionFunctionArgs } from 'react-router';
+import { data, type ActionFunctionArgs } from 'react-router';
 import { aiContentGenerator } from '~/services/content/ai-content-generator';
 import type { ContentGenerationType } from '~/services/content/ai-content-generator';
 
 export async function action({ request }: ActionFunctionArgs) {
   if (request.method !== 'POST') {
-    return json({ error: 'Method not allowed' }, { status: 405 });
+    return data({ error: 'Method not allowed' }, { status: 405 });
   }
 
   try {
@@ -20,7 +20,7 @@ export async function action({ request }: ActionFunctionArgs) {
     
     // Validate required fields
     if (!body.content || !body.contentType) {
-      return json(
+      return data(
         { error: 'Content and content type are required' },
         { status: 400 }
       );
@@ -33,13 +33,13 @@ export async function action({ request }: ActionFunctionArgs) {
       body.keywords || []
     );
 
-    return json({
+    return {
       success: true,
       qualityScore,
-    });
+    };
   } catch (error) {
     console.error('Error assessing content quality:', error);
-    return json(
+    return data(
       { 
         error: 'Failed to assess content quality',
         details: error instanceof Error ? error.message : 'Unknown error'

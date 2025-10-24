@@ -4,7 +4,7 @@
  * Review and approve content before publishing
  */
 
-import { json, type LoaderFunctionArgs, type ActionFunctionArgs } from "@react-router/node";
+import { data, type LoaderFunctionArgs, type ActionFunctionArgs } from "@react-router/node";
 import { useLoaderData, useActionData, useSubmit, useRevalidator } from "react-router";
 import { Page, Card, Text, Button, Badge, InlineStack, BlockStack, Banner, EmptyState, Layout } from "@shopify/polaris";
 import { authenticate } from "../shopify.server";
@@ -26,14 +26,14 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
     const stats = await ContentApprovalWorkflowService.getApprovalStats();
 
-    return json({
+    return {
       approvals: items,
       total,
       stats
     });
   } catch (error: any) {
     console.error("Error loading content approvals:", error);
-    return json({
+    return {
       approvals: [],
       total: 0,
       stats: {
@@ -68,24 +68,24 @@ export async function action({ request }: ActionFunctionArgs) {
             publish_immediately
           }
         );
-        return json({ success: true, message: "Content approved successfully!" });
+        return { success: true, message: "Content approved successfully!" });
 
       case "reject":
         const rejection_reason = formData.get("rejection_reason") as string;
         await ContentApprovalWorkflowService.rejectContent(id, "content-agent", rejection_reason);
-        return json({ success: true, message: "Content rejected" });
+        return { success: true, message: "Content rejected" });
 
       case "request_changes":
         const requested_changes = formData.get("requested_changes") as string;
         await ContentApprovalWorkflowService.requestChanges(id, "content-agent", requested_changes);
-        return json({ success: true, message: "Changes requested" });
+        return { success: true, message: "Changes requested" });
 
       default:
-        return json({ success: false, error: "Invalid action" }, { status: 400 });
+        return data({ success: false, error: "Invalid action" }, { status: 400 });
     }
   } catch (error: any) {
     console.error(`Error performing ${actionType} action:`, error);
-    return json({ success: false, error: error.message || `Failed to ${actionType}` }, { status: 400 });
+    return data({ success: false, error: error.message || `Failed to ${actionType}` }, { status: 400 });
   }
 }
 

@@ -6,27 +6,27 @@
  * Generates multiple variations of content with different tones
  */
 
-import { json, type ActionFunctionArgs } from 'react-router';
+import { data, type ActionFunctionArgs } from 'react-router';
 import { aiContentGenerator } from '~/services/content/ai-content-generator';
 
 export async function action({ request }: ActionFunctionArgs) {
   if (request.method !== 'POST') {
-    return json({ error: 'Method not allowed' }, { status: 405 });
+    return data({ error: 'Method not allowed' }, { status: 405 });
   }
 
   try {
     const body = await request.json();
-    
+
     // Validate required fields
     if (!body.type || !body.request) {
-      return json(
+      return data(
         { error: 'Type and request are required' },
         { status: 400 }
       );
     }
 
     if (body.type !== 'product_description' && body.type !== 'blog_post') {
-      return json(
+      return data(
         { error: 'Invalid content type' },
         { status: 400 }
       );
@@ -39,14 +39,14 @@ export async function action({ request }: ActionFunctionArgs) {
       body.count || 3
     );
 
-    return json({
+    return {
       success: true,
       variations,
-    });
+    };
   } catch (error) {
     console.error('Error generating variations:', error);
-    return json(
-      { 
+    return data(
+      {
         error: 'Failed to generate variations',
         details: error instanceof Error ? error.message : 'Unknown error'
       },

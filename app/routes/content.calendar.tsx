@@ -10,7 +10,7 @@
  * - Approval workflow integration
  */
 
-import { json, type LoaderFunctionArgs, type ActionFunctionArgs } from "@react-router/node";
+import { data, type LoaderFunctionArgs, type ActionFunctionArgs } from "@react-router/node";
 import { useLoaderData, useActionData, useSubmit, useNavigation } from "react-router";
 import { Page, Card, Text, Button, Badge, InlineStack, BlockStack, Banner, Modal, TextField, Select } from "@shopify/polaris";
 import { authenticate } from "../shopify.server";
@@ -60,7 +60,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     // Generate calendar structure
     const calendar = generateCalendar(parseInt(year), parseInt(month), items);
 
-    return json({
+    return {
       calendar,
       month: parseInt(month),
       year: parseInt(year),
@@ -69,7 +69,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     });
   } catch (error: any) {
     console.error("Error loading content calendar:", error);
-    return json({
+    return {
       calendar: [],
       month: parseInt(month),
       year: parseInt(year),
@@ -112,12 +112,12 @@ export async function action({ request }: ActionFunctionArgs) {
         };
 
         const scheduled = await SchedulingService.scheduleContent(scheduleData);
-        return json({ success: true, message: "Content scheduled successfully!", data: scheduled });
+        return { success: true, message: "Content scheduled successfully!", data: scheduled });
 
       case "cancel":
         const cancelId = formData.get("id") as string;
         await SchedulingService.cancelScheduledContent(cancelId);
-        return json({ success: true, message: "Scheduled content cancelled" });
+        return { success: true, message: "Scheduled content cancelled" });
 
       case "reschedule":
         const rescheduleId = formData.get("id") as string;
@@ -125,14 +125,14 @@ export async function action({ request }: ActionFunctionArgs) {
         await SchedulingService.updateScheduledContent(rescheduleId, {
           scheduled_for: newTime
         });
-        return json({ success: true, message: "Content rescheduled successfully!" });
+        return { success: true, message: "Content rescheduled successfully!" });
 
       default:
-        return json({ success: false, error: "Invalid action" }, { status: 400 });
+        return data({ success: false, error: "Invalid action" }, { status: 400 });
     }
   } catch (error: any) {
     console.error(`Error performing ${actionType} action:`, error);
-    return json({ success: false, error: error.message || `Failed to ${actionType}` }, { status: 400 });
+    return data({ success: false, error: error.message || `Failed to ${actionType}` }, { status: 400 });
   }
 }
 
