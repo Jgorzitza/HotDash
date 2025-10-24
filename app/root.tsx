@@ -1,22 +1,6 @@
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router";
-import { seoOptimizer } from "./lib/seo/seo-optimization";
 
 export default function App() {
-  // Default SEO data for the app
-  const defaultSEOData = {
-    title: "Hot Dash - Hot Rod AN Control Center",
-    description: "Centralized metrics, inventory control, CX, and growth levers for Shopify stores. Real-time analytics, automated inventory management, and AI-powered customer support.",
-    keywords: ["shopify", "analytics", "inventory", "ecommerce", "dashboard", "control center"],
-    canonicalUrl: process.env.SITE_URL || "https://hotdash.fly.dev",
-    type: "website" as const,
-    noindex: false,
-    nofollow: false
-  };
-
-  const metaTags = seoOptimizer.generateMetaTags(defaultSEOData);
-  const structuredData = seoOptimizer.generateStructuredData(defaultSEOData);
-  const jsonLD = seoOptimizer.generateJSONLD(structuredData);
-
   return (
     <html lang="en">
       <head>
@@ -27,8 +11,6 @@ export default function App() {
           rel="stylesheet"
           href="https://cdn.shopify.com/static/fonts/inter/v4/styles.css"
         />
-        <div dangerouslySetInnerHTML={{ __html: metaTags }} />
-        <div dangerouslySetInnerHTML={{ __html: jsonLD }} />
         <Meta />
         <Links />
       </head>
