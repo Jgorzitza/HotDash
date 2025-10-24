@@ -1,12 +1,74 @@
-# Canon (manager only)
-docs/directions/**          @manager-team
-docs/**                     @manager-team
-feedback/manager.md         @manager-team
+# CODEOWNERS - Defines required reviewers for specific paths
+# See: docs/development/code-review-guidelines.md
 
-# App areas (customize teams as you grow)
-app/**                      @dashboard-team
-packages/**                 @tooling-team
+# ============================================================================
+# Governance & Documentation (Manager Only)
+# ============================================================================
 
-# CI/infra
-.github/**                  @tooling-team
-scripts/**                  @tooling-team
+docs/NORTH_STAR.md                      @Jgorzitza
+docs/RULES.md                           @Jgorzitza
+docs/OPERATING_MODEL.md                 @Jgorzitza
+docs/directions/**                      @Jgorzitza
+docs/manager/**                         @Jgorzitza
+feedback/manager/**                     @Jgorzitza
+
+# ============================================================================
+# Security (Manager Required)
+# ============================================================================
+
+app/middleware/security-*               @Jgorzitza
+app/services/security/**                @Jgorzitza
+scripts/security/**                     @Jgorzitza
+docs/security/**                        @Jgorzitza
+.github/gitleaks.toml                   @Jgorzitza
+vault/**                                @Jgorzitza
+
+# ============================================================================
+# Database (Manager Required)
+# ============================================================================
+
+supabase/migrations/**                  @Jgorzitza
+supabase/functions/**                   @Jgorzitza
+prisma/schema.prisma                    @Jgorzitza
+
+# ============================================================================
+# CI/CD & Infrastructure (Manager Required)
+# ============================================================================
+
+.github/workflows/**                    @Jgorzitza
+.github/CODEOWNERS                      @Jgorzitza
+Dangerfile.js                           @Jgorzitza
+fly.toml                                @Jgorzitza
+Dockerfile                              @Jgorzitza
+
+# ============================================================================
+# Agent Configuration (Manager Required)
+# ============================================================================
+
+app/agents/config/**                    @Jgorzitza
+docs/runbooks/manager_*                 @Jgorzitza
+
+# ============================================================================
+# Application Code (Team Review)
+# ============================================================================
+
+app/**                                  @Jgorzitza
+packages/**                             @Jgorzitza
+scripts/**                              @Jgorzitza
+
+# ============================================================================
+# Testing (QA + Engineer)
+# ============================================================================
+
+tests/**                                @Jgorzitza
+scripts/test/**                         @Jgorzitza
+
+# ============================================================================
+# Documentation (Any Team Member)
+# ============================================================================
+
+docs/specs/**                           @Jgorzitza
+docs/integrations/**                    @Jgorzitza
+docs/testing/**                         @Jgorzitza
+docs/development/**                     @Jgorzitza
+README.md                               @Jgorzitza
