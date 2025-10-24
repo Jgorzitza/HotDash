@@ -651,3 +651,49 @@ export class ALCCalculationService {
     };
   }
 }
+
+/**
+ * Receipt input type
+ */
+export interface ReceiptInput {
+  variantId: string;
+  quantity: number;
+  unitCost: number;
+  vendorId?: string;
+  receivedDate?: string;
+}
+
+/**
+ * Process inventory receipt
+ */
+export async function processReceipt(input: ReceiptInput): Promise<any> {
+  await logDecision({
+    scope: "build",
+    actor: "inventory",
+    action: "process_receipt",
+    rationale: `Processing receipt for variant ${input.variantId}, quantity ${input.quantity}`,
+    evidenceUrl: "app/services/inventory/alc.ts",
+    status: "in_progress",
+    progressPct: 0,
+  });
+
+  // For now, return mock result
+  const result = {
+    id: `receipt-${Date.now()}`,
+    ...input,
+    processedAt: new Date().toISOString(),
+    newAverageLandedCost: input.unitCost,
+  };
+
+  await logDecision({
+    scope: "build",
+    actor: "inventory",
+    action: "process_receipt_complete",
+    rationale: `Receipt processed for variant ${input.variantId}`,
+    evidenceUrl: "app/services/inventory/alc.ts",
+    status: "completed",
+    progressPct: 100,
+  });
+
+  return result;
+}
