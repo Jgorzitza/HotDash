@@ -457,3 +457,39 @@ export async function getVendorOptions(): Promise<any[]> {
 
   return options;
 }
+
+/**
+ * Get best vendor for a product
+ */
+export async function getBestVendorForProduct(productId: string): Promise<any> {
+  await logDecision({
+    scope: "build",
+    actor: "inventory",
+    action: "get_best_vendor_for_product",
+    rationale: `Finding best vendor for product ${productId}`,
+    evidenceUrl: "app/services/inventory/vendor-service.ts",
+    status: "in_progress",
+    progressPct: 0,
+  });
+
+  // For now, return mock best vendor
+  const vendor = {
+    id: "vendor-1",
+    name: "Primary Vendor",
+    leadTime: 7,
+    reliability: 0.95,
+    cost: 100,
+  };
+
+  await logDecision({
+    scope: "build",
+    actor: "inventory",
+    action: "get_best_vendor_for_product_complete",
+    rationale: `Found best vendor ${vendor.name} for product ${productId}`,
+    evidenceUrl: "app/services/inventory/vendor-service.ts",
+    status: "completed",
+    progressPct: 100,
+  });
+
+  return vendor;
+}
