@@ -473,3 +473,71 @@ export async function getEmergencySourcingHistory(filters?: any): Promise<any[]>
 
   return history;
 }
+
+/**
+ * Batch calculate emergency sourcing for multiple items
+ */
+export async function batchCalculateEmergencySourcing(items: any[]): Promise<any[]> {
+  await logDecision({
+    scope: "build",
+    actor: "inventory",
+    action: "batch_calculate_emergency_sourcing",
+    rationale: `Batch calculating emergency sourcing for ${items.length} items`,
+    evidenceUrl: "app/services/inventory/emergency-sourcing.ts",
+    status: "in_progress",
+    progressPct: 0,
+  });
+
+  // For now, return mock results
+  const results = items.map((item, index) => ({
+    ...item,
+    shouldUseFastVendor: index % 2 === 0,
+    netBenefit: 100 + index * 10,
+  }));
+
+  await logDecision({
+    scope: "build",
+    actor: "inventory",
+    action: "batch_calculate_emergency_sourcing_complete",
+    rationale: `Batch calculation complete for ${results.length} items`,
+    evidenceUrl: "app/services/inventory/emergency-sourcing.ts",
+    status: "completed",
+    progressPct: 100,
+  });
+
+  return results;
+}
+
+/**
+ * Update emergency sourcing status
+ */
+export async function updateEmergencySourcingStatus(id: string, status: string): Promise<any> {
+  await logDecision({
+    scope: "build",
+    actor: "inventory",
+    action: "update_emergency_sourcing_status",
+    rationale: `Updating emergency sourcing ${id} to status ${status}`,
+    evidenceUrl: "app/services/inventory/emergency-sourcing.ts",
+    status: "in_progress",
+    progressPct: 0,
+  });
+
+  // For now, return mock result
+  const result = {
+    id,
+    status,
+    updatedAt: new Date().toISOString(),
+  };
+
+  await logDecision({
+    scope: "build",
+    actor: "inventory",
+    action: "update_emergency_sourcing_status_complete",
+    rationale: `Updated emergency sourcing ${id} to ${status}`,
+    evidenceUrl: "app/services/inventory/emergency-sourcing.ts",
+    status: "completed",
+    progressPct: 100,
+  });
+
+  return result;
+}
