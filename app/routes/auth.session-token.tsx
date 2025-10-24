@@ -1,33 +1,32 @@
 import { useEffect } from "react";
-import type { LoaderFunctionArgs } from "react-router";
-import { useSearchParams } from "react-router";
+import { useSearchParams, useNavigate } from "react-router";
 import { AppProvider } from "@shopify/shopify-app-react-router/react";
-import { useAppBridge } from "@shopify/app-bridge-react";
-import { Redirect } from "@shopify/app-bridge/actions";
 
-import { authenticate } from "../shopify.server";
-
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-  await authenticate.admin(request);
+export const loader = () => {
+  // Don't authenticate here - just render the page
   return null;
 };
 
 export default function SessionToken() {
   const [searchParams] = useSearchParams();
-  const appBridge = useAppBridge();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const reloadUrl = searchParams.get("shopify-reload");
-    
-    if (reloadUrl && appBridge) {
-      // Use App Bridge to redirect within the embedded app
-      const redirect = Redirect.create(appBridge);
-      redirect.dispatch(Redirect.Action.APP, reloadUrl);
-    } else if (reloadUrl) {
-      // Fallback to window redirect if App Bridge isn't available
-      window.location.href = reloadUrl;
+
+    if (reloadUrl) {
+      // Extract the path from the full URL
+      try {
+        const url = new URL(reloadUrl);
+        const path = url.pathname + url.search;
+        // Use React Router navigate to go to the app route
+        navigate(path, { replace: true });
+      } catch (e) {
+        // If URL parsing fails, try direct navigation
+        window.location.href = reloadUrl;
+      }
     }
-  }, [searchParams, appBridge]);
+  }, [searchParams, navigate]);
 
   return (
     <AppProvider embedded={true}>
