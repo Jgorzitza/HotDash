@@ -146,28 +146,28 @@ async function main() {
 
 async function verifyShopify(): Promise<IntegrationCheck> {
   const notes: string[] = [];
-  
+
   // Check for Shopify integration files
   const hasAdapter = await fileExists('packages/integrations/shopify.ts');
   const hasTests = await fileExists('tests/integration/shopify.spec.ts');
   const hasDocs = await fileExists('docs/integrations/shopify.md');
-  
+
   notes.push(hasAdapter ? '✅ Adapter exists' : '❌ Adapter missing');
   notes.push(hasTests ? '✅ Tests exist' : '⚠️  Tests missing');
   notes.push(hasDocs ? '✅ Documentation exists' : '⚠️  Documentation missing');
-  
+
   // Check environment variables
   const hasApiKey = !!process.env.SHOPIFY_API_KEY;
   const hasApiSecret = !!process.env.SHOPIFY_API_SECRET;
-  const hasShopDomain = !!process.env.SHOPIFY_SHOP_DOMAIN;
-  
+  const hasAppUrl = !!process.env.SHOPIFY_APP_URL;
+
   notes.push(hasApiKey ? '✅ API key configured' : '❌ API key missing');
   notes.push(hasApiSecret ? '✅ API secret configured' : '❌ API secret missing');
-  notes.push(hasShopDomain ? '✅ Shop domain configured' : '❌ Shop domain missing');
-  
-  const status = (hasAdapter && hasApiKey && hasApiSecret && hasShopDomain) ? 
+  notes.push(hasAppUrl ? '✅ App URL configured' : '⚠️  App URL missing');
+
+  const status = (hasAdapter && hasApiKey && hasApiSecret) ?
     (hasTests && hasDocs ? 'pass' : 'warning') : 'fail';
-  
+
   return {
     name: 'Shopify Admin API',
     status,
@@ -182,24 +182,24 @@ async function verifyShopify(): Promise<IntegrationCheck> {
 
 async function verifyChatwoot(): Promise<IntegrationCheck> {
   const notes: string[] = [];
-  
+
   const hasAdapter = await fileExists('packages/integrations/chatwoot.ts');
   const hasTests = await fileExists('tests/integration/chatwoot');
   const hasDocs = await fileExists('docs/integrations/chatwoot.md');
-  
+
   notes.push(hasAdapter ? '✅ Adapter exists' : '❌ Adapter missing');
   notes.push(hasTests ? '✅ Tests exist' : '⚠️  Tests missing');
   notes.push(hasDocs ? '✅ Documentation exists' : '⚠️  Documentation missing');
-  
-  const hasApiKey = !!process.env.CHATWOOT_API_KEY;
+
+  const hasAccessToken = !!process.env.CHATWOOT_ACCESS_TOKEN;
   const hasBaseUrl = !!process.env.CHATWOOT_BASE_URL;
-  
-  notes.push(hasApiKey ? '✅ API key configured' : '❌ API key missing');
+
+  notes.push(hasAccessToken ? '✅ Access token configured' : '❌ Access token missing');
   notes.push(hasBaseUrl ? '✅ Base URL configured' : '❌ Base URL missing');
-  
-  const status = (hasAdapter && hasApiKey && hasBaseUrl) ? 
+
+  const status = (hasAdapter && hasAccessToken && hasBaseUrl) ?
     (hasTests && hasDocs ? 'pass' : 'warning') : 'fail';
-  
+
   return {
     name: 'Chatwoot',
     status,
@@ -242,17 +242,17 @@ async function verifyGoogleAnalytics(): Promise<IntegrationCheck> {
 
 async function verifySupabase(): Promise<IntegrationCheck> {
   const notes: string[] = [];
-  
+
   const hasUrl = !!process.env.SUPABASE_URL;
-  const hasAnonKey = !!process.env.SUPABASE_ANON_KEY;
-  const hasServiceKey = !!process.env.SUPABASE_SERVICE_ROLE_KEY;
-  
+  const hasServiceKey = !!process.env.SUPABASE_SERVICE_KEY;
+  const hasDevKbUrl = !!process.env.SUPABASE_DEV_KB_DIRECT_URL;
+
   notes.push(hasUrl ? '✅ URL configured' : '❌ URL missing');
-  notes.push(hasAnonKey ? '✅ Anon key configured' : '❌ Anon key missing');
   notes.push(hasServiceKey ? '✅ Service key configured' : '❌ Service key missing');
-  
-  const status = (hasUrl && hasAnonKey) ? 'pass' : 'fail';
-  
+  notes.push(hasDevKbUrl ? '✅ Dev KB URL configured' : '⚠️  Dev KB URL missing');
+
+  const status = (hasUrl && hasServiceKey) ? 'pass' : 'fail';
+
   return {
     name: 'Supabase',
     status,

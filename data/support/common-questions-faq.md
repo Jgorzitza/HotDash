@@ -52,11 +52,15 @@ Quick answers to the most frequently asked questions about PTFE hose, AN fitting
 ## Product Selection
 
 ### Q6: What size AN hose do I need for my application?
-**A:** It depends on your horsepower and fuel system:
-- **400-600 HP (NA):** AN-6 supply, AN-6 return
-- **600+ HP (NA):** AN-8 supply, AN-6 return
-- **Turbo/Supercharged:** AN-8 supply minimum
-- **800+ HP:** AN-10 supply, AN-8 return
+**A:** General guidance (gasoline):
+- Up to ~450 HP NA: AN-6 feed, AN-6 return
+- 450–750 HP NA: AN-8 feed, AN-6 return
+- Forced induction 600–800 HP: AN-8 feed minimum (consider AN-10 for higher demand/long runs)
+- 800+ HP: AN-10 feed, AN-8 return
+
+Notes:
+- Ethanol/E85 requires ~30–40% more volume; consider one dash size larger
+- Actual needs depend on pump flow, base pressure, line length, regulator location, and component port sizes
 
 For specific recommendations, email your engine specs to support@hotrodan.com
 
@@ -67,17 +71,14 @@ For specific recommendations, email your engine specs to support@hotrodan.com
 - **Nylon Braided:** Lighter weight, more flexible, easier to route, comes in multiple colors, slightly less durable to abrasion
 - **Stainless Braided:** Heavier, more rigid, maximum abrasion resistance, show-quality appearance, silver only
 
-Both have the same PTFE inner liner and performance. Choose based on your preferences and application!
+Both options use a PTFE inner liner for chemical compatibility and similar pressure performance. Stainless offers higher abrasion/heat shielding; nylon is lighter and more flexible. Choose based on your preferences and application.
 
 ---
 
 ### Q8: What do the numbers mean? (AN-6, AN-8, AN-10)
-**A:** AN sizes refer to the dash size:
-- **AN-6:** 6/16" or 3/8" inner diameter
-- **AN-8:** 8/16" or 1/2" inner diameter  
-- **AN-10:** 10/16" or 5/8" inner diameter
+**A:** AN “dash” sizes are 1/16-inch increments of tube outside diameter (e.g., -6 = 6/16 = 3/8). Actual inner diameter varies by hose construction, especially with PTFE liners. Always check product specifications for exact ID/flow.
 
-Higher number = larger hose = more fuel flow capacity
+Higher number = larger nominal size = higher potential flow capacity (actual flow depends on ID and length)
 
 ---
 
@@ -95,7 +96,7 @@ Higher number = larger hose = more fuel flow capacity
 1. **Hose end fitting** (straight, 45°, or 90°) - attaches to hose
 2. **Adapter fitting** (if needed) - connects hose end to your component
 
-Check your component port type (AN, NPT, ORB, etc.) and order matching adapters. Our bundle deals include hose + 8 fittings for complete setups!
+Check your component port type (AN, NPT, ORB, etc.) and order matching adapters. We offer bundles on select kits; see product pages for current bundle contents.
 
 ---
 

@@ -1,4 +1,4 @@
-import type { LoaderFunctionArgs } from "react-router";
+import type { LoaderFunctionArgs, MetaFunction } from "react-router";
 import { useLoaderData, useFetcher } from "react-router";
 import type { LoaderFunction } from "react-router";
 
@@ -71,6 +71,19 @@ import { ServiceError } from "../services/types";
 import type { IdeaPoolResponse } from "./api.analytics.idea-pool";
 import type { CEOAgentStatsResponse } from "./api.ceo-agent.stats";
 import type { UnreadMessagesResponse } from "./api.chatwoot.unread";
+
+export const meta: MetaFunction = () => {
+  return [
+    { title: "Dashboard - Hot Dash | Shopify Control Center" },
+    { name: "description", content: "Real-time Shopify dashboard with sales analytics, inventory management, customer experience monitoring, and growth automation." },
+    { name: "keywords", content: "shopify dashboard, real-time analytics, inventory management, sales monitoring, ecommerce dashboard" },
+    { property: "og:title", content: "Dashboard - Hot Dash" },
+    { property: "og:description", content: "Real-time Shopify control center with analytics and automation." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary_large_image" },
+    { name: "robots", content: "noindex, nofollow" }, // Dashboard is private
+  ];
+};
 
 interface LoaderData {
   mode: "live" | "mock";

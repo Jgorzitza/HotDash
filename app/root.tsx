@@ -6,6 +6,26 @@ export const headers: HeadersFunction = () => {
 };
 
 export default function App() {
+  // Organization structured data (Schema.org)
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Hot Dash",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "description": "Centralized control center for Shopify stores with real-time analytics, inventory management, and growth automation.",
+    "url": "https://hotdash.fly.dev",
+    "author": {
+      "@type": "Organization",
+      "name": "Hot Dash"
+    }
+  };
+
   return (
     <html lang="en">
       <head>
@@ -18,6 +38,11 @@ export default function App() {
         />
         <Meta />
         <Links />
+        {/* Structured Data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
       </head>
       <body>
         <Outlet />

@@ -26,7 +26,7 @@ describe('Triage Agent Intent Classification', () => {
     expect(triageAgent.name).toBe('Triage');
     expect(triageAgent.tools).toBeDefined();
     expect(triageAgent.handoffs).toBeDefined();
-    expect(triageAgent.handoffs).toHaveLength(2);
+    expect(triageAgent.handoffs).toHaveLength(4);
 
     // Verify agent has set_intent tool
     const hasSetIntentTool = triageAgent.tools.some((t: any) => t.name === 'set_intent');
@@ -121,13 +121,15 @@ describe('Triage Agent Intent Classification', () => {
   });
 
   it('should have correct handoff configuration', () => {
-    // Verify exactly 2 handoff targets
-    expect(triageAgent.handoffs).toHaveLength(2);
+    // Verify exactly 4 handoff targets (added Shipping Support and Technical Support)
+    expect(triageAgent.handoffs).toHaveLength(4);
 
     const handoffNames = triageAgent.handoffs.map((h: any) => h.name);
 
-    // Should handoff to Order Support and Product Q&A
+    // Should handoff to all specialist agents
     expect(handoffNames).toContain('Order Support');
+    expect(handoffNames).toContain('Shipping Support');
     expect(handoffNames).toContain('Product Q&A');
+    expect(handoffNames).toContain('Technical Support');
   });
 });

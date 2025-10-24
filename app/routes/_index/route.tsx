@@ -55,16 +55,13 @@ export default function App() {
         )}
         <ul className={styles.list}>
           <li>
-            <strong>Product feature</strong>. Some detail about your feature and
-            its benefit to your customer.
+            <strong>Real-time Analytics</strong>. Monitor sales, traffic, and performance metrics in real-time with actionable insights.
           </li>
           <li>
-            <strong>Product feature</strong>. Some detail about your feature and
-            its benefit to your customer.
+            <strong>Inventory Management</strong>. Automated stock alerts, reorder suggestions, and inventory optimization powered by AI.
           </li>
           <li>
-            <strong>Product feature</strong>. Some detail about your feature and
-            its benefit to your customer.
+            <strong>Growth Automation</strong>. SEO optimization, content generation, and marketing automation to scale your store.
           </li>
         </ul>
       </div>
