@@ -21,6 +21,8 @@
   /* Background & Surface */
   --occ-bg-primary: var(--p-color-bg-surface, #ffffff);
   --occ-bg-secondary: var(--p-color-bg-surface-subdued, #f6f6f7);
+  --occ-bg-surface: var(--p-color-bg-surface, #ffffff);
+  --occ-bg-default: var(--p-color-bg, #f6f6f7);
   --occ-bg-hover: var(--p-color-bg-surface-hover, #f6f6f7);
 
   /* Border Colors */
@@ -31,6 +33,7 @@
   /* Text Colors */
   --occ-text-primary: var(--p-color-text, #202223);
   --occ-text-secondary: var(--p-color-text-subdued, #637381);
+  --occ-text-on-primary: var(--p-color-text-on-interactive, #ffffff);
   --occ-text-interactive: var(--p-color-text-interactive, #2c6ecb);
   --occ-text-success: var(--p-color-text-success, #1a7f37);
   --occ-text-critical: var(--p-color-text-critical, #d82c0d);
@@ -291,6 +294,8 @@
   /* Background & Surface (Dark Mode) */
   --occ-bg-primary: var(--p-color-bg-surface-on-dark, #111827);
   --occ-bg-secondary: var(--p-color-bg-surface-subdued-on-dark, #1f2937);
+  --occ-bg-surface: var(--p-color-bg-surface-on-dark, #111827);
+  --occ-bg-default: var(--p-color-bg-on-dark, #1f2937);
   --occ-bg-hover: var(--p-color-bg-surface-hover-on-dark, #374151);
 
   /* Border Colors (Dark Mode) */
@@ -301,6 +306,7 @@
   /* Text Colors (Dark Mode) */
   --occ-text-primary: var(--p-color-text-on-dark, #f9fafb);
   --occ-text-secondary: var(--p-color-text-subdued-on-dark, #9ca3af);
+  --occ-text-on-primary: var(--p-color-text-on-interactive-on-dark, #ffffff);
   --occ-text-interactive: var(--p-color-text-interactive-on-dark, #60a5fa);
   --occ-text-success: var(--p-color-text-success-on-dark, #4ade80);
   --occ-text-critical: var(--p-color-text-critical-on-dark, #f87171);

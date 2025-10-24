@@ -246,11 +246,13 @@ export function GrowthEngineAnalyticsTile({
         }}>
           <div style={{
             backgroundColor: "var(--occ-bg-surface)",
+            color: "var(--occ-text-primary)",
             borderRadius: "var(--occ-radius-lg)",
             maxWidth: "90vw",
             maxHeight: "90vh",
             overflow: "auto",
-            position: "relative"
+            position: "relative",
+            boxShadow: "var(--occ-shadow-modal)"
           }}>
             <button
               onClick={() => setIsExpanded(false)}
@@ -259,6 +261,7 @@ export function GrowthEngineAnalyticsTile({
                 top: "var(--occ-space-3)",
                 right: "var(--occ-space-3)",
                 background: "var(--occ-bg-surface)",
+                color: "var(--occ-text-primary)",
                 border: "1px solid var(--occ-border-default)",
                 borderRadius: "var(--occ-radius-sm)",
                 padding: "var(--occ-space-1) var(--occ-space-2)",
