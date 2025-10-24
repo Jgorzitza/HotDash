@@ -1,5 +1,5 @@
 import { Prisma } from "@prisma/client";
-import prisma from "../prisma.server";
+import prisma from "../db.server";
 
 export interface RecordDashboardFactInput {
   shopDomain: string;

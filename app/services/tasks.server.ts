@@ -1,5 +1,5 @@
 import { Prisma } from "@prisma/client";
-import prisma from "../prisma.server";
+import prisma from "../db.server";
 import { createSecureTaskService } from './security/database-security';
 
 // ============================================================================
