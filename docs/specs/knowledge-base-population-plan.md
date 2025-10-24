@@ -422,42 +422,71 @@ npx tsx --env-file=.env scripts/knowledge-base/commit-approved.ts \
 
 ---
 
-## 🚀 Rollout Plan
+## 🚀 Implementation Order (CEO Approved - Expedited)
 
-**Phase 1: Foundation (Week 1)**
+**Work in order, no time constraints:**
+
+**Step 1: Build Staging & Preview System**
+- scripts/knowledge-base/scrape-hotrodan.ts
+- scripts/knowledge-base/generate-preview.ts
+- scripts/knowledge-base/commit-approved.ts
+- staging/ directory setup
+
+**Step 2: Scrape hotrodan.com**
+- Run scraper → staging
+- Extract policies, FAQ, products
+- NO commits yet
+
+**Step 3: Generate CEO Preview**
+- Create preview document
+- Format for CEO review
+- Save to staging/
+
+**Step 4: CEO Reviews & Approves**
+- CEO marks: Approve / Reject / Edit
+- CEO saves approved preview
+- CEO authorizes commit
+
+**Step 5: Commit Approved Content**
+- Commit ONLY approved sections
+- Include CEO approval metadata
+- Test with sample queries
+
+**Step 6: Chatwoot Integration (After Chatwoot Fixed)**
+- Extract quality conversations
+- Generate Q&A preview
+- CEO approves
+- Commit approved Q&A
+
+**Step 7: Continuous Improvement (Ongoing)**
+- Periodic Chatwoot extractions
+- CEO reviews new content
+- Update as needed
+
+---
+
+## ✅ CEO Approval - 2025-10-24
+
+**CEO (Justin) has approved the plan:**
+
+1. **Scope:** ✅ APPROVED - Included/excluded list is correct
+2. **Sources:** ✅ APPROVED - 3 sources (website, chatwoot, manual) sufficient for now
+3. **Approval Workflow:** ✅ APPROVED - Preview/approve/commit workflow acceptable
+4. **Quality Filters:** ✅ APPROVED - Chatwoot thresholds correct (tone ≥4.5, accuracy ≥4.7, policy ≥4.8)
+5. **Timeline:** ✅ EXPEDITED - Work in task order, no time outline needed
+6. **Responsibility:** ✅ CEO ONLY - Justin is the only reviewer (no delegation)
+
+**Status:** APPROVED - Implementation can begin immediately
+
+**Priority:** Work in order:
 1. Build staging & preview system
 2. Scrape hotrodan.com
-3. CEO reviews and approves initial content
-4. Commit approved content
-5. Test with sample queries
-
-**Phase 2: Chatwoot Integration (Week 2 - After Chatwoot Fixed)**
-1. Extract quality conversations
-2. Generate Q&A pairs
-3. CEO reviews and approves
-4. Commit approved Q&A
-5. Monitor agent performance
-
-**Phase 3: Continuous Improvement (Ongoing)**
-1. Weekly Chatwoot extractions
-2. CEO reviews new Q&A
-3. Update existing content as needed
-4. Track quality metrics
+3. Generate CEO preview
+4. CEO approves preview
+5. Commit approved content
+6. (Later) Chatwoot extraction after Chatwoot fixed
 
 ---
 
-## ❓ CEO Questions to Answer
-
-**Before proceeding, CEO should confirm:**
-
-1. **Scope:** Is the included/excluded list correct?
-2. **Sources:** Are the 3 sources (website, chatwoot, manual) sufficient?
-3. **Approval Workflow:** Is the preview/approve/commit workflow acceptable?
-4. **Quality Filters:** Are the Chatwoot quality thresholds correct (tone ≥4.5, accuracy ≥4.7, policy ≥4.8)?
-5. **Timeline:** Is the 2-week rollout plan acceptable?
-6. **Responsibility:** Who will review previews if CEO is unavailable?
-
----
-
-**NEXT STEP: CEO approval required before implementation begins**
+**IMPLEMENTATION AUTHORIZED - content agent can start immediately**
 
