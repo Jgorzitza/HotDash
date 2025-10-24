@@ -68,17 +68,17 @@ export async function action({ request }: ActionFunctionArgs) {
             publish_immediately
           }
         );
-        return { success: true, message: "Content approved successfully!" });
+        return { success: true, message: "Content approved successfully!" };
 
       case "reject":
         const rejection_reason = formData.get("rejection_reason") as string;
         await ContentApprovalWorkflowService.rejectContent(id, "content-agent", rejection_reason);
-        return { success: true, message: "Content rejected" });
+        return { success: true, message: "Content rejected" };
 
       case "request_changes":
         const requested_changes = formData.get("requested_changes") as string;
         await ContentApprovalWorkflowService.requestChanges(id, "content-agent", requested_changes);
-        return { success: true, message: "Changes requested" });
+        return { success: true, message: "Changes requested" };
 
       default:
         return data({ success: false, error: "Invalid action" }, { status: 400 });
