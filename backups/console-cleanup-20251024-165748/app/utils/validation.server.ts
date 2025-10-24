@@ -1,0 +1,75 @@
+/**
+ * Validation utilities for common data validation patterns
+ */
+
+/**
+ * Validate email format
+ */
+export function isValidEmail(email: string): boolean {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}
+
+/**
+ * Validate Shopify GID format
+ */
+export function isValidShopifyGid(gid: string, resourceType?: string): boolean {
+  const gidRegex = /^gid:\/\/shopify\/\w+\/\d+$/;
+  if (!gidRegex.test(gid)) return false;
+
+  if (resourceType) {
+    return gid.includes(`gid://shopify/${resourceType}/`);
+  }
+
+  return true;
+}
+
+/**
+ * Extract numeric ID from Shopify GID
+ */
+export function extractIdFromGid(gid: string): string | null {
+  const match = gid.match(/gid:\/\/shopify\/\w+\/(\d+)$/);
+  return match ? match[1] : null;
+}
+
+/**
+ * Validate URL format
+ */
+export function isValidUrl(url: string): boolean {
+  try {
+    new URL(url);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Sanitize user input (remove potential XSS)
+ */
+export function sanitizeInput(input: string): string {
+  return input
+    .replace(/[<>]/g, "") // Remove angle brackets
+    .trim();
+}
+
+/**
+ * Validate positive number
+ */
+export function isPositiveNumber(value: any): value is number {
+  return typeof value === "number" && value > 0 && isFinite(value);
+}
+
+/**
+ * Validate integer
+ */
+export function isInteger(value: any): value is number {
+  return typeof value === "number" && Number.isInteger(value);
+}
+
+/**
+ * Clamp number to range
+ */
+export function clamp(value: number, min: number, max: number): number {
+  return Math.min(Math.max(value, min), max);
+}

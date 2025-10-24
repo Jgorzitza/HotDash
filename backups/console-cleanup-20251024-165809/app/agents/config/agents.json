@@ -1,0 +1,105 @@
+{
+  "agents": [
+    {
+      "id": "manager",
+      "human_review": false,
+      "reviewers": []
+    },
+    {
+      "id": "engineer",
+      "human_review": false,
+      "reviewers": []
+    },
+    {
+      "id": "qa",
+      "human_review": false,
+      "reviewers": []
+    },
+    {
+      "id": "devops",
+      "human_review": false,
+      "reviewers": []
+    },
+    {
+      "id": "integrations",
+      "human_review": false,
+      "reviewers": []
+    },
+    {
+      "id": "ai-customer",
+      "human_review": true,
+      "reviewers": ["github:justin"],
+      "review": {
+        "queue": "chatwoot:cx",
+        "requiresGrades": ["tone", "accuracy", "policy"],
+        "instructions": "Draft replies must be graded on tone, accuracy, and policy before posting; see docs/runbooks/ai_agent_review_checklist.md."
+      }
+    },
+    {
+      "id": "ceo-insights",
+      "human_review": true,
+      "reviewers": ["github:justin"],
+      "review": {
+        "queue": "ceo:briefings",
+        "requiresGrades": ["accuracy", "policy"],
+        "instructions": "Executive briefings require accuracy/policy sign-off before delivery; attach evidence from business.summary and knowledge.search."
+      }
+    },
+    {
+      "id": "ai-knowledge",
+      "human_review": false,
+      "reviewers": []
+    },
+    {
+      "id": "inventory",
+      "human_review": false,
+      "reviewers": []
+    },
+    {
+      "id": "analytics",
+      "human_review": false,
+      "reviewers": []
+    },
+    {
+      "id": "seo",
+      "human_review": false,
+      "reviewers": []
+    },
+    {
+      "id": "ads",
+      "human_review": false,
+      "reviewers": []
+    },
+    {
+      "id": "content",
+      "human_review": false,
+      "reviewers": []
+    },
+    {
+      "id": "support",
+      "human_review": false,
+      "reviewers": []
+    },
+    {
+      "id": "designer",
+      "human_review": false,
+      "reviewers": []
+    },
+    {
+      "id": "product",
+      "human_review": false,
+      "reviewers": []
+    },
+    {
+      "id": "data",
+      "human_review": false,
+      "reviewers": []
+    },
+    {
+      "id": "specialagent001",
+      "human_review": false,
+      "reviewers": [],
+      "description": "LLM Infrastructure Specialist - Builds and maintains LiteLLM + Langfuse + Valkey stack for production agents"
+    }
+  ]
+}

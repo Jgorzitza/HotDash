@@ -1,6 +1,9 @@
-import { Prisma } from "@prisma/client";
-import prisma from "../db.server";
+import { Prisma } from "@prisma/kb-client";
+import kbPrisma from "../kb-db.server";
 import { createSecureTaskService } from './security/database-security';
+
+// Use KB database for task assignments (keeps dev data separate from production)
+const prisma = kbPrisma;
 
 // ============================================================================
 // TASK ASSIGNMENT SERVICE (Database-Driven Direction)

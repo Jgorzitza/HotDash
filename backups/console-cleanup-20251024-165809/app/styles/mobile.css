@@ -1,0 +1,354 @@
+/**
+ * Mobile Optimization Styles
+ * Mobile-first responsive design for HotDash
+ * Aligned with Shopify Polaris responsive patterns
+ */
+
+/* ========================================
+   MOBILE-FIRST BASE STYLES
+   ======================================== */
+
+/* Mobile (default): < 768px */
+:root {
+  --mobile-nav-height: 64px;
+  --mobile-touch-target: 44px;
+  --mobile-padding: var(--occ-space-4);
+  --mobile-gap: var(--occ-space-3);
+}
+
+/* ========================================
+   RESPONSIVE TILE GRID
+   ======================================== */
+
+/* Mobile: 1 column */
+.occ-tile-grid {
+  display: grid;
+  gap: var(--mobile-gap);
+  grid-template-columns: 1fr;
+  padding: var(--mobile-padding);
+}
+
+/* Tablet: 2 columns */
+@media (min-width: 768px) {
+  .occ-tile-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--occ-tile-gap);
+    padding: var(--occ-space-5);
+  }
+}
+
+/* Desktop: Auto-fit with minimum width */
+@media (min-width: 1024px) {
+  .occ-tile-grid {
+    grid-template-columns: repeat(auto-fit, minmax(var(--occ-tile-min-width), 1fr));
+    gap: var(--occ-tile-gap);
+    padding: var(--occ-space-6);
+  }
+}
+
+/* Wide: 4 columns max */
+@media (min-width: 1440px) {
+  .occ-tile-grid {
+    grid-template-columns: repeat(auto-fit, minmax(var(--occ-tile-min-width), 1fr));
+    max-width: 1600px;
+    margin: 0 auto;
+  }
+}
+
+/* ========================================
+   TOUCH-FRIENDLY BUTTONS
+   ======================================== */
+
+/* Minimum 44x44px touch targets (WCAG 2.2 AA) */
+.mobile-button,
+button,
+.button-primary,
+.button-secondary {
+  min-height: var(--mobile-touch-target);
+  min-width: var(--mobile-touch-target);
+  padding: var(--occ-space-3) var(--occ-space-5);
+  font-size: var(--occ-font-size-base);
+}
+
+/* Larger touch targets on mobile */
+@media (max-width: 767px) {
+  .mobile-button,
+  button,
+  .button-primary,
+  .button-secondary {
+    min-height: 48px;
+    padding: var(--occ-space-4) var(--occ-space-6);
+    font-size: var(--occ-font-size-lg);
+  }
+}
+
+/* Touch feedback */
+.mobile-button:active,
+button:active {
+  transform: scale(0.98);
+  opacity: 0.9;
+}
+
+/* ========================================
+   MOBILE NAVIGATION
+   ======================================== */
+
+/* Bottom navigation bar (mobile only) */
+.mobile-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: var(--mobile-nav-height);
+  background-color: var(--occ-bg-primary);
+  border-top: 1px solid var(--occ-border-default);
+  box-shadow: 0 -2px 8px rgba(15, 23, 42, 0.08);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: var(--occ-space-2) var(--occ-space-4);
+  z-index: 1000;
+}
+
+/* Hide on tablet and desktop */
+@media (min-width: 768px) {
+  .mobile-nav {
+    display: none;
+  }
+}
+
+/* Navigation items */
+.mobile-nav__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--occ-space-1);
+  min-width: var(--mobile-touch-target);
+  min-height: var(--mobile-touch-target);
+  padding: var(--occ-space-2);
+  color: var(--occ-text-secondary);
+  text-decoration: none;
+  font-size: var(--occ-font-size-xs);
+  font-weight: var(--occ-font-weight-medium);
+  border-radius: var(--occ-radius-sm);
+  transition: all var(--occ-duration-fast) var(--occ-easing-default);
+}
+
+.mobile-nav__item:active {
+  background-color: var(--occ-bg-hover);
+  transform: scale(0.95);
+}
+
+.mobile-nav__item--active {
+  color: var(--occ-text-interactive);
+  background-color: var(--occ-bg-hover);
+}
+
+.mobile-nav__icon {
+  width: 24px;
+  height: 24px;
+}
+
+.mobile-nav__label {
+  font-size: var(--occ-font-size-xs);
+  line-height: 1;
+}
+
+/* ========================================
+   MOBILE-SPECIFIC INTERACTIONS
+   ======================================== */
+
+/* Swipeable container */
+.swipeable {
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Pull-to-refresh indicator */
+.pull-to-refresh {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--occ-text-secondary);
+  font-size: var(--occ-font-size-sm);
+  transform: translateY(-100%);
+  transition: transform var(--occ-duration-normal) var(--occ-easing-default);
+}
+
+.pull-to-refresh--active {
+  transform: translateY(0);
+}
+
+/* ========================================
+   MOBILE LAYOUT ADJUSTMENTS
+   ======================================== */
+
+/* Add bottom padding for mobile nav */
+@media (max-width: 767px) {
+  body {
+    padding-bottom: calc(var(--mobile-nav-height) + var(--occ-space-4));
+  }
+  
+  main {
+    padding-bottom: var(--occ-space-4);
+  }
+}
+
+/* Tiles on mobile */
+@media (max-width: 767px) {
+  .occ-tile {
+    min-width: 100%;
+    min-height: auto;
+    padding: var(--occ-space-4);
+  }
+  
+  .occ-tile-grid {
+    padding: var(--occ-space-3);
+    gap: var(--occ-space-3);
+  }
+}
+
+/* Modals on mobile */
+@media (max-width: 767px) {
+  .modal {
+    width: 100%;
+    max-width: 100%;
+    height: 100vh;
+    max-height: 100vh;
+    border-radius: 0;
+    margin: 0;
+  }
+  
+  .modal-content {
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
+  }
+}
+
+/* ========================================
+   TOUCH GESTURES
+   ======================================== */
+
+/* Horizontal scroll containers */
+.scroll-container {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory;
+  display: flex;
+  gap: var(--occ-space-3);
+  padding: var(--occ-space-3);
+}
+
+.scroll-container__item {
+  scroll-snap-align: start;
+  flex-shrink: 0;
+}
+
+/* Hide scrollbar on mobile */
+@media (max-width: 767px) {
+  .scroll-container::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .scroll-container {
+    scrollbar-width: none;
+  }
+}
+
+/* ========================================
+   MOBILE TYPOGRAPHY
+   ======================================== */
+
+@media (max-width: 767px) {
+  /* Slightly larger text on mobile for readability */
+  body {
+    font-size: var(--occ-font-size-base);
+  }
+  
+  h1 {
+    font-size: var(--occ-font-size-xl);
+  }
+  
+  h2 {
+    font-size: var(--occ-font-size-lg);
+  }
+  
+  .metric-value {
+    font-size: var(--occ-font-size-xl);
+  }
+}
+
+/* ========================================
+   MOBILE ACCESSIBILITY
+   ======================================== */
+
+/* Larger focus indicators on mobile */
+@media (max-width: 767px) {
+  *:focus {
+    outline-width: 3px;
+    outline-offset: 3px;
+  }
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ========================================
+   MOBILE UTILITIES
+   ======================================== */
+
+/* Show only on mobile */
+.mobile-only {
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .mobile-only {
+    display: none;
+  }
+}
+
+/* Hide on mobile */
+.mobile-hidden {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .mobile-hidden {
+    display: block;
+  }
+}
+
+/* ========================================
+   DARK MODE MOBILE ADJUSTMENTS
+   ======================================== */
+
+[data-theme="dark"] .mobile-nav {
+  background-color: var(--occ-bg-primary);
+  border-top-color: var(--occ-border-default);
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .mobile-nav__item {
+  color: var(--occ-text-secondary);
+}
+
+[data-theme="dark"] .mobile-nav__item--active {
+  color: var(--occ-text-interactive);
+  background-color: var(--occ-bg-hover);
+}
+

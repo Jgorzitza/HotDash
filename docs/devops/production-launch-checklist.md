@@ -82,15 +82,15 @@
 ### Backup & Recovery ✅
 
 - [x] **Automated Backups**
-  - Provider: Supabase
-  - Frequency: Daily
+  - Provider: Supabase (PITR + daily snapshots)
+  - Frequency: Daily (00:00 UTC)
   - Retention: Point-in-time recovery
   - Status: Operational
 
 - [x] **Backup Scripts**
-  - Agent tables: scripts/data/backup-agent-tables.sh
-  - Retention: Last 7 backups
-  - Format: SQL with INSERT statements
+  - CSV exports via `scripts/deploy/create-daily-backup.sh`
+  - Artifacts: `artifacts/devops/2025-10-24/backups/*.csv`
+  - Next: schedule execution + upload to secure storage
 
 - [x] **Recovery Procedures**
   - Documentation: docs/runbooks/database-recovery.md
@@ -115,8 +115,9 @@
 - [ ] **Load Test Execution**
   - Target: 1000 concurrent users
   - Duration: 19 minutes
-  - Script: artifacts/devops/2025-10-24/load-test-script.js
-  - Status: Ready to execute
+  - Runner: `scripts/deploy/run-load-test.sh` (Node fallback when k6 unavailable)
+  - Latest: 2025-10-24 baseline failed (`errorRate=89.8%`, `p95=6.8s`)
+  - Status: Needs remediation + re-run
 
 - [x] **Load Test Preparation**
   - Script created: Yes
@@ -359,4 +360,3 @@ curl https://hotdash-production.fly.dev/api/monitoring/health
 - Custom monitoring dashboards
 - Advanced performance optimization
 - Multi-region deployment
-

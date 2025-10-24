@@ -1,0 +1,28 @@
+function formatDateTime(value) {
+    if (!value)
+        return undefined;
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime()))
+        return undefined;
+    return date.toLocaleString();
+}
+export function FulfillmentHealthTile({ issues }) {
+    return (<>
+      {issues.length ? (<ul style={{
+                margin: 0,
+                paddingLeft: "1.1rem",
+                display: "flex",
+                flexDirection: "column",
+                gap: "var(--occ-space-1)",
+                color: "var(--occ-text-primary)",
+            }}>
+          {issues.map((issue) => (<li key={issue.orderId}>
+              {issue.name} — {issue.displayStatus.toLowerCase()} (since{" "}
+              {formatDateTime(issue.createdAt)})
+            </li>))}
+        </ul>) : (<p style={{ color: "var(--occ-text-secondary)", margin: 0 }}>
+          All recent orders are on track.
+        </p>)}
+    </>);
+}
+//# sourceMappingURL=FulfillmentHealthTile.js.map

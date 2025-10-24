@@ -1,0 +1,1 @@
+{"version":3,"file":"client.d.ts","sourceRoot":"","sources":["../../../../../../app/services/shopify/client.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,qBAAqB,EAAE,MAAM,SAAS,CAAC;AAQrD,eAAO,MAAM,UAAU;gCACO,CAAC,EAAE,EAAE,MAAM,KAAK,OAAO,CAAC,IAAI,CAAC;;kCAO3B,MAAM,MAAM;;CAM3C,CAAC;AAwCF,wBAAsB,wBAAwB,CAC5C,OAAO,EAAE,OAAO,GACf,OAAO,CAAC,qBAAqB,CAAC,CAsBhC"}

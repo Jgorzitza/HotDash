@@ -1,0 +1,62 @@
+import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router";
+import { getSecurityHeaders } from "./middleware/security-headers";
+export const headers = () => {
+    return getSecurityHeaders();
+};
+export default function App() {
+    // Organization structured data (Schema.org)
+    const organizationSchema = {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Hot Dash",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "description": "Centralized control center for Shopify stores with real-time analytics, inventory management, and growth automation.",
+        "url": "https://hotdash.fly.dev",
+        "author": {
+            "@type": "Organization",
+            "name": "Hot Dash"
+        }
+    };
+    return (<html lang="en">
+      <head>
+        <meta charSet="utf-8"/>
+        <meta name="viewport" content="width=device-width,initial-scale=1"/>
+        <link rel="preconnect" href="https://cdn.shopify.com/"/>
+        <link rel="stylesheet" href="https://cdn.shopify.com/static/fonts/inter/v4/styles.css"/>
+        <Meta />
+        <Links />
+        {/* Structured Data */}
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}/>
+      </head>
+      <body>
+        <Outlet />
+        <ScrollRestoration />
+        <Scripts />
+        {/* Chatwoot Live Chat Widget */}
+        <script dangerouslySetInnerHTML={{
+            __html: `
+              (function(d,t) {
+                var BASE_URL="https://hotdash-chatwoot.fly.dev";
+                var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+                g.src=BASE_URL+"/packs/js/sdk.js";
+                g.async = true;
+                s.parentNode.insertBefore(g,s);
+                g.onload=function(){
+                  window.chatwootSDK.run({
+                    websiteToken: 'ieNpPnBaZXd9joxoeMts7qTA',
+                    baseUrl: BASE_URL
+                  })
+                }
+              })(document,"script");
+            `,
+        }}/>
+      </body>
+    </html>);
+}
+//# sourceMappingURL=root.js.map

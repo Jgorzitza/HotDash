@@ -1,0 +1,1 @@
+{"version":3,"file":"CXEscalationsTile.d.ts","sourceRoot":"","sources":["../../../../../../app/components/tiles/CXEscalationsTile.tsx"],"names":[],"mappings":"AAEA,OAAO,KAAK,EAAE,sBAAsB,EAAE,MAAM,+BAA+B,CAAC;AAG5E,UAAU,sBAAsB;IAC9B,aAAa,EAAE,sBAAsB,EAAE,CAAC;IACxC,WAAW,CAAC,EAAE,OAAO,CAAC;CACvB;AAED,wBAAgB,iBAAiB,CAAC,EAChC,aAAa,EACb,WAAmB,GACpB,EAAE,sBAAsB,qBAwExB"}

@@ -1,0 +1,238 @@
+{
+  "taskId": "INTEGRATIONS-GE-002",
+  "taskTitle": "Wire Storefront Sub-Agent to Agent SDK",
+  "searchQueries": [
+    "How to implement Wire Storefront Sub-Agent to Agent SDK? What are the steps and requirements?",
+    "What are the best practices for integrations agent when working on Wire Storefront Sub-Agent to Agent SDK?",
+    "Common issues and solutions when implementing Wire Storefront Sub-Agent to Agent SDK",
+    "How does Wire Storefront Sub-Agent to Agent SDK integrate with the Growth Engine architecture?"
+  ],
+  "results": [
+    {
+      "question": "How to implement Wire Storefront Sub-Agent to Agent SDK? What are the steps and requirements?",
+      "answer": "To implement the Wire Storefront Sub-Agent to the Agent SDK, follow these steps and requirements:\n### Steps to Implement:\n1. **Understand the Agent Architecture**:\n   - The Storefront Sub-Agent is responsible for inventory queries, product details, and collection lookups using the Storefront API (read-only) [Source 1].\n2. **Setup Development Environment**:\n   - Navigate to the repository root: `~/HotDash/hot-dash/` or `/home/justin/HotDash/hot-dash/` [Source 3].\n   - Ensure you are on the correct daily branch as announced by the manager [Source 6].\n3. **Git Setup**:\n   - Fetch the latest changes and checkout the current branch:\n     ```bash\n     git fetch origin\n     git checkout agent-launch-20251022\n     git pull origin agent-launch-20251022\n     ```\n   - Verify the branch is correct [Source 3].\n4. **MCP Tools Verification**:\n   - Pull documentation from the MCP before writing any code. Use the Shopify Dev MCP for Polaris and Shopify APIs [Source 3].\n5. **Implement the Sub-Agent Logic**:\n   - The Storefront Sub-Agent will execute queries to the Shopify Storefront API. Ensure it returns structured JSON with the required data (e.g., inventory status, product details) [Source 1].\n6. **Handoff Pattern**:\n   - Implement the handoff pattern where the Customer-Front Agent triages the request and decides whether to transfer to the Storefront Sub-Agent. The sub-agent will own the request and execute the necessary queries [Source 1].\n7. **Return Structured Results**:\n   - Ensure the sub-agent returns structured JSON results that the front agent can use to compose replies [Source 1].\n8. **Testing and Validation**:\n   - Test the integration thoroughly to ensure it meets the requirements and functions correctly within the overall agent orchestration framework.\n### Requirements:\n- **Access Control**: Ensure compliance with the ABAC model, where the Storefront Sub-Agent has read-only access to the Storefront API [Source 4].\n- **Documentation**: Follow the documentation in the `mcp/` directory for setup and usage [Source 2].\n- **Approval Workflow**: Implement a HITL (Human-in-the-Loop) approval process for any actions that require it [Source 4].\n- **Evidence Logging**: Maintain logs of actions taken by the agent for accountability and auditing [Source 9].\nBy following these steps and ensuring compliance with the outlined requirements, you can successfully implement the Wire Storefront Sub-Agent into the Agent SDK.",
+      "sources": [
+        {
+          "title": "1. docs/OPERATING_MODEL.md",
+          "similarity": 0.461
+        },
+        {
+          "title": "2. docs/NORTH_STAR.md",
+          "similarity": 0.402
+        },
+        {
+          "title": "3. docs/runbooks/agent_startup_checklist.md",
+          "similarity": 0.394
+        },
+        {
+          "title": "4. docs/OPERATING_MODEL.md",
+          "similarity": 0.388
+        },
+        {
+          "title": "5. docs/NORTH_STAR.md",
+          "similarity": 0.381
+        },
+        {
+          "title": "6. docs/OPERATING_MODEL.md",
+          "similarity": 0.38
+        },
+        {
+          "title": "7. docs/manager/PROJECT_PLAN.md",
+          "similarity": 0.366
+        },
+        {
+          "title": "8. docs/directions/manager.md",
+          "similarity": 0.359
+        },
+        {
+          "title": "9. docs/NORTH_STAR.md",
+          "similarity": 0.357
+        },
+        {
+          "title": "10. docs/directions/engineer.md",
+          "similarity": 0.357
+        },
+        {
+          "title": "11. docs/runbooks/agent_startup_checklist.md",
+          "similarity": 0.354
+        },
+        {
+          "title": "12. docs/manager/PROJECT_PLAN.md",
+          "similarity": 0.353
+        }
+      ],
+      "timestamp": "2025-10-24T22:01:05.066Z"
+    },
+    {
+      "question": "What are the best practices for integrations agent when working on Wire Storefront Sub-Agent to Agent SDK?",
+      "answer": "The best practices for integrations agents working on the Wire Storefront Sub-Agent to Agent SDK include the following:\n1. **Daily Branch Coordination**: All agents must work on the same daily branch as announced by the manager. This ensures consistency and prevents conflicts. Agents should fetch the latest updates and verify their branch before starting work [Source 3].\n2. **MCP Tools Verification**: Before writing any code, agents must pull documentation from the appropriate MCP (MCP Tool Priority) to ensure they are using the latest and most accurate information. The Shopify Dev MCP should be the first resource for Shopify-related queries [Source 3].\n3. **Handoff Pattern**: Follow the established handoff pattern where the Customer-Front agent triages the request and transfers it to the appropriate sub-agent. The sub-agent then executes the necessary queries and returns structured JSON results. This process should be strictly adhered to for efficient operations [Source 1][Source 2].\n4. **Security Practices**: Utilize the PII Broker for redaction of personally identifiable information (PII) in responses. Ensure that all responses to customers do not include sensitive information, and that full details are only accessible to operators through the PII Card [Source 4].\n5. **Logging and Evidence**: Maintain thorough logs of progress and decisions using `logDecision()`. Additionally, provide MCP evidence in the required format for any code changes, and ensure that all actions are documented for accountability [Source 8].\n6. **Approval Workflow**: For write operations, such as refunds or inventory adjustments, ensure that human-in-the-loop (HITL) approval is obtained before execution. This adds a layer of oversight and helps maintain operational integrity [Source 4].\n7. **Commit Style**: Follow the conventional commit style for any changes made, ensuring that the agent's name is included in the commit messages. This helps in tracking changes and maintaining clarity in version control [Source 3].\n8. **Continuous Communication**: If blocked or facing issues, agents should log the blocker and communicate with the manager promptly. This ensures that any obstacles are addressed quickly and do not hinder progress [Source 7].\nBy adhering to these best practices, integrations agents can effectively manage their responsibilities while ensuring compliance with operational standards and security protocols.",
+      "sources": [
+        {
+          "title": "1. docs/OPERATING_MODEL.md",
+          "similarity": 0.464
+        },
+        {
+          "title": "2. docs/NORTH_STAR.md",
+          "similarity": 0.427
+        },
+        {
+          "title": "3. docs/runbooks/agent_startup_checklist.md",
+          "similarity": 0.406
+        },
+        {
+          "title": "4. docs/OPERATING_MODEL.md",
+          "similarity": 0.393
+        },
+        {
+          "title": "5. docs/directions/manager.md",
+          "similarity": 0.383
+        },
+        {
+          "title": "6. docs/NORTH_STAR.md",
+          "similarity": 0.383
+        },
+        {
+          "title": "7. docs/runbooks/agent_startup_checklist.md",
+          "similarity": 0.379
+        },
+        {
+          "title": "8. docs/NORTH_STAR.md",
+          "similarity": 0.37
+        },
+        {
+          "title": "9. docs/OPERATING_MODEL.md",
+          "similarity": 0.367
+        },
+        {
+          "title": "10. docs/manager/PROJECT_PLAN.md",
+          "similarity": 0.365
+        },
+        {
+          "title": "11. docs/OPERATING_MODEL.md",
+          "similarity": 0.358
+        },
+        {
+          "title": "12. docs/directions/AGENT_DIRECTION_TEMPLATE.md",
+          "similarity": 0.358
+        }
+      ],
+      "timestamp": "2025-10-24T22:01:19.983Z"
+    },
+    {
+      "question": "Common issues and solutions when implementing Wire Storefront Sub-Agent to Agent SDK",
+      "answer": "Common issues and solutions when implementing the Wire Storefront Sub-Agent to the Agent SDK include:\n1. **Integration Challenges**: \n   - **Issue**: Difficulty in executing Shopify GraphQL queries due to incorrect API configurations or permissions.\n   - **Solution**: Ensure that the Storefront Sub-Agent has the correct read-only access to the Storefront API and that all API calls are validated against the Shopify Dev MCP documentation before implementation [Source 1][Source 4].\n2. **Data Handling**:\n   - **Issue**: Inconsistent data formats when returning structured JSON from the sub-agent.\n   - **Solution**: Follow the established handoff pattern to ensure that the sub-agent returns structured JSON consistently, and verify the data format against the expected output in the front agent [Source 1][Source 2].\n3. **Approval Workflow**:\n   - **Issue**: Delays in the Human-in-the-Loop (HITL) approval process for write operations.\n   - **Solution**: Clearly define which operations require HITL approval and streamline the approval process to minimize delays, ensuring that operators are aware of their roles in the workflow [Source 5].\n4. **Branch Management**:\n   - **Issue**: Confusion over which branch to work on, leading to conflicts.\n   - **Solution**: Adhere to the daily branch model where all agents work on the same branch coordinated by the manager. Always fetch the latest branch and verify before starting work [Source 4][Source 6].\n5. **MCP Tools Verification**:\n   - **Issue**: Outdated training data leading to incorrect implementations.\n   - **Solution**: Pull the latest documentation from the MCP tools before writing any code to ensure that the implementation is based on the most current information [Source 4].\n6. **Security Compliance**:\n   - **Issue**: Potential exposure of Personally Identifiable Information (PII) in responses.\n   - **Solution**: Implement the PII Broker correctly to enforce redaction of sensitive information in public replies while allowing full details to be accessible to operators [Source 2][Source 5].\nBy addressing these common issues with the outlined solutions, the implementation of the Wire Storefront Sub-Agent to the Agent SDK can be more efficient and effective.",
+      "sources": [
+        {
+          "title": "1. docs/OPERATING_MODEL.md",
+          "similarity": 0.477
+        },
+        {
+          "title": "2. docs/NORTH_STAR.md",
+          "similarity": 0.439
+        },
+        {
+          "title": "3. docs/NORTH_STAR.md",
+          "similarity": 0.411
+        },
+        {
+          "title": "4. docs/runbooks/agent_startup_checklist.md",
+          "similarity": 0.407
+        },
+        {
+          "title": "5. docs/OPERATING_MODEL.md",
+          "similarity": 0.405
+        },
+        {
+          "title": "6. docs/OPERATING_MODEL.md",
+          "similarity": 0.378
+        },
+        {
+          "title": "7. docs/manager/PROJECT_PLAN.md",
+          "similarity": 0.374
+        },
+        {
+          "title": "8. docs/directions/engineer.md",
+          "similarity": 0.372
+        },
+        {
+          "title": "9. docs/runbooks/agent_startup_checklist.md",
+          "similarity": 0.37
+        },
+        {
+          "title": "10. docs/directions/manager.md",
+          "similarity": 0.367
+        },
+        {
+          "title": "11. docs/manager/PROJECT_PLAN.md",
+          "similarity": 0.367
+        },
+        {
+          "title": "12. docs/manager/PROJECT_PLAN.md",
+          "similarity": 0.366
+        }
+      ],
+      "timestamp": "2025-10-24T22:01:30.650Z"
+    },
+    {
+      "question": "How does Wire Storefront Sub-Agent to Agent SDK integrate with the Growth Engine architecture?",
+      "answer": "The Wire Storefront Sub-Agent integrates with the Growth Engine architecture by functioning as a specific type of sub-agent within the overall agent orchestration model. This sub-agent is responsible for handling inventory queries, product details, and collection lookups using the Storefront API in a read-only capacity. \nIn the Growth Engine architecture, the Customer-Front Agent triages customer inquiries and decides whether to transfer the request to the Accounts Sub-Agent or the Storefront Sub-Agent. Once transferred, the Storefront Sub-Agent owns the request, executes the necessary queries (specifically Shopify GraphQL queries), and returns structured JSON data containing relevant information such as inventory status and product details. This structured data is then composed into a reply by the front agent, which is subject to human-in-the-loop (HITL) approval before being sent to the customer via the Chatwoot API [Source 1][Source 2].\nThis integration ensures that customer interactions regarding storefront inquiries are efficiently managed and that the responses are accurate and compliant with privacy standards, as enforced by the PII Broker during the reply composition process [Source 2].",
+      "sources": [
+        {
+          "title": "1. docs/OPERATING_MODEL.md",
+          "similarity": 0.552
+        },
+        {
+          "title": "2. docs/NORTH_STAR.md",
+          "similarity": 0.469
+        },
+        {
+          "title": "3. docs/directions/manager.md",
+          "similarity": 0.461
+        },
+        {
+          "title": "4. docs/directions/ai-customer.md",
+          "similarity": 0.459
+        },
+        {
+          "title": "5. docs/directions/product.md",
+          "similarity": 0.456
+        },
+        {
+          "title": "6. docs/directions/designer.md",
+          "similarity": 0.448
+        },
+        {
+          "title": "7. docs/directions/ai-knowledge.md",
+          "similarity": 0.441
+        },
+        {
+          "title": "8. docs/directions/engineer.md",
+          "similarity": 0.433
+        },
+        {
+          "title": "9. docs/directions/manager.md",
+          "similarity": 0.403
+        },
+        {
+          "title": "10. docs/NORTH_STAR.md",
+          "similarity": 0.403
+        },
+        {
+          "title": "11. docs/directions/integrations.md",
+          "similarity": 0.403
+        },
+        {
+          "title": "12. docs/runbooks/manager_startup_checklist.md",
+          "similarity": 0.401
+        }
+      ],
+      "timestamp": "2025-10-24T22:01:41.172Z"
+    }
+  ],
+  "recommendations": [
+    "✅ Found existing solutions in KB - review before implementing",
+    "⚠️ Found common issues in KB - review potential problems",
+    "🔒 Found security considerations in KB - review security requirements",
+    "🔗 Found integration points in KB - review system connections"
+  ]
+}

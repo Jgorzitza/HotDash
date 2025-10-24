@@ -21,9 +21,9 @@ This directory contains comprehensive integration tests for the Growth Engine sy
 
 ```
 tests/integration/growth-engine/
-├── end-to-end.test.ts           # Main end-to-end integration tests
-├── telemetry-pipeline.test.ts   # Telemetry data flow tests
-├── approval-workflow.test.ts    # HITL approval workflow tests
+├── end-to-end.spec.ts           # Main end-to-end integration tests
+├── telemetry-pipeline.spec.ts   # Telemetry data flow tests
+├── approval-workflow.spec.ts    # HITL approval workflow tests
 ├── test-config.ts               # Test configuration and utilities
 ├── README.md                    # This documentation
 └── artifacts/                   # Test evidence and reports
@@ -31,7 +31,7 @@ tests/integration/growth-engine/
 
 ## Test Suites
 
-### 1. End-to-End Integration Tests (`end-to-end.test.ts`)
+### 1. End-to-End Integration Tests (`end-to-end.spec.ts`)
 
 **Purpose**: Test the complete Growth Engine workflow from start to finish.
 
@@ -45,7 +45,7 @@ tests/integration/growth-engine/
 - **Error Handling**: Failure scenarios and recovery
 - **Performance Testing**: Load and concurrency testing
 
-### 2. Telemetry Pipeline Tests (`telemetry-pipeline.test.ts`)
+### 2. Telemetry Pipeline Tests (`telemetry-pipeline.spec.ts`)
 
 **Purpose**: Test data collection and processing from external sources.
 
@@ -55,7 +55,7 @@ tests/integration/growth-engine/
 - **Action Queue Creation**: Converting telemetry data to actionable items
 - **Data Pipeline Integration**: End-to-end data processing
 
-### 3. Approval Workflow Tests (`approval-workflow.test.ts`)
+### 3. Approval Workflow Tests (`approval-workflow.spec.ts`)
 
 **Purpose**: Test the human approval process and state management.
 
@@ -107,13 +107,13 @@ npx tsx scripts/test-growth-engine-integration.ts
 
 ```bash
 # Run end-to-end tests only
-npx vitest run tests/integration/growth-engine/end-to-end.test.ts
+npx vitest run tests/integration/growth-engine/end-to-end.spec.ts
 
 # Run telemetry pipeline tests only
-npx vitest run tests/integration/growth-engine/telemetry-pipeline.test.ts
+npx vitest run tests/integration/growth-engine/telemetry-pipeline.spec.ts
 
 # Run approval workflow tests only
-npx vitest run tests/integration/growth-engine/approval-workflow.test.ts
+npx vitest run tests/integration/growth-engine/approval-workflow.spec.ts
 ```
 
 ### Run Tests with Coverage
@@ -149,7 +149,7 @@ Long-running tests (>2 hours) log heartbeat data:
   "task": "QA-001",
   "status": "doing",
   "progress": "40%",
-  "file": "tests/integration/growth-engine/end-to-end.test.ts"
+  "file": "tests/integration/growth-engine/end-to-end.spec.ts"
 }
 ```
 
@@ -222,7 +222,7 @@ DEBUG=true npx vitest run tests/integration/growth-engine/
 ### Adding New Tests
 
 1. Create test file in appropriate directory
-2. Follow naming convention: `*.test.ts`
+2. Follow naming convention: `*.spec.ts`
 3. Use test configuration from `test-config.ts`
 4. Log MCP evidence for tool usage
 5. Update documentation

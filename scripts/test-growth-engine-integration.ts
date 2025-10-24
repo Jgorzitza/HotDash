@@ -85,7 +85,7 @@ async function runTestSuite(suiteName: string): Promise<TestSuite> {
     console.log(`  Running ${suiteName} tests...`);
     
     // Run the test suite using vitest
-    const testCommand = `npx vitest run tests/integration/growth-engine/${suiteName}.test.ts --reporter=json`;
+    const testCommand = `npx vitest run tests/integration/growth-engine/${suiteName}.spec.ts --reporter=json`;
     
     try {
       const output = execSync(testCommand, { 

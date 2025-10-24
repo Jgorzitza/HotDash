@@ -1,9 +1,12 @@
-import { Prisma } from "@prisma/client";
-import prisma from "../db.server";
+import { Prisma } from "@prisma/kb-client";
+import kbPrisma from "../kb-db.server";
 import { getSupabaseConfig } from "../config/supabase.server";
 import { supabaseMemory } from "../../packages/memory/supabase";
 import type { DecisionLog as MemoryDecision } from "../../packages/memory";
 import { createSecureDecisionService } from './security/database-security';
+
+// Use KB database for decision logging (keeps dev data separate from production)
+const prisma = kbPrisma;
 
 // Standard payload structures for consistency
 export interface TaskCompletionPayload {
@@ -103,8 +106,6 @@ export async function logDecision(input: LogDecisionInput) {
       action: input.action,
       rationale: input.rationale,
       evidenceUrl: input.evidenceUrl,
-      shopDomain: input.shopDomain,
-      externalRef: input.externalRef,
       payload: input.payload ?? Prisma.JsonNull,
 
       // Enhanced feedback tracking fields

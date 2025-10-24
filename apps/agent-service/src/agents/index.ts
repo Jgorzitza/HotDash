@@ -22,6 +22,12 @@ import {
   updatePreferences,
   getAccountsMetrics
 } from '../tools/accounts.js';
+import {
+  storefrontSearchProducts,
+  storefrontCheckAvailability,
+  storefrontQueryPolicy,
+  storefrontBrowseCollections,
+} from '../tools/storefront.js';
 
 /**
  * Intent classification tool for the triage agent.
@@ -180,6 +186,34 @@ export const technicalSupportAgent = new Agent({
 });
 
 /**
+ * Storefront Support Agent
+ *
+ * Handles catalog discovery, product availability, collection browsing,
+ * and store policy questions using Storefront MCP.
+ * Never sends public replies without approval.
+ */
+export const storefrontAgent = new Agent({
+  name: 'Storefront Support',
+  instructions: [
+    'You are a storefront specialist focused on the public catalog.',
+    'Use storefront_search_products to locate relevant products and collections.',
+    'Use storefront_check_availability to confirm inventory status before making promises.',
+    'Use storefront_query_policy for return/shipping/privacy/terms questions.',
+    'Summarize findings in private notes; request approval before public replies.',
+    'If a request requires account-specific data, transfer to the appropriate sub-agent.',
+  ].join('\n'),
+  tools: [
+    answerFromDocs,
+    storefrontSearchProducts,
+    storefrontCheckAvailability,
+    storefrontQueryPolicy,
+    storefrontBrowseCollections,
+    cwCreatePrivateNote,
+    cwSendPublicReply,
+  ],
+});
+
+/**
  * Customer Accounts Agent
  *
  * Handles authenticated customer account requests using Customer Accounts MCP.
@@ -244,11 +278,18 @@ export const triageAgent = new Agent({
     '- Shipping-related (tracking, delivery, methods) → Shipping Support',
     '- Product questions (features, specs, compatibility) → Product Q&A',
     '- Technical issues (setup, troubleshooting, warranty) → Technical Support',
+    '- Catalog discovery, availability, or policy questions → Storefront Support',
     '- Account management (authenticated customers) → Customer Accounts',
     'If confidence < 0.7 or unclear, create a private note requesting clarification.',
     'Include intent and confidence in your handoff message.',
   ].join('\n'),
   tools: [setIntent, cwCreatePrivateNote],
-  handoffs: [orderSupportAgent, shippingSupportAgent, productQAAgent, technicalSupportAgent, customerAccountsAgent],
+  handoffs: [
+    orderSupportAgent,
+    shippingSupportAgent,
+    productQAAgent,
+    technicalSupportAgent,
+    storefrontAgent,
+    customerAccountsAgent,
+  ],
 });
-

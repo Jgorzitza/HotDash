@@ -1,302 +1,324 @@
-import { assignTask } from '../../app/services/tasks.server';
-import { PrismaClient } from '@prisma/client';
+/**
+ * Assign tasks to all idle agents
+ * Usage: npx tsx --env-file=.env scripts/manager/assign-all-idle-agents.ts
+ */
 
-const prisma = new PrismaClient();
+import "dotenv/config";
+import { assignTask } from "../../app/services/tasks.server";
 
 async function assignAllIdleAgents() {
-  console.log('🎯 Assigning Tasks to ALL Idle Agents (15 completed agents)');
-  console.log('=' .repeat(60));
+  console.log("📋 Assigning tasks to all idle agents...\n");
 
-  // ENGINEER - Growth Engine Core Features
-  await assignTask({
-    assignedBy: 'manager',
-    assignedTo: 'engineer',
-    taskId: 'ENG-024',
-    title: 'Growth Engine Advanced Dashboard Features',
-    description: 'Implement advanced dashboard features for Growth Engine phases 9-12 including real-time updates, advanced analytics, and performance optimizations.',
-    acceptanceCriteria: [
-      'Advanced dashboard features implemented',
-      'Real-time updates working across all tiles',
-      'Performance optimizations applied',
-      'All Growth Engine requirements met'
-    ],
-    allowedPaths: ['app/**'],
-    priority: 'P0',
-    estimatedHours: 4,
-    dependencies: [],
-  });
+  const assignments = [
+    // 1. ENGINEER - Fix build failures (P0)
+    {
+      assignedBy: "manager",
+      assignedTo: "engineer",
+      taskId: "ENG-BUILD-FIX-001",
+      title: "Fix Build Failures (package.json + analytics.ts)",
+      description: `Fix critical build failures blocking QA and QA-HELPER:
 
-  // DESIGNER - Growth Engine UX
-  await assignTask({
-    assignedBy: 'manager',
-    assignedTo: 'designer',
-    taskId: 'DES-022',
-    title: 'Growth Engine UX Design System',
-    description: 'Create comprehensive UX design system for Growth Engine phases 9-12 with advanced components and interactions.',
-    acceptanceCriteria: [
-      'Growth Engine design system created',
-      'Advanced component library updated',
-      'UX patterns for all phases documented',
-      'Accessibility guidelines updated'
-    ],
-    allowedPaths: ['docs/design/**'],
-    priority: 'P0',
-    estimatedHours: 3,
-    dependencies: [],
-  });
+1. Remove duplicate key in package.json: 'dev-kb:query'
+2. Fix duplicate exports in app/utils/analytics.ts
+3. Verify build passes without errors
+4. Run tests to confirm no regressions
 
-  // DATA - Growth Engine Data Architecture
-  await assignTask({
-    assignedBy: 'manager',
-    assignedTo: 'data',
-    taskId: 'DATA-108',
-    title: 'Growth Engine Data Architecture',
-    description: 'Design and implement comprehensive data architecture for Growth Engine phases 9-12 with advanced analytics and reporting.',
-    acceptanceCriteria: [
-      'Growth Engine data architecture designed',
-      'Advanced analytics tables created',
-      'Data flow optimized for performance',
-      'Reporting infrastructure implemented'
-    ],
-    allowedPaths: ['supabase/migrations/**', 'prisma/schema.prisma', 'docs/**'],
-    priority: 'P0',
-    estimatedHours: 3,
-    dependencies: [],
-  });
+MCP Requirements:
+- Use Context7 MCP to verify package.json best practices
+- Use Context7 MCP to verify TypeScript export patterns
+- Create MCP Evidence JSONL: artifacts/engineer/$(date +%Y-%m-%d)/mcp/ENG-BUILD-FIX-001.jsonl
 
-  // DEVOPS - Growth Engine Infrastructure
-  await assignTask({
-    assignedBy: 'manager',
-    assignedTo: 'devops',
-    taskId: 'DEVOPS-006',
-    title: 'Growth Engine Infrastructure Setup',
-    description: 'Set up infrastructure for Growth Engine phases 9-12 including monitoring, scaling, and deployment automation.',
-    acceptanceCriteria: [
-      'Growth Engine infrastructure configured',
-      'Monitoring and alerting set up',
-      'Scaling policies implemented',
-      'Deployment automation working'
-    ],
-    allowedPaths: ['docs/runbooks/**', 'fly.toml', 'package.json'],
-    priority: 'P0',
-    estimatedHours: 3,
-    dependencies: [],
-  });
+Unblocks: QA-004, QA-UI-001 (3 tasks total)`,
+      acceptanceCriteria: [
+        "Duplicate package.json key removed",
+        "Duplicate exports in analytics.ts fixed",
+        "Build passes: npm run build succeeds",
+        "Tests pass: npm test succeeds",
+        "QA and QA-HELPER unblocked",
+        "MCP Evidence JSONL created"
+      ],
+      allowedPaths: ["package.json", "app/utils/analytics.ts", "tests/**", "artifacts/engineer/**"],
+      priority: "P0" as const,
+      estimatedHours: 1
+    },
 
-  // INTEGRATIONS - Growth Engine Integrations
-  await assignTask({
-    assignedBy: 'manager',
-    assignedTo: 'integrations',
-    taskId: 'INTEGRATIONS-102',
-    title: 'Growth Engine Advanced Integrations',
-    description: 'Implement advanced integrations for Growth Engine phases 9-12 including AI services, analytics platforms, and third-party APIs.',
-    acceptanceCriteria: [
-      'Advanced integrations implemented',
-      'AI services integrated',
-      'Analytics platforms connected',
-      'Third-party APIs working'
-    ],
-    allowedPaths: ['app/**', 'docs/**'],
-    priority: 'P0',
-    estimatedHours: 3,
-    dependencies: [],
-  });
+    // 2. DATA - Redo security audits with MCP (P0)
+    {
+      assignedBy: "manager",
+      assignedTo: "data",
+      taskId: "SECURITY-AUDIT-REDO-001",
+      title: "Redo Security Audits with MCP Verification",
+      description: `CRITICAL: Redo SECURITY-AUDIT-001 and SECURITY-AUDIT-002 WITH MCP TOOLS.
 
-  // ANALYTICS - Growth Engine Analytics
-  await assignTask({
-    assignedBy: 'manager',
-    assignedTo: 'analytics',
-    taskId: 'ANALYTICS-022',
-    title: 'Growth Engine Advanced Analytics',
-    description: 'Implement advanced analytics for Growth Engine phases 9-12 including predictive analytics, machine learning, and business intelligence.',
-    acceptanceCriteria: [
-      'Advanced analytics implemented',
-      'Predictive analytics working',
-      'Machine learning models deployed',
-      'Business intelligence dashboards created'
-    ],
-    allowedPaths: ['app/**', 'docs/**'],
-    priority: 'P0',
-    estimatedHours: 3,
-    dependencies: [],
-  });
+Previous audits violated CRITICAL_MCP_ENFORCEMENT.md by not using MCP tools.
 
-  // INVENTORY - Growth Engine Inventory
-  await assignTask({
-    assignedBy: 'manager',
-    assignedTo: 'inventory',
-    taskId: 'INVENTORY-103',
-    title: 'Growth Engine Inventory Optimization',
-    description: 'Implement advanced inventory optimization for Growth Engine phases 9-12 including AI-powered forecasting and automated reordering.',
-    acceptanceCriteria: [
-      'Advanced inventory optimization implemented',
-      'AI-powered forecasting working',
-      'Automated reordering system active',
-      'Inventory analytics dashboard created'
-    ],
-    allowedPaths: ['app/**', 'docs/**'],
-    priority: 'P0',
-    estimatedHours: 3,
-    dependencies: [],
-  });
+MCP Requirements (MANDATORY):
+1. Create MCP Evidence directory FIRST: artifacts/data/$(date +%Y-%m-%d)/mcp/
+2. Use Shopify Dev MCP for Shopify security patterns
+3. Use Context7 MCP for library security patterns (React Router, Prisma, TypeScript)
+4. Verify ALL recommendations against current official docs
+5. Log each MCP call to JSONL: artifacts/data/$(date +%Y-%m-%d)/mcp/SECURITY-AUDIT-REDO-001.jsonl
 
-  // ADS - Growth Engine Advertising
-  await assignTask({
-    assignedBy: 'manager',
-    assignedTo: 'ads',
-    taskId: 'ADS-103',
-    title: 'Growth Engine Advanced Advertising',
-    description: 'Implement advanced advertising features for Growth Engine phases 9-12 including AI-powered ad optimization and automated campaigns.',
-    acceptanceCriteria: [
-      'Advanced advertising features implemented',
-      'AI-powered ad optimization working',
-      'Automated campaigns active',
-      'Advertising analytics dashboard created'
-    ],
-    allowedPaths: ['app/**', 'docs/**'],
-    priority: 'P0',
-    estimatedHours: 3,
-    dependencies: [],
-  });
+Tasks to redo:
+- SECURITY-AUDIT-001: General security audit
+- SECURITY-AUDIT-002: Console logging review
 
-  // CONTENT - Growth Engine Content
-  await assignTask({
-    assignedBy: 'manager',
-    assignedTo: 'content',
-    taskId: 'CONTENT-024',
-    title: 'Growth Engine Content Strategy',
-    description: 'Develop comprehensive content strategy for Growth Engine phases 9-12 including AI-generated content and automated content optimization.',
-    acceptanceCriteria: [
-      'Growth Engine content strategy created',
-      'AI-generated content system implemented',
-      'Automated content optimization working',
-      'Content analytics dashboard created'
-    ],
-    allowedPaths: ['docs/**'],
-    priority: 'P0',
-    estimatedHours: 3,
-    dependencies: [],
-  });
+Validate or correct previous findings based on MCP-verified current best practices.`,
+      acceptanceCriteria: [
+        "MCP Evidence JSONL files created BEFORE starting",
+        "Shopify Dev MCP used for Shopify security patterns",
+        "Context7 MCP used for library security patterns",
+        "All recommendations verified against current docs (not training data)",
+        "Previous audit findings validated or corrected with evidence",
+        "Security recommendations are current (2025 standards)"
+      ],
+      allowedPaths: ["artifacts/data/**", "docs/security/**"],
+      priority: "P0" as const,
+      estimatedHours: 2
+    },
 
-  // QA - Growth Engine Quality Assurance
-  await assignTask({
-    assignedBy: 'manager',
-    assignedTo: 'qa',
-    taskId: 'QA-104',
-    title: 'Growth Engine Quality Assurance',
-    description: 'Implement comprehensive quality assurance for Growth Engine phases 9-12 including automated testing, performance monitoring, and quality gates.',
-    acceptanceCriteria: [
-      'Growth Engine QA framework created',
-      'Automated testing implemented',
-      'Performance monitoring active',
-      'Quality gates established'
-    ],
-    allowedPaths: ['docs/**'],
-    priority: 'P0',
-    estimatedHours: 3,
-    dependencies: [],
-  });
+    // 3. DESIGNER - UI/UX Launch Readiness Review (P1)
+    {
+      assignedBy: "manager",
+      assignedTo: "designer",
+      taskId: "DESIGNER-LAUNCH-REVIEW-001",
+      title: "UI/UX Launch Readiness Review",
+      description: `Review all UI components for launch readiness.
 
-  // PILOT - Growth Engine Testing
-  await assignTask({
-    assignedBy: 'manager',
-    assignedTo: 'pilot',
-    taskId: 'PILOT-022',
-    title: 'Growth Engine Testing Framework',
-    description: 'Develop comprehensive testing framework for Growth Engine phases 9-12 including end-to-end testing, user acceptance testing, and performance testing.',
-    acceptanceCriteria: [
-      'Growth Engine testing framework created',
-      'End-to-end testing implemented',
-      'User acceptance testing active',
-      'Performance testing automated'
-    ],
-    allowedPaths: ['docs/**'],
-    priority: 'P0',
-    estimatedHours: 3,
-    dependencies: [],
-  });
+Focus Areas:
+1. Polaris component usage consistency
+2. Responsive design across breakpoints
+3. Accessibility (WCAG 2.1 AA compliance)
+4. Visual consistency (colors, spacing, typography)
+5. Error states and loading states
+6. Empty states and placeholder content
 
-  // AI-CUSTOMER - Growth Engine AI
-  await assignTask({
-    assignedBy: 'manager',
-    assignedTo: 'ai-customer',
-    taskId: 'AI-CUSTOMER-105',
-    title: 'Growth Engine AI Implementation',
-    description: 'Implement advanced AI features for Growth Engine phases 9-12 including natural language processing, machine learning, and automated decision making.',
-    acceptanceCriteria: [
-      'Advanced AI features implemented',
-      'Natural language processing working',
-      'Machine learning models deployed',
-      'Automated decision making active'
-    ],
-    allowedPaths: ['app/**', 'docs/**'],
-    priority: 'P0',
-    estimatedHours: 3,
-    dependencies: [],
-  });
+MCP Requirements:
+- Use Shopify Dev MCP to verify Polaris best practices
+- Create MCP Evidence JSONL: artifacts/designer/$(date +%Y-%m-%d)/mcp/DESIGNER-LAUNCH-REVIEW-001.jsonl
 
-  // AI-KNOWLEDGE - Growth Engine Knowledge
-  await assignTask({
-    assignedBy: 'manager',
-    assignedTo: 'ai-knowledge',
-    taskId: 'AI-KNOWLEDGE-101',
-    title: 'Growth Engine Knowledge Management',
-    description: 'Implement advanced knowledge management for Growth Engine phases 9-12 including AI-powered search, knowledge graphs, and automated content curation.',
-    acceptanceCriteria: [
-      'Advanced knowledge management implemented',
-      'AI-powered search working',
-      'Knowledge graphs created',
-      'Automated content curation active'
-    ],
-    allowedPaths: ['app/**', 'docs/**'],
-    priority: 'P0',
-    estimatedHours: 3,
-    dependencies: [],
-  });
+Deliverables:
+- UI/UX audit report with screenshots
+- List of issues found (P0/P1/P2)
+- Recommendations for improvements`,
+      acceptanceCriteria: [
+        "All major UI routes reviewed",
+        "Polaris usage verified via Shopify Dev MCP",
+        "Accessibility issues documented",
+        "Visual consistency issues documented",
+        "Launch readiness report created",
+        "MCP Evidence JSONL created"
+      ],
+      allowedPaths: ["artifacts/designer/**", "docs/design/**"],
+      priority: "P1" as const,
+      estimatedHours: 2
+    },
 
-  // SUPPORT - Growth Engine Support
-  await assignTask({
-    assignedBy: 'manager',
-    assignedTo: 'support',
-    taskId: 'SUPPORT-013',
-    title: 'Growth Engine Support Framework',
-    description: 'Create comprehensive support framework for Growth Engine phases 9-12 including AI-powered support, automated troubleshooting, and advanced documentation.',
-    acceptanceCriteria: [
-      'Growth Engine support framework created',
-      'AI-powered support implemented',
-      'Automated troubleshooting active',
-      'Advanced documentation created'
-    ],
-    allowedPaths: ['docs/runbooks/**'],
-    priority: 'P0',
-    estimatedHours: 3,
-    dependencies: [],
-  });
+    // 4. ANALYTICS - Launch Metrics Monitoring (P1)
+    {
+      assignedBy: "manager",
+      assignedTo: "analytics",
+      taskId: "ANALYTICS-LAUNCH-MONITOR-001",
+      title: "Launch Metrics Monitoring Setup",
+      description: `Set up real-time monitoring for launch metrics.
 
-  // MANAGER - Growth Engine Coordination
-  await assignTask({
-    assignedBy: 'manager',
-    assignedTo: 'manager',
-    taskId: 'MANAGER-002',
-    title: 'Growth Engine Project Coordination',
-    description: 'Coordinate Growth Engine phases 9-12 implementation across all agents including project management, milestone tracking, and stakeholder communication.',
-    acceptanceCriteria: [
-      'Growth Engine project plan created',
-      'Milestone tracking implemented',
-      'Stakeholder communication active',
-      'Agent coordination optimized'
-    ],
-    allowedPaths: ['docs/**'],
-    priority: 'P0',
-    estimatedHours: 4,
-    dependencies: [],
-  });
+Metrics to Monitor:
+1. Core Web Vitals (LCP, FID, CLS)
+2. Page load times (P50, P95, P99)
+3. Error rates (client + server)
+4. User engagement (sessions, bounce rate)
+5. Conversion funnel (signup, activation)
 
-  console.log('\n✅ ALL 15 Idle Agents Assigned New Tasks');
-  console.log('Priority: P0 for all agents');
-  console.log('Focus: Growth Engine phases 9-12 implementation');
-  console.log('Total: 15 new tasks assigned');
-  console.log('Next: All agents should start working immediately');
+MCP Requirements:
+- Use Context7 MCP to verify Google Analytics 4 patterns
+- Create MCP Evidence JSONL: artifacts/analytics/$(date +%Y-%m-%d)/mcp/ANALYTICS-LAUNCH-MONITOR-001.jsonl
+
+Deliverables:
+- Real-time dashboard for launch metrics
+- Alert thresholds configured
+- Monitoring runbook`,
+      acceptanceCriteria: [
+        "Real-time metrics dashboard created",
+        "Alert thresholds configured",
+        "GA4 integration verified via Context7 MCP",
+        "Monitoring runbook documented",
+        "MCP Evidence JSONL created"
+      ],
+      allowedPaths: ["app/components/analytics/**", "app/routes/analytics/**", "artifacts/analytics/**"],
+      priority: "P1" as const,
+      estimatedHours: 2
+    },
+
+    // 5. INVENTORY - ROP Calculations & Monitoring (P1)
+    {
+      assignedBy: "manager",
+      assignedTo: "inventory",
+      taskId: "INVENTORY-ROP-MONITOR-001",
+      title: "ROP Calculations & Inventory Health Monitoring",
+      description: `Implement automated ROP (Reorder Point) calculations and monitoring.
+
+Features:
+1. Calculate ROP = Lead-time demand + Safety stock
+2. Monitor inventory levels vs ROP
+3. Generate reorder alerts
+4. Track stockout risk
+5. Emergency sourcing recommendations
+
+MCP Requirements:
+- Use Context7 MCP to verify calculation patterns
+- Create MCP Evidence JSONL: artifacts/inventory/$(date +%Y-%m-%d)/mcp/INVENTORY-ROP-MONITOR-001.jsonl
+
+Deliverables:
+- ROP calculation service
+- Inventory health dashboard
+- Reorder alert system`,
+      acceptanceCriteria: [
+        "ROP calculations implemented and tested",
+        "Inventory health dashboard created",
+        "Reorder alerts configured",
+        "Calculation patterns verified via Context7 MCP",
+        "MCP Evidence JSONL created"
+      ],
+      allowedPaths: ["app/services/inventory/**", "app/components/inventory/**", "artifacts/inventory/**"],
+      priority: "P1" as const,
+      estimatedHours: 2
+    },
+
+    // 6. SEO - Post-Launch SEO Monitoring (P1)
+    {
+      assignedBy: "manager",
+      assignedTo: "seo",
+      taskId: "SEO-LAUNCH-MONITOR-001",
+      title: "Post-Launch SEO Monitoring & Optimization",
+      description: `Set up SEO monitoring and optimization for launch.
+
+Focus Areas:
+1. Meta tags optimization (title, description, OG tags)
+2. Structured data (JSON-LD)
+3. Sitemap generation
+4. Robots.txt configuration
+5. Core Web Vitals impact on SEO
+6. Mobile-first indexing readiness
+
+MCP Requirements:
+- Use web search to verify current SEO best practices (2025)
+- Create MCP Evidence JSONL: artifacts/seo/$(date +%Y-%m-%d)/mcp/SEO-LAUNCH-MONITOR-001.jsonl
+
+Deliverables:
+- SEO audit report
+- Optimization recommendations
+- Monitoring dashboard`,
+      acceptanceCriteria: [
+        "SEO audit completed",
+        "Meta tags optimized",
+        "Structured data implemented",
+        "SEO best practices verified via web search",
+        "Monitoring dashboard created",
+        "MCP Evidence JSONL created"
+      ],
+      allowedPaths: ["app/routes/**", "app/components/**", "public/**", "artifacts/seo/**"],
+      priority: "P1" as const,
+      estimatedHours: 2
+    },
+
+    // 7. CONTENT - Help Documentation Completion (P1)
+    {
+      assignedBy: "manager",
+      assignedTo: "content",
+      taskId: "CONTENT-HELP-DOCS-001",
+      title: "Complete Help Documentation for Launch",
+      description: `Complete comprehensive help documentation for launch.
+
+Documentation Needed:
+1. Getting Started Guide
+2. Feature Tutorials (step-by-step)
+3. FAQ (common questions)
+4. Troubleshooting Guide
+5. Video Tutorials (scripts)
+6. API Documentation (if applicable)
+
+MCP Requirements:
+- Use web search to verify documentation best practices
+- Create MCP Evidence JSONL: artifacts/content/$(date +%Y-%m-%d)/mcp/CONTENT-HELP-DOCS-001.jsonl
+
+Deliverables:
+- Complete help documentation
+- Video tutorial scripts
+- FAQ database`,
+      acceptanceCriteria: [
+        "Getting Started Guide complete",
+        "Feature tutorials complete",
+        "FAQ complete (min 20 questions)",
+        "Troubleshooting guide complete",
+        "Documentation best practices verified",
+        "MCP Evidence JSONL created"
+      ],
+      allowedPaths: ["docs/help/**", "app/routes/help/**", "artifacts/content/**"],
+      priority: "P1" as const,
+      estimatedHours: 3
+    },
+
+    // 8. PRODUCT - Launch Coordination & Stakeholder Comms (P1)
+    {
+      assignedBy: "manager",
+      assignedTo: "product",
+      taskId: "PRODUCT-LAUNCH-COORD-001",
+      title: "Launch Coordination & Stakeholder Communication",
+      description: `Coordinate launch activities and stakeholder communication.
+
+Responsibilities:
+1. Launch checklist verification
+2. Stakeholder communication plan
+3. Launch timeline coordination
+4. Risk assessment and mitigation
+5. Success metrics tracking
+6. Post-launch retrospective planning
+
+Deliverables:
+- Launch readiness report
+- Stakeholder communication plan
+- Risk mitigation plan
+- Success metrics dashboard`,
+      acceptanceCriteria: [
+        "Launch checklist 100% complete",
+        "Stakeholder communication plan created",
+        "Launch timeline finalized",
+        "Risk assessment complete",
+        "Success metrics dashboard ready",
+        "Post-launch retrospective scheduled"
+      ],
+      allowedPaths: ["docs/product/**", "artifacts/product/**"],
+      priority: "P1" as const,
+      estimatedHours: 2
+    }
+  ];
+
+  let successCount = 0;
+  let errorCount = 0;
+
+  for (const assignment of assignments) {
+    try {
+      console.log(`\n📝 Assigning ${assignment.taskId} to ${assignment.assignedTo.toUpperCase()}...`);
+      const task = await assignTask(assignment);
+      console.log(`   ✅ Success! Task ID: ${task.id}, Status: ${task.status}`);
+      successCount++;
+    } catch (error) {
+      console.error(`   ❌ Error: ${error instanceof Error ? error.message : String(error)}`);
+      errorCount++;
+    }
+  }
+
+  console.log(`\n\n📊 Assignment Summary:`);
+  console.log(`   Total tasks: ${assignments.length}`);
+  console.log(`   Successful: ${successCount}`);
+  console.log(`   Errors: ${errorCount}`);
+  
+  if (successCount === assignments.length) {
+    console.log(`\n✅ ALL AGENTS NOW HAVE WORK ASSIGNED!\n`);
+  } else {
+    console.log(`\n⚠️  Some assignments failed. Review errors above.\n`);
+  }
 }
 
-assignAllIdleAgents().finally(() => prisma.$disconnect());
+assignAllIdleAgents().catch(console.error);
+

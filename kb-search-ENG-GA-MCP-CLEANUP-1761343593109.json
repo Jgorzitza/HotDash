@@ -1,0 +1,293 @@
+{
+  "taskId": "ENG-GA-MCP-CLEANUP",
+  "taskTitle": "Remove GA MCP References (Use Direct API)",
+  "searchQueries": [
+    "How to implement Remove GA MCP References (Use Direct API)? What are the steps and requirements?",
+    "What are the best practices for engineer agent when working on Remove GA MCP References (Use Direct API)?",
+    "API implementation patterns and best practices",
+    "Common issues and solutions when implementing Remove GA MCP References (Use Direct API)",
+    "How does Remove GA MCP References (Use Direct API) integrate with the Growth Engine architecture?"
+  ],
+  "results": [
+    {
+      "question": "How to implement Remove GA MCP References (Use Direct API)? What are the steps and requirements?",
+      "answer": "To implement the \"Remove GA MCP References (Use Direct API)\" task, follow these steps and requirements based on the provided sources:\n### Steps to Implement\n1. **Understand the Context**:\n   - The task involves removing references to the GA MCP (Google Analytics Managed Control Plane) and using the Direct API instead. This aligns with the MCP-first development model, which mandates the use of specific tools and APIs for development tasks.\n2. **Setup GA4 Custom Dimension**:\n   - Ensure that the GA4 property is set up correctly. You will need to create a custom dimension in GA4 for tracking purposes. Follow the steps outlined in the documentation for creating a custom dimension:\n     - Log in to GA4 and navigate to the property.\n     - Go to Admin → Data display → Custom definitions.\n     - Click \"Create custom dimensions\" and fill in the required fields (e.g., dimension name, scope, description, event parameter) [Source 6].\n3. **Implement Direct API Calls**:\n   - Replace any existing GA MCP references in your code with direct API calls to the GA4 API. This may involve using the `@google-analytics/data` package to interact with GA4 directly.\n   - Ensure that you are familiar with the GA4 API documentation for event tracking and custom dimensions [Source 10].\n4. **Testing**:\n   - After implementing the changes, conduct thorough testing to ensure that the new API calls are functioning correctly. This includes verifying that events are being tracked properly in GA4 and that the custom dimension is being populated as expected [Source 9].\n5. **Documentation**:\n   - Update any relevant documentation to reflect the changes made during this implementation. Ensure that the new processes and API usage are clearly documented for future reference [Source 3].\n### Requirements\n- **MCP Tools**: Ensure that you are using the Context7 MCP for workflow development and that you follow the MCP-first approach in your development process [Source 1].\n- **Evidence Requirements**: Log MCP conversation IDs in MCP Evidence JSONL files and ensure that all changes are documented in the PR template, including MCP evidence and heartbeat checks [Source 2].\n- **CI Compliance**: Ensure that your changes comply with CI guards, which may include checks for MCP evidence and heartbeat verification [Source 8].\nBy following these steps and adhering to the outlined requirements, you can effectively implement the removal of GA MCP references and transition to using the Direct API.",
+      "sources": [
+        {
+          "title": "1. docs/OPERATING_MODEL.md",
+          "similarity": 0.474
+        },
+        {
+          "title": "2. docs/directions/devops.md",
+          "similarity": 0.422
+        },
+        {
+          "title": "3. docs/directions/analytics.md",
+          "similarity": 0.41
+        },
+        {
+          "title": "4. docs/NORTH_STAR.md",
+          "similarity": 0.409
+        },
+        {
+          "title": "5. docs/runbooks/manager_startup_checklist.md",
+          "similarity": 0.4
+        },
+        {
+          "title": "6. docs/directions/devops.md",
+          "similarity": 0.399
+        },
+        {
+          "title": "7. docs/NORTH_STAR.md",
+          "similarity": 0.393
+        },
+        {
+          "title": "8. docs/directions/devops.md",
+          "similarity": 0.392
+        },
+        {
+          "title": "9. docs/directions/analytics.md",
+          "similarity": 0.392
+        },
+        {
+          "title": "10. docs/directions/engineer.md",
+          "similarity": 0.388
+        },
+        {
+          "title": "11. docs/NORTH_STAR.md",
+          "similarity": 0.387
+        },
+        {
+          "title": "12. docs/runbooks/agent_startup_checklist.md",
+          "similarity": 0.385
+        }
+      ],
+      "timestamp": "2025-10-24T22:05:37.995Z"
+    },
+    {
+      "question": "What are the best practices for engineer agent when working on Remove GA MCP References (Use Direct API)?",
+      "answer": "The best practices for engineer agents working on \"Remove GA MCP References (Use Direct API)\" include the following:\n1. **MCP Tools Verification**: Always use the appropriate MCP tools before writing any code. For Shopify-related work, utilize the Shopify Dev MCP first, and for other libraries, use Context7 MCP. Web search should only be a last resort [Source 1][Source 6].\n2. **MCP Evidence Logging**: Log all MCP conversation IDs in MCP Evidence JSONL files located in the `artifacts/` directory. This is mandatory for all code changes and serves as evidence for compliance [Source 1][Source 4].\n3. **Daily Audits**: Participate in daily audits to ensure compliance with MCP usage. Agents are expected to make at least four MCP calls per day and provide evidence of tool usage in their feedback [Source 3].\n4. **No Secrets in Code**: Ensure that no secrets are included in the code. Use GitHub Environments and Secrets for credential management [Source 1][Source 2].\n5. **Follow the Agent Direction Template**: Adhere to the agent direction template provided in the documentation. This ensures consistency and clarity in task assignments [Source 2].\n6. **Commit Style and Branch Management**: Follow the prescribed commit style and ensure that all changes are made on the same daily branch as announced by the manager. This includes fetching the latest changes and verifying the branch before making any commits [Source 6].\n7. **Immediate Feedback on Status Changes**: Use the logging functions to provide immediate feedback on task status changes, ensuring that the manager can track progress efficiently [Source 9].\n8. **Reject PRs Without Evidence**: PRs lacking MCP evidence or containing imports from the Dev MCP should be immediately rejected by the manager [Source 1][Source 3].\nBy adhering to these practices, engineer agents can ensure compliance with the MCP-first policy and contribute effectively to the project.",
+      "sources": [
+        {
+          "title": "1. docs/OPERATING_MODEL.md",
+          "similarity": 0.478
+        },
+        {
+          "title": "2. docs/NORTH_STAR.md",
+          "similarity": 0.466
+        },
+        {
+          "title": "3. docs/directions/manager.md",
+          "similarity": 0.464
+        },
+        {
+          "title": "4. docs/NORTH_STAR.md",
+          "similarity": 0.462
+        },
+        {
+          "title": "5. docs/runbooks/manager_startup_checklist.md",
+          "similarity": 0.442
+        },
+        {
+          "title": "6. docs/runbooks/agent_startup_checklist.md",
+          "similarity": 0.441
+        },
+        {
+          "title": "7. docs/manager/PROJECT_PLAN.md",
+          "similarity": 0.439
+        },
+        {
+          "title": "8. docs/directions/ai-customer.md",
+          "similarity": 0.438
+        },
+        {
+          "title": "9. docs/NORTH_STAR.md",
+          "similarity": 0.432
+        },
+        {
+          "title": "10. docs/directions/designer.md",
+          "similarity": 0.432
+        },
+        {
+          "title": "11. docs/directions/manager.md",
+          "similarity": 0.423
+        },
+        {
+          "title": "12. docs/directions/manager.md",
+          "similarity": 0.422
+        }
+      ],
+      "timestamp": "2025-10-24T22:05:50.085Z"
+    },
+    {
+      "question": "API implementation patterns and best practices",
+      "answer": "API implementation patterns and best practices for the HotDash development team are outlined in several sources. Here are the key points:\n1. **Approvals Loop**: All actions must follow a structured approvals loop with defined states (Draft → Pending Review → Approved → Applied → Audited → Learned). Each suggestion or reply must include evidence, projected impact, risks, and rollback plans. The service level agreement (SLA) for reviews is 15 minutes during business hours for customer experience (CX) and same-day for inventory and growth [Source 1].\n2. **Evidence and Audit Trails**: Every action must \"show receipts,\" meaning that evidence must accompany all actions. This includes structured logs and audit trails that capture before/after states and rollback artifacts [Source 2][Source 3].\n3. **Tool-Based Actions**: Actions should only be applied through server-side tools (e.g., Shopify Admin GraphQL, Supabase RPC, Chatwoot API) to prevent manual edits outside the defined workflow [Source 1][Source 3].\n4. **Human-in-the-Loop (HITL)**: The system enforces HITL for customer and social interactions, ensuring that human agents review and approve actions before they are executed [Source 3][Source 10].\n5. **Integration and Validation**: All API integrations must be validated against the relevant documentation (e.g., Shopify Dev MCP for GraphQL queries). This includes using specific tools for validation and ensuring that all code adheres to established patterns [Source 4][Source 7].\n6. **Error Handling and Rate Limiting**: Implement robust error handling for API responses, particularly for GraphQL queries. Rate limiting should be enforced (e.g., 500ms between Shopify API calls) to comply with API usage policies [Source 7][Source 9].\n7. **Accessibility and User Experience**: Ensure that all user interfaces are designed with accessibility in mind, following guidelines such as WCAG AA standards. This includes proper labeling, focus management, and visual hierarchy [Source 5][Source 8].\n8. **Continuous Learning and Feedback**: The system should incorporate feedback mechanisms to learn from human edits and grading, which can inform future actions and improve the overall process [Source 1][Source 3].\nThese patterns and practices are designed to create a reliable, efficient, and user-friendly API implementation process within the HotDash ecosystem.",
+      "sources": [
+        {
+          "title": "1. docs/NORTH_STAR.md",
+          "similarity": 0.316
+        },
+        {
+          "title": "2. docs/NORTH_STAR.md",
+          "similarity": 0.315
+        },
+        {
+          "title": "3. docs/OPERATING_MODEL.md",
+          "similarity": 0.311
+        },
+        {
+          "title": "4. docs/runbooks/agent_startup_checklist.md",
+          "similarity": 0.306
+        },
+        {
+          "title": "5. docs/directions/designer.md",
+          "similarity": 0.303
+        },
+        {
+          "title": "6. docs/runbooks/agent_startup_checklist.md",
+          "similarity": 0.3
+        },
+        {
+          "title": "7. docs/directions/integrations.md",
+          "similarity": 0.298
+        },
+        {
+          "title": "8. docs/directions/designer.md",
+          "similarity": 0.296
+        },
+        {
+          "title": "9. docs/directions/integrations.md",
+          "similarity": 0.295
+        },
+        {
+          "title": "10. docs/NORTH_STAR.md",
+          "similarity": 0.294
+        },
+        {
+          "title": "11. docs/manager/PROJECT_PLAN.md",
+          "similarity": 0.292
+        },
+        {
+          "title": "12. docs/directions/engineer.md",
+          "similarity": 0.289
+        }
+      ],
+      "timestamp": "2025-10-24T22:06:10.834Z"
+    },
+    {
+      "question": "Common issues and solutions when implementing Remove GA MCP References (Use Direct API)",
+      "answer": "Common issues when implementing the removal of GA MCP references and using the Direct API include:\n1. **MCP Evidence Requirement**: All development agents must log MCP evidence when making changes. If MCP evidence is missing, PRs will be immediately rejected. This is a new enforcement policy that could lead to delays if not adhered to [Source 1][Source 12].\n2. **Tool Usage Compliance**: Agents are required to use MCP tools for all development tasks. Failure to do so can result in flagged performance and potential rejection of PRs. This includes using the Context7 MCP for Google Analytics-related tasks [Source 6][Source 12].\n3. **Documentation and Guidance**: There may be confusion regarding the correct usage of the Direct API versus MCP tools. It is crucial to refer to the appropriate documentation for the Direct API and ensure that all team members are aligned on the new processes [Source 1][Source 4].\n4. **CI Guards Implementation**: The introduction of CI guards to verify MCP evidence and ensure no Dev MCP imports in production code can lead to merge blockers if not properly configured or if evidence is not provided [Source 8][Source 12].\n5. **Training and Familiarization**: Given that the training data for managers and agents is 6-12 months old, there may be a knowledge gap regarding the latest practices and tools. Continuous training and updates are necessary to mitigate this issue [Source 2][Source 4].\nTo address these issues, it is recommended to:\n- Ensure all agents are trained on the new MCP-first policy and the use of the Direct API.\n- Regularly audit tool usage and provide feedback to agents to encourage compliance.\n- Maintain clear documentation and guidelines on the Direct API usage to avoid confusion.\n- Implement CI guards effectively and ensure all team members understand their importance in the development workflow.",
+      "sources": [
+        {
+          "title": "1. docs/OPERATING_MODEL.md",
+          "similarity": 0.473
+        },
+        {
+          "title": "2. docs/runbooks/manager_startup_checklist.md",
+          "similarity": 0.436
+        },
+        {
+          "title": "3. docs/manager/PROJECT_PLAN.md",
+          "similarity": 0.407
+        },
+        {
+          "title": "4. docs/runbooks/agent_startup_checklist.md",
+          "similarity": 0.403
+        },
+        {
+          "title": "5. docs/NORTH_STAR.md",
+          "similarity": 0.395
+        },
+        {
+          "title": "6. docs/directions/devops.md",
+          "similarity": 0.389
+        },
+        {
+          "title": "7. docs/NORTH_STAR.md",
+          "similarity": 0.389
+        },
+        {
+          "title": "8. docs/directions/devops.md",
+          "similarity": 0.381
+        },
+        {
+          "title": "9. docs/directions/analytics.md",
+          "similarity": 0.378
+        },
+        {
+          "title": "10. docs/NORTH_STAR.md",
+          "similarity": 0.376
+        },
+        {
+          "title": "11. docs/manager/PROJECT_PLAN.md",
+          "similarity": 0.376
+        },
+        {
+          "title": "12. docs/directions/manager.md",
+          "similarity": 0.374
+        }
+      ],
+      "timestamp": "2025-10-24T22:06:22.746Z"
+    },
+    {
+      "question": "How does Remove GA MCP References (Use Direct API) integrate with the Growth Engine architecture?",
+      "answer": "The \"Remove GA MCP References (Use Direct API)\" integration with the Growth Engine architecture is not explicitly detailed in the provided sources. Therefore, I cannot provide specific information on how this integration works within the Growth Engine architecture. If you have more specific details or context about this integration, I may be able to assist further.",
+      "sources": [
+        {
+          "title": "1. docs/directions/analytics.md",
+          "similarity": 0.5
+        },
+        {
+          "title": "2. docs/directions/engineer.md",
+          "similarity": 0.498
+        },
+        {
+          "title": "3. docs/directions/ai-customer.md",
+          "similarity": 0.492
+        },
+        {
+          "title": "4. docs/directions/ai-knowledge.md",
+          "similarity": 0.483
+        },
+        {
+          "title": "5. docs/directions/manager.md",
+          "similarity": 0.481
+        },
+        {
+          "title": "6. docs/NORTH_STAR.md",
+          "similarity": 0.479
+        },
+        {
+          "title": "7. docs/directions/devops.md",
+          "similarity": 0.477
+        },
+        {
+          "title": "8. docs/directions/product.md",
+          "similarity": 0.477
+        },
+        {
+          "title": "9. docs/directions/manager.md",
+          "similarity": 0.473
+        },
+        {
+          "title": "10. docs/directions/integrations.md",
+          "similarity": 0.465
+        },
+        {
+          "title": "11. docs/directions/data.md",
+          "similarity": 0.461
+        },
+        {
+          "title": "12. docs/directions/designer.md",
+          "similarity": 0.452
+        }
+      ],
+      "timestamp": "2025-10-24T22:06:30.501Z"
+    }
+  ],
+  "recommendations": [
+    "✅ Found existing solutions in KB - review before implementing",
+    "⚠️ Found common issues in KB - review potential problems",
+    "🔗 Found integration points in KB - review system connections"
+  ]
+}

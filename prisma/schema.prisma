@@ -33,16 +33,16 @@ model Session {
 
 model DecisionLog {
   id               Int       @id @default(autoincrement())
-  scope            String    @db.VarChar(50)
-  actor            String    @db.VarChar(50)
-  action           String    @db.VarChar(100)
+  scope            String    @db.VarChar
+  actor            String    @db.VarChar
+  action           String    @db.VarChar
   rationale        String?
   evidenceUrl      String?   @map("evidence_url")
-  taskId           String?   @map("task_id") @db.VarChar(50)
-  status           String?   @db.VarChar(20)
+  taskId           String?   @map("task_id") @db.VarChar
+  status           String?   @db.VarChar
   progressPct      Int?      @map("progress_pct")
   blockerDetails   String?   @map("blocker_details")
-  blockedBy        String?   @map("blocked_by") @db.VarChar(50)
+  blockedBy        String?   @map("blocked_by") @db.VarChar
   durationEstimate Int?      @map("duration_estimate")
   durationActual   Int?      @map("duration_actual")
   nextAction       String?   @map("next_action")
@@ -55,6 +55,7 @@ model DecisionLog {
   @@index([scope], map: "idx_decision_log_scope")
   @@index([status], map: "idx_decision_log_status")
   @@index([taskId], map: "idx_decision_log_task_id")
+  @@map("DecisionLog")
   @@schema("public")
 }
 

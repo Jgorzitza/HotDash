@@ -15,16 +15,12 @@ echo "║           Production Load Test Runner                            ║"
 echo "╚══════════════════════════════════════════════════════════════════╝"
 echo ""
 
+FALLBACK_RUNNER=0
+
 # Check if k6 is installed
 if ! command -v k6 &> /dev/null; then
-    echo "❌ k6 is not installed"
-    echo ""
-    echo "Install k6:"
-    echo "  macOS:   brew install k6"
-    echo "  Linux:   sudo gpg -k && sudo gpg --no-default-keyring --keyring /usr/share/keyrings/k6-archive-keyring.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C5AD17C747E3415A3642D57D77C6C491D6AC1D69 && echo 'deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main' | sudo tee /etc/apt/sources.list.d/k6.list && sudo apt-get update && sudo apt-get install k6"
-    echo "  Windows: choco install k6"
-    echo ""
-    exit 1
+    echo "⚠️  k6 not found — will use Node fallback runner"
+    FALLBACK_RUNNER=1
 fi
 
 # Check if load test script exists
@@ -52,8 +48,14 @@ echo ""
 echo "🚀 Starting load test..."
 echo ""
 
-# Run k6 load test
-k6 run "$LOAD_TEST_SCRIPT"
+if [ "$FALLBACK_RUNNER" -eq 1 ]; then
+    LOAD_TEST_BASE_URL="https://hotdash-production.fly.dev" \
+    LOAD_TEST_OUTPUT="$ARTIFACTS_DIR/load-test-results.json" \
+    node "$PROJECT_ROOT/scripts/deploy/load-test-runner.mjs"
+else
+    # Run k6 load test
+    k6 run "$LOAD_TEST_SCRIPT"
+fi
 
 echo ""
 echo "✅ Load test complete!"
@@ -64,4 +66,3 @@ echo ""
 echo "📈 View results:"
 echo "  cat $ARTIFACTS_DIR/load-test-results.json | jq '.metrics'"
 echo ""
-

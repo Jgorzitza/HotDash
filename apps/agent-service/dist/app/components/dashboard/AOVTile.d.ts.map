@@ -1,0 +1,1 @@
+{"version":3,"file":"AOVTile.d.ts","sourceRoot":"","sources":["../../../../../../app/components/dashboard/AOVTile.tsx"],"names":[],"mappings":"AASA,UAAU,YAAY;IACpB,KAAK,EAAE,MAAM,CAAC;IACd,KAAK,EAAE,IAAI,GAAG,MAAM,GAAG,SAAS,CAAC;IACjC,aAAa,EAAE,MAAM,CAAC;IACtB,OAAO,CAAC,EAAE,OAAO,CAAC;CACnB;AAED,wBAAgB,OAAO,CAAC,EACtB,KAAK,EACL,KAAK,EACL,aAAa,EACb,OAAO,GACR,EAAE,YAAY,qBAsCd"}

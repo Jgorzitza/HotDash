@@ -1,0 +1,38 @@
+
+/* Theme Toggle Styles */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--occ-space-2);
+}
+
+.theme-toggle__label {
+  font-size: var(--occ-font-size-sm);
+  color: var(--occ-text-secondary);
+  font-weight: var(--occ-font-weight-medium);
+}
+
+.theme-toggle__select {
+  padding: var(--occ-space-2) var(--occ-space-3);
+  border-radius: var(--occ-radius-button);
+  border: 1px solid var(--occ-border-default);
+  background-color: var(--occ-bg-primary);
+  color: var(--occ-text-primary);
+  font-size: var(--occ-font-size-sm);
+  cursor: pointer;
+  transition: all var(--occ-duration-fast) var(--occ-easing-default);
+}
+
+.theme-toggle__select:hover {
+  border-color: var(--occ-border-interactive);
+}
+
+.theme-toggle__select:focus {
+  outline: 2px solid var(--occ-border-focus);
+  outline-offset: 2px;
+}
+
+.theme-toggle__select option {
+  background-color: var(--occ-bg-primary);
+  color: var(--occ-text-primary);
+}
