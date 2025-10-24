@@ -72,7 +72,7 @@ export default function App() {
       <ToastProvider>
         <s-app-nav>
           <s-link href="/app">Dashboard</s-link>
-          <s-link href="/approvals">
+          <s-link href="/app/approvals">
             Approvals
             {/* Live Badge (Phase 5 - ENG-024) */}
             {livePendingCount > 0 && (
