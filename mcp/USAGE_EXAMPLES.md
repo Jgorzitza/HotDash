@@ -152,38 +152,6 @@ are currently out of stock"
 
 ---
 
-## Google Analytics MCP Examples
-
-### Example 1: Get Page Views
-```
-Prompt: "Fetch Google Analytics data for page views over the last 30 days,
-broken down by day"
-```
-
-### Example 2: Analyze Traffic Sources
-```
-Prompt: "Generate a report showing the top 10 traffic sources for the last
-week, including sessions and conversion rates"
-```
-
-### Example 3: User Demographics
-```
-Prompt: "Show me the geographic distribution of users who visited the site
-in the last month, grouped by country"
-```
-
-### Example 4: Conversion Funnel
-```
-Prompt: "Analyze the signup conversion funnel: landing page → signup form →
-email verification → completed profile. Show drop-off rates at each step"
-```
-
-### Example 5: Campaign Performance
-```
-Prompt: "Compare the performance of all active marketing campaigns in Google
-Analytics, showing clicks, conversions, and ROI"
-```
-
 ---
 
 ---

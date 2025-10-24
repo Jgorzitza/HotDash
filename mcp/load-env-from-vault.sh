@@ -9,20 +9,6 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 info() { echo "[mcp-env] $*"; }
 warn() { echo "[mcp-env] WARN: $*" >&2; }
 
-# --- Google Analytics ---
-GA_CREDS_PATH="$ROOT_DIR/vault/occ/google/analytics-service-account.json"
-if [[ -f "$GA_CREDS_PATH" ]]; then
-  export GOOGLE_APPLICATION_CREDENTIALS="$GA_CREDS_PATH"
-  info "GOOGLE_APPLICATION_CREDENTIALS set to vault path"
-else
-  warn "Google Analytics service account JSON not found at $GA_CREDS_PATH"
-fi
-
-# Project ID is not secret; set default if not already defined
-: "${GOOGLE_PROJECT_ID:=hotrodan-seo-reports}"
-export GOOGLE_PROJECT_ID
-info "GOOGLE_PROJECT_ID is set"
-
 # --- Supabase ---
 # Prefer OCC staging service key if present; otherwise fall back to local env
 SUPABASE_OCC_SK_ENV="$ROOT_DIR/vault/occ/supabase/service_key_staging.env"
