@@ -51,6 +51,23 @@ export function TileCard<T>({
   autoRefreshInterval,
   showRefreshIndicator = false,
 }: TileCardProps<T>) {
+  // Safety check: if tile is undefined, return error state
+  if (!tile || !tile.status) {
+    return (
+      <div className="occ-tile-card">
+        <div className="occ-tile-header">
+          <h2 style={{ margin: 0, fontSize: "var(--occ-font-size-lg)", color: "var(--occ-text-primary)" }}>
+            {title}
+          </h2>
+          <span className="occ-status-attention">Error</span>
+        </div>
+        <p style={{ color: "var(--occ-text-secondary)", margin: 0 }}>
+          Tile data is unavailable
+        </p>
+      </div>
+    );
+  }
+
   const statusClass =
     tile.status === "ok"
       ? "occ-status-healthy"
