@@ -12,7 +12,7 @@
  */
 
 import { createHash } from "crypto";
-import prisma from "~/prisma.server";
+import prisma from "~/db.server";
 
 const db = prisma; // Alias for compatibility
 

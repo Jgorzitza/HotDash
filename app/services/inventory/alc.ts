@@ -1,4 +1,4 @@
-import { prisma } from "~/prisma.server";
+import { prisma } from "~/db.server";
 import { logDecision } from "~/services/decisions.server";
 import { Decimal } from "@prisma/client/runtime/library";
 import { create, all } from "mathjs";

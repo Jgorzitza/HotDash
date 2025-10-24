@@ -17,7 +17,7 @@
 
 import { OpenAI } from "openai";
 import { sanitizeConversation } from "./pii-sanitizer";
-import { prisma } from "~/prisma.server";
+import { prisma } from "~/db.server";
 
 // OpenAI client for embeddings
 const openai = new OpenAI({

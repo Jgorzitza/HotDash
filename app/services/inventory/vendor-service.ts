@@ -1,4 +1,4 @@
-import { prisma } from "~/prisma.server";
+import { prisma } from "~/db.server";
 import { logDecision } from "~/services/decisions.server";
 
 export interface VendorWithMetrics {

@@ -4,7 +4,7 @@
  * Business logic for approval workflows
  */
 
-import prisma from "~/prisma.server";
+import prisma from "~/db.server";
 import type { Approval } from "~/components/approvals/ApprovalsDrawer";
 
 /**

@@ -7,7 +7,7 @@
  * Determines trend direction (up/down/stable)
  */
 
-import prisma from "~/prisma.server";
+import prisma from "~/db.server";
 
 export interface ForecastPoint {
   date: Date;

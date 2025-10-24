@@ -7,7 +7,7 @@
  * @module services/ai-customer/agent-performance
  */
 
-import { prisma } from "~/prisma.server";
+import { prisma } from "~/db.server";
 
 /**
  * Agent performance metrics

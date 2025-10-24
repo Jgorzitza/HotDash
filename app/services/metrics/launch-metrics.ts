@@ -7,7 +7,7 @@
  * @see docs/metrics/production-launch-metrics.md
  */
 
-import prisma from "~/prisma.server";
+import prisma from "~/db.server";
 import { getGaConfig } from "~/config/ga.server";
 
 // ============================================================================

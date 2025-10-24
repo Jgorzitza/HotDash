@@ -7,7 +7,7 @@
  */
 
 import { type LoaderFunctionArgs } from "react-router";
-import prisma from "~/prisma.server";
+import prisma from "~/db.server";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const start = Date.now();

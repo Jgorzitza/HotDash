@@ -5,7 +5,7 @@
  * Implements standardized contract with Top-10 ranking and operator approval workflow
  */
 
-import prisma from "~/prisma.server";
+import prisma from "~/db.server";
 import type { ActionQueueItem } from "~/lib/growth-engine/action-queue";
 
 export interface ActionQueueCreateInput {

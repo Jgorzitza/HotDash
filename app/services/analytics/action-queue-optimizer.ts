@@ -16,7 +16,7 @@
  * - v3_ml: Full ML-based scoring with historical performance
  */
 
-import prisma from "~/prisma.server";
+import prisma from "~/db.server";
 import { logDecision } from "~/services/decisions.server";
 
 // ============================================================================

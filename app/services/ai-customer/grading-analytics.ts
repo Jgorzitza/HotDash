@@ -7,7 +7,7 @@
  * @module services/ai-customer/grading-analytics
  */
 
-import prisma from "~/prisma.server";
+import prisma from "~/db.server";
 
 /**
  * Grading statistics for a segment (template, time period, etc.)

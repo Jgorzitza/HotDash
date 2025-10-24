@@ -9,7 +9,7 @@
  * - Content type management
  */
 
-import prisma from "~/prisma.server";
+import prisma from "~/db.server";
 
 export interface ContentType {
   id: string;

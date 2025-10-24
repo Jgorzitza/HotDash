@@ -8,7 +8,7 @@
  * - Integration with scheduling service
  */
 
-import prisma from "~/prisma.server";
+import prisma from "~/db.server";
 import { SchedulingService } from "./scheduling.service";
 
 export interface ContentApproval {

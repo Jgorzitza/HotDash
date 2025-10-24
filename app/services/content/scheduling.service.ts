@@ -8,7 +8,7 @@
  * - Handle publishing failures and retries
  */
 
-import prisma from "~/prisma.server";
+import prisma from "~/db.server";
 
 export interface ScheduledContent {
   id: string;
