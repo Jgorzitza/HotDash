@@ -98,15 +98,25 @@ export interface ABACPolicy {
 }
 
 export class AccountsSubAgent {
-  private supabase: ReturnType<typeof createClient>;
+  private _supabase?: ReturnType<typeof createClient>;
   private mcpEnabled: boolean;
 
-  constructor() {
-    this.supabase = createClient(
-      process.env.SUPABASE_URL!,
-      process.env.SUPABASE_ANON_KEY!
-    );
+  constructor(supabaseClient?: ReturnType<typeof createClient>) {
+    this._supabase = supabaseClient;
     this.mcpEnabled = process.env.CUSTOMER_ACCOUNTS_MCP_ENABLED === 'true';
+  }
+
+  /**
+   * Get Supabase client (lazy initialization)
+   */
+  private get supabase(): ReturnType<typeof createClient> {
+    if (!this._supabase) {
+      this._supabase = createClient(
+        process.env.SUPABASE_URL!,
+        process.env.SUPABASE_ANON_KEY!
+      );
+    }
+    return this._supabase;
   }
 
   /**
