@@ -334,9 +334,9 @@ For each active agent:
 
 ## 7 Start the Day (2 min)
 
-- [ ] Create/resize **Tasks** (≤ 2-day molecules) and set in the Issue:
-      **owner**, **DoD**, and **Allowed paths** (fnmatch).
-- [ ] Update `docs/directions/<agent>.md` with **today's objective** + **constraints**,
+- [ ] Create/resize **Tasks** (≤ 2-day molecules) via database:
+      **owner**, **DoD**, **description** (direction), and **Allowed paths** (fnmatch).
+- [ ] Update task descriptions in database with **today's objective** + **constraints**,
       and link the **Issue** (and PR if open).
 - [ ] Move any blockers from `query-blocked-tasks.ts` output
       into the **Issue** as a comment with **resolver + ETA**.

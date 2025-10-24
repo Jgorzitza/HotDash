@@ -24,16 +24,17 @@ docs/RULES.md
 docs/OPERATING_MODEL.md
 docs/ARCHIVE_INDEX.md
 docs/runbooks/{manager_*,agent_*,ai_agent_review_checklist.md,drift_checklist.md}
-docs/directions/<agent|role>.md
-docs/directions/agenttemplate.md
-docs/manager/{PROJECT_PLAN.md,IMPLEMENTATION_PLAYBOOK.md}
+docs/manager/{PROJECT_PLAN.md,IMPLEMENTATION_PLAYBOOK.md,*.md}
 docs/planning/<agent>-<task>-<YYYYMMDD>.md  # TTL 2 days
 docs/specs/**
 docs/integrations/**
+docs/training/**
 feedback/<agent>/<YYYY-MM-DD>.md
 docs/_archive/**
 mcp/**  # MCP tools documentation (critical infrastructure - DO NOT REMOVE)
 ```
+
+**NOTE:** Agent direction is in DATABASE (task.description), NOT markdown files.
 
 ## Rules for Markdown Files
 
@@ -122,9 +123,9 @@ git commit -am "chore: planning TTL sweep" && git push
 - ✅ `docs/NORTH_STAR.md`
 - ✅ `docs/RULES.md`
 - ✅ `docs/OPERATING_MODEL.md`
-- ✅ `docs/directions/<agent>.md`
 - ✅ `docs/manager/PROJECT_PLAN.md`
 - ✅ `docs/manager/IMPLEMENTATION_PLAYBOOK.md`
+- ✅ `docs/manager/*.md` (status reports, plans, summaries)
 
 **Any agent (with approval):**
 - ✅ `docs/specs/**` (new specs)

@@ -146,15 +146,17 @@ docs/RULES.md
 docs/OPERATING_MODEL.md
 docs/ARCHIVE_INDEX.md
 docs/runbooks/{manager_*,agent_*,*.md}
-docs/directions/<agent|role>.md
 docs/manager/{PROJECT_PLAN.md,IMPLEMENTATION_PLAYBOOK.md,*.md}
 docs/planning/<agent>-<task>-<YYYYMMDD>.md  # TTL 2 days
 docs/specs/**
 docs/integrations/**
+docs/training/**
 feedback/<agent>/<YYYY-MM-DD>.md
 docs/_archive/**
 mcp/**  # PROTECTED - DO NOT REMOVE
 ```
+
+**NOTE:** Agent direction is in DATABASE (task.description), NOT markdown files.
 
 **Enforcement:** `scripts/policy/check-docs.mjs` + `Dangerfile.js`
 
