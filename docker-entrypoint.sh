@@ -14,6 +14,10 @@ elif [ -n "$GOOGLE_APPLICATION_CREDENTIALS_JSON" ]; then
   echo "✓ Google Analytics credentials written to $GOOGLE_APPLICATION_CREDENTIALS"
 fi
 
+# Run database migrations
+echo "Running database migrations..."
+npx prisma migrate deploy || echo "⚠️  Migration failed, continuing anyway..."
+
 # Execute the command passed to the entrypoint
 exec "$@"
 
