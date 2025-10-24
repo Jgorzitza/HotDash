@@ -78,63 +78,88 @@ export class ActionQueueService {
   }
 
   /**
-   * Get actions from the queue with filtering and ranking
+   * Get actions from the queue with filtering, sorting, and pagination
    */
   static async getActions(options: {
     limit?: number;
+    offset?: number;
     status?: string;
     agent?: string;
     type?: string;
     risk_tier?: string;
+    priority?: string;
+    category?: string;
+    sort_by?: string;
+    sort_order?: string;
   } = {}): Promise<ActionQueueItem[]> {
     try {
       const {
         limit = 10,
+        offset = 0,
+        status = 'pending',
+        agent,
+        type,
+        risk_tier,
+        priority,
+        category,
+        sort_by = 'score',
+        sort_order = 'desc'
+      } = options;
+
+      // Build where clause
+      const where: any = { status };
+      if (agent) where.agent = agent;
+      if (type) where.type = type;
+      if (risk_tier) where.risk_tier = risk_tier;
+
+      // Build orderBy clause
+      const orderBy: any = {};
+      const validSortFields = ['score', 'confidence', 'created_at', 'expected_impact'];
+      const sortField = validSortFields.includes(sort_by) ? sort_by : 'score';
+      orderBy[sortField] = sort_order === 'asc' ? 'asc' : 'desc';
+
+      const actions = await prisma.action_queue.findMany({
+        where,
+        orderBy,
+        take: limit,
+        skip: offset
+      });
+
+      return actions.map(row => this.mapDbRowToActionQueueItem(row));
+    } catch (error) {
+      console.error('Error fetching actions:', error);
+      throw new Error('Failed to fetch actions');
+    }
+  }
+
+  /**
+   * Get count of actions matching filters
+   */
+  static async getActionCount(options: {
+    status?: string;
+    agent?: string;
+    type?: string;
+    risk_tier?: string;
+    priority?: string;
+    category?: string;
+  } = {}): Promise<number> {
+    try {
+      const {
         status = 'pending',
         agent,
         type,
         risk_tier
       } = options;
 
-      let query = `
-        SELECT 
-          id, type, target, draft, evidence, expected_impact, 
-          confidence, ease, risk_tier, can_execute, rollback_plan, 
-          freshness_label, agent, score, status, created_at, updated_at,
-          approved_at, approved_by, executed_at, executed_by, execution_result
-        FROM action_queue 
-        WHERE status = $1
-      `;
-      
-      const params: any[] = [status];
-      let paramIndex = 2;
-      
-      if (agent) {
-        query += ` AND agent = $${paramIndex}`;
-        params.push(agent);
-        paramIndex++;
-      }
-      
-      if (type) {
-        query += ` AND type = $${paramIndex}`;
-        params.push(type);
-        paramIndex++;
-      }
-      
-      if (risk_tier) {
-        query += ` AND risk_tier = $${paramIndex}`;
-        params.push(risk_tier);
-        paramIndex++;
-      }
-      
-      query += ` ORDER BY score DESC LIMIT $${paramIndex}`;
-      params.push(limit);
-      
-      const { rows } = await prisma.query(query, params);
-      return rows.map(row => this.mapDbRowToActionQueueItem(row));
+      const where: any = { status };
+      if (agent) where.agent = agent;
+      if (type) where.type = type;
+      if (risk_tier) where.risk_tier = risk_tier;
+
+      return await prisma.action_queue.count({ where });
     } catch (error) {
-      console.error('Error fetching actions:', error);
-      throw new Error('Failed to fetch actions');
+      console.error('Error counting actions:', error);
+      throw new Error('Failed to count actions');
     }
   }
 
@@ -258,6 +283,20 @@ export class ActionQueueService {
       approved_by: operatorId,
       approved_at: new Date()
     });
+  }
+
+  /**
+   * Delete an action
+   */
+  static async deleteAction(id: string): Promise<void> {
+    try {
+      await prisma.action_queue.delete({
+        where: { id }
+      });
+    } catch (error) {
+      console.error('Error deleting action:', error);
+      throw new Error('Failed to delete action');
+    }
   }
 
   /**
