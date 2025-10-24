@@ -11,7 +11,7 @@
 
 import { type ActionFunctionArgs } from "react-router";
 import { detectKeywordCannibalization } from "~/services/seo/cannibalization";
-import { logDecision } from "~/services/tasks.server";
+import { logDecision } from "~/services/decisions.server";
 
 export async function action({ request }: ActionFunctionArgs) {
   const startTime = Date.now();
