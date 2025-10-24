@@ -35,7 +35,7 @@ describe('Triage Agent Intent Classification', () => {
     // Verify instructions mention order-related routing
     expect(triageAgent.instructions).toContain('order');
     expect(triageAgent.instructions).toContain('Order Support');
-  }, { timeout: 5000 });
+  });
 
   it('should classify product question', async () => {
     const input = 'Does this widget work with Android?';

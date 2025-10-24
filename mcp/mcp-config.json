@@ -31,16 +31,6 @@
       "env": {"LIQUID_VALIDATION_MODE": "partial"},
       "capabilities": ["shopify_api", "liquid_templates", "product_management", "order_management", "theme_development"]
     },
-    "google-analytics": {
-      "description": "Google Analytics MCP server for analytics data and reporting",
-      "command": "pipx",
-      "args": ["run", "analytics-mcp"],
-      "env": {
-        "GOOGLE_APPLICATION_CREDENTIALS": "/home/justin/HotDash/hot-dash/vault/occ/google/analytics-service-account.json",
-        "GOOGLE_PROJECT_ID": "hotrodan-seo-reports"
-      },
-      "capabilities": ["analytics_reporting", "metrics_tracking", "user_behavior_analysis", "conversion_tracking"]
-    },
     "chrome-devtools": {
       "description": "Chrome DevTools MCP server",
       "command": "npx",
@@ -133,22 +123,6 @@
         "Query Shopify API"
       ]
     },
-    "google-analytics": {
-      "when_to_use": [
-        "Fetching analytics data",
-        "Generating reports",
-        "Analyzing user behavior",
-        "Tracking conversions",
-        "Monitoring traffic metrics"
-      ],
-      "examples": [
-        "Get page view statistics",
-        "Generate conversion report",
-        "Analyze user demographics",
-        "Track campaign performance"
-      ]
-    }
-,
     "chrome-devtools": {
       "when_to_use": [
         "Inspecting live browser console/network logs during development",

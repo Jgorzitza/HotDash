@@ -13,7 +13,7 @@ alwaysApply: true
 
 Model Context Protocol (MCP) enables AI agents to interact with external tools and services through a standardized interface.
 
-## Available MCP Servers (6 Active)
+## Available MCP Servers (5 Active)
 
 ### 1. GitHub Official
 - **Purpose:** Repository management, issues, PRs, workflows
@@ -44,12 +44,6 @@ Model Context Protocol (MCP) enables AI agents to interact with external tools a
 - **Type:** NPX
 - **Status:** ✅ Active
 - **Use for:** Shopify API, product management, theme development, Liquid validation
-
-### 6. Google Analytics
-- **Purpose:** Analytics data and reporting
-- **Type:** Pipx
-- **Status:** ✅ Active
-- **Use for:** Fetching metrics, generating reports, analyzing user behavior
 
 ## MCP-First Development Rule
 
@@ -135,19 +129,6 @@ Model Context Protocol (MCP) enables AI agents to interact with external tools a
 - "Validate this Liquid template syntax"
 - "Query Shopify for all products in the Featured collection"
 - "Show me the GraphQL schema for Product"
-
-### Google Analytics MCP
-**Use when you need to:**
-- Fetch analytics metrics
-- Generate traffic reports
-- Analyze user behavior
-- Track conversion funnels
-- Monitor campaign performance
-
-**Example prompts:**
-- "Get page views for the last 30 days from Google Analytics"
-- "Show me the top 10 traffic sources this week"
-- "What's the conversion rate for the signup funnel?"
 
 ## MCP Documentation
 

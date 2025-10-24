@@ -44,22 +44,14 @@ export async function searchSimilarCreatives(
   request: CreativeSearchRequest
 ): Promise<CreativeSearchResponse> {
   const startTime = Date.now();
-  
+
   try {
-    // TODO: Implement when ENG-IMAGE-SEARCH-003 completes
-    // 1. Call image search API
-    // 2. Filter results by performance metrics
-    // 3. Return similar creatives
-    
-    throw new Error('Not implemented - waiting on ENG-IMAGE-SEARCH-003');
-    
-    // Example implementation (to be completed):
-    /*
     let searchResults: any[];
-    
+
     // 1. Search by reference image or text query
     if (request.referenceImageId) {
-      const response = await fetch('/api/search/images', {
+      // Image-to-image search
+      const response = await fetch(`${process.env.APP_URL || 'http://localhost:3000'}/api/search/images`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -68,46 +60,48 @@ export async function searchSimilarCreatives(
           project: 'occ',
         }),
       });
-      
+
       if (!response.ok) {
         throw new Error(`Image search failed: ${response.statusText}`);
       }
-      
+
       const data = await response.json();
-      searchResults = data.results;
+      searchResults = data.results || [];
     } else if (request.query) {
-      const response = await fetch(`/api/search/images?q=${encodeURIComponent(request.query)}&limit=${(request.limit || 10) * 2}&project=occ`);
-      
+      // Text-to-image search
+      const response = await fetch(
+        `${process.env.APP_URL || 'http://localhost:3000'}/api/search/images?q=${encodeURIComponent(request.query)}&limit=${(request.limit || 10) * 2}&project=occ`
+      );
+
       if (!response.ok) {
         throw new Error(`Image search failed: ${response.statusText}`);
       }
-      
+
       const data = await response.json();
-      searchResults = data.results;
+      searchResults = data.results || [];
     } else {
       throw new Error('Either referenceImageId or query must be provided');
     }
-    
+
     // 2. Filter by performance metrics
     const filtered = filterByPerformance(searchResults, request.filters);
-    
+
     // 3. Transform to SimilarCreative format
     const results: SimilarCreative[] = filtered.map(result => ({
-      imageId: result.imageId,
+      imageId: result.photoId || result.id,
       imageUrl: result.imageUrl,
       thumbnailUrl: result.thumbnailUrl,
       similarity: result.similarity,
-      performance: result.metadata as AdCreativeMetadata,
+      performance: (result.metadata || {}) as AdCreativeMetadata,
       description: result.description,
     }));
-    
+
     return {
       results: results.slice(0, request.limit || 10),
       total: results.length,
       filters: request.filters || {},
       processingTime: Date.now() - startTime,
     };
-    */
   } catch (error) {
     throw new Error(
       `Creative search failed: ${error instanceof Error ? error.message : 'Unknown error'}`
@@ -135,17 +129,8 @@ export async function findSimilarHighPerformers(
   request: RecommendationRequest
 ): Promise<RecommendationResponse> {
   const startTime = Date.now();
-  
+
   try {
-    // TODO: Implement when ENG-IMAGE-SEARCH-003 completes
-    // 1. Search for similar creatives
-    // 2. Filter by performance thresholds
-    // 3. Generate recommendations
-    
-    throw new Error('Not implemented - waiting on ENG-IMAGE-SEARCH-003');
-    
-    // Example implementation (to be completed):
-    /*
     // 1. Search for similar creatives
     const searchResponse = await searchSimilarCreatives({
       referenceImageId: request.referenceImageId,
@@ -156,13 +141,13 @@ export async function findSimilarHighPerformers(
       },
       limit: (request.limit || 10) * 2, // Get more to filter
     });
-    
+
     // 2. Generate recommendations
     const recommendations = generateRecommendations(searchResponse.results);
-    
+
     // 3. Calculate stats
     const stats = calculatePerformanceStats(searchResponse.results);
-    
+
     return {
       recommendations: recommendations.slice(0, request.limit || 10),
       total: recommendations.length,
@@ -170,7 +155,6 @@ export async function findSimilarHighPerformers(
       averageCtr: stats.averageCtr,
       processingTime: Date.now() - startTime,
     };
-    */
   } catch (error) {
     throw new Error(
       `Failed to find high performers: ${error instanceof Error ? error.message : 'Unknown error'}`
