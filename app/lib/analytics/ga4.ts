@@ -60,6 +60,14 @@ export interface ConversionMetrics {
   };
 }
 
+export interface RealtimeEngagementMetrics {
+  activeUsers: number;
+  screenPageViews: number;
+  eventCount: number;
+  keyEvents: number;
+  timestamp: string;
+}
+
 // ============================================================================
 // Revenue Metrics
 // ============================================================================
@@ -257,6 +265,71 @@ export async function getTrafficMetrics(): Promise<TrafficMetrics> {
     const duration = Date.now() - startTime;
     appMetrics.gaApiCall("getTrafficMetrics", false, duration);
     throw error;
+  }
+}
+
+/**
+ * Fetch realtime engagement metrics from GA4
+ */
+export async function getRealtimeEngagementMetrics(): Promise<RealtimeEngagementMetrics> {
+  const cacheKey = "analytics:ga4:realtime-engagement";
+  const cached = getCached<RealtimeEngagementMetrics>(cacheKey);
+  if (cached) {
+    appMetrics.cacheHit(cacheKey);
+    return cached;
+  }
+  appMetrics.cacheMiss(cacheKey);
+
+  const startTime = Date.now();
+
+  try {
+    const config = getGaConfig();
+    const { BetaAnalyticsDataClient } = await import("@google-analytics/data");
+    const gaClient = new BetaAnalyticsDataClient();
+
+    const [response] = await gaClient.runRealtimeReport({
+      property: `properties/${config.propertyId}`,
+      metrics: [
+        { name: "activeUsers" },
+        { name: "screenPageViews" },
+        { name: "eventCount" },
+        { name: "keyEvents" },
+      ],
+    });
+
+    const metricValues = response.rows?.[0]?.metricValues ?? [];
+    const parse = (index: number) =>
+      Number(metricValues[index]?.value ?? 0);
+
+    const result: RealtimeEngagementMetrics = {
+      activeUsers: parse(0),
+      screenPageViews: parse(1),
+      eventCount: parse(2),
+      keyEvents: parse(3),
+      timestamp: new Date().toISOString(),
+    };
+
+    const duration = Date.now() - startTime;
+    appMetrics.gaApiCall("getRealtimeEngagementMetrics", true, duration);
+
+    // Cache for 15 seconds to avoid quota spikes
+    setCached(cacheKey, result, 15000);
+
+    return result;
+  } catch (error) {
+    const duration = Date.now() - startTime;
+    appMetrics.gaApiCall("getRealtimeEngagementMetrics", false, duration);
+    console.error("[GA4] Realtime engagement metrics failed:", error);
+
+    const fallback: RealtimeEngagementMetrics = {
+      activeUsers: 0,
+      screenPageViews: 0,
+      eventCount: 0,
+      keyEvents: 0,
+      timestamp: new Date().toISOString(),
+    };
+    setCached(cacheKey, fallback, 10000);
+    return fallback;
   }
 }
 

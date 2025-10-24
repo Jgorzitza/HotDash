@@ -32,7 +32,6 @@ export async function semanticSearch(
   } = request;
 
   try {
-    console.log(`[KB Search] Searching for: "${query.substring(0, 50)}..."`);
 
     // Generate embedding for query
     const cleanedQuery = prepareTextForEmbedding(query);
@@ -91,7 +90,6 @@ export async function semanticSearch(
       LIMIT ${limit}
     `;
 
-    console.log(`[KB Search] ✅ Found ${results.length} results`);
 
     // Map results to SearchResult type
     return results.map((record, index) => ({
@@ -121,7 +119,6 @@ export async function findSimilarArticles(
   minSimilarity: number = 0.7
 ): Promise<SearchResult[]> {
   try {
-    console.log(`[KB Search] Finding similar articles to: ${articleId}`);
 
     // Get the source article
     const sourceArticle = await prisma.knowledge_base.findUnique({
@@ -163,7 +160,6 @@ export async function findSimilarArticles(
       LIMIT ${limit}
     `;
 
-    console.log(`[KB Search] ✅ Found ${results.length} similar articles`);
 
     return results.map((record, index) => ({
       article: mapToKBArticle(record),

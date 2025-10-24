@@ -134,7 +134,6 @@ export function CXEscalationModal({
   const handleEdit = () => {
     // Edit action allows operator to modify the suggested reply before approval
     // No submission - keeps modal open for editing
-    console.log("Edit mode - operator modifying suggested reply");
   };
 
   const handleEscalate = () => {

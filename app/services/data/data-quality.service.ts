@@ -69,13 +69,11 @@ export class DataQualityService {
     failed: number;
     results: any[];
   }> {
-    console.log('[Data Quality] Running validation rules...');
     
     const rules = await prisma.data_validation_rules.findMany({
       where: { enabled: true }
     });
     
-    console.log(`[Data Quality] Found ${rules.length} enabled rules`);
     
     const results = [];
     let passed = 0;
@@ -112,7 +110,6 @@ export class DataQualityService {
       }
     }
     
-    console.log(`[Data Quality] Validation complete: ${passed} passed, ${failed} failed`);
     
     await logDecision({
       scope: 'data-quality',
@@ -164,7 +161,6 @@ export class DataQualityService {
     dataSource: string,
     tableName?: string
   ): Promise<QualityMetric[]> {
-    console.log(`[Data Quality] Calculating metrics for ${dataSource}${tableName ? `.${tableName}` : ''}`);
     
     const metrics: QualityMetric[] = [];
     
@@ -227,7 +223,6 @@ export class DataQualityService {
       });
     }
     
-    console.log(`[Data Quality] Calculated ${metrics.length} metrics`);
     
     return metrics;
   }
@@ -239,7 +234,6 @@ export class DataQualityService {
     dataSource: string,
     tableName?: string
   ): Promise<Anomaly[]> {
-    console.log(`[Data Quality] Detecting anomalies for ${dataSource}${tableName ? `.${tableName}` : ''}`);
     
     const anomalies: Anomaly[] = [];
     
@@ -312,7 +306,6 @@ export class DataQualityService {
       });
     }
     
-    console.log(`[Data Quality] Detected ${anomalies.length} anomalies`);
     
     if (anomalies.length > 0) {
       await logDecision({
@@ -343,13 +336,11 @@ export class DataQualityService {
     stale: number;
     results: any[];
   }> {
-    console.log('[Data Quality] Checking data freshness...');
     
     const checks = await prisma.data_freshness_checks.findMany({
       where: { alert_enabled: true }
     });
     
-    console.log(`[Data Quality] Found ${checks.length} freshness checks`);
     
     const results = [];
     let healthy = 0;
@@ -386,7 +377,6 @@ export class DataQualityService {
       }
     }
     
-    console.log(`[Data Quality] Freshness check complete: ${healthy} healthy, ${stale} stale`);
     
     return {
       totalChecks: checks.length,

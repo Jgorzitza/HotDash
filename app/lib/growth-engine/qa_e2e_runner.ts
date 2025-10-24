@@ -34,7 +34,6 @@ async function runTelemetryPipeline() {
 
   try {
     const result = await withTimeout(pipeline.runDailyPipeline(), 10000);
-    console.log("[QA-001] Telemetry pipeline result:", result);
     return result;
   } catch (err: any) {
     console.error("[QA-001] Telemetry pipeline failed:", err?.message || err);
@@ -53,7 +52,6 @@ async function runSpecialistAgentsAndPersist() {
 
   const orchestrator = new SpecialistAgentOrchestrator();
   const actions = await orchestrator.runAllAgents();
-  console.log(`[QA-001] Specialist agents produced ${actions.length} actions`);
 
   let inserted = 0;
   for (const action of actions) {
@@ -75,7 +73,6 @@ async function runSpecialistAgentsAndPersist() {
     }
   }
 
-  console.log(`[QA-001] Persisted ${inserted}/${actions.length} actions to action_queue`);
   return { produced: actions.length, inserted };
 }
 
@@ -118,7 +115,6 @@ async function createAndApproveSampleApproval() {
       createApproval(action, userId, SUPABASE_URL, SUPABASE_SERVICE_KEY),
       8000,
     );
-    console.log("[QA-001] Created approval:", approval);
 
     const approved = await withTimeout(
       updateApprovalStatus(
@@ -131,7 +127,6 @@ async function createAndApproveSampleApproval() {
       ),
       8000,
     );
-    console.log(`[QA-001] Approval ${approval.approvalId} approved:`, approved);
 
     return { created: true, approvalId: approval.approvalId, approved };
   } catch (err: any) {
@@ -150,7 +145,6 @@ async function logSummary(summary: any) {
       rationale: "QA-001 E2E run completed",
       payload: summary,
     });
-    console.log("[QA-001] Summary logged to decision_log");
   } catch (err: any) {
     console.error("[QA-001] Failed to log summary:", err?.message || err);
   }
@@ -172,9 +166,7 @@ async function main() {
       console.warn('[QA-001] Skipping DB pre-count (timeout or failure)');
     }
   } else {
-    console.log('[QA-001] QA_SKIP_DB=1 - skipping DB counts');
   }
-  console.log(`[QA-001] action_queue count (before): ${beforeCount}`);
 
   const telemetry = SKIP_TELEMETRY ? { success: true, opportunitiesFound: 0, actionsEmitted: 0, errors: [], performance: { totalTime: 0, gscFetchTime: 0, ga4FetchTime: 0, transformTime: 0, emitTime: 0 } } : await runTelemetryPipeline();
   const agentRun = SKIP_DB ? { produced: 0, inserted: 0 } : await runSpecialistAgentsAndPersist();
@@ -190,7 +182,6 @@ async function main() {
       console.warn('[QA-001] Skipping DB post-count (timeout or failure)');
     }
   }
-  console.log(`[QA-001] action_queue count (after): ${afterCount}`);
 
   const approval = SKIP_APPROVAL ? { created: false } : await createAndApproveSampleApproval();
 
@@ -203,7 +194,6 @@ async function main() {
 
   await logSummary(summary);
 
-  console.log("\n[QA-001] E2E Summary:", JSON.stringify(summary, null, 2));
 }
 
 main().catch((err) => {

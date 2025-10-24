@@ -45,7 +45,6 @@ export async function storeSearchConsoleMetrics(
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
-  console.log(
     `[Search Console Storage] Storing metrics for ${today.toISOString().split("T")[0]} (${periodDays}d)`,
   );
 
@@ -82,7 +81,6 @@ export async function storeSearchConsoleMetrics(
     },
   });
 
-  console.log(
     `[Search Console Storage] ✅ Metrics stored: ${metrics.clicks} clicks, ${metrics.impressions} impressions`,
   );
 }
@@ -102,7 +100,6 @@ export async function storeTopQueries(
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
-  console.log(
     `[Search Console Storage] Storing ${queries.length} top queries for ${today.toISOString().split("T")[0]}`,
   );
 
@@ -129,7 +126,6 @@ export async function storeTopQueries(
     });
   }
 
-  console.log(`[Search Console Storage] ✅ ${queries.length} queries stored`);
 }
 
 /**
@@ -147,7 +143,6 @@ export async function storeLandingPages(
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
-  console.log(
     `[Search Console Storage] Storing ${pages.length} landing pages for ${today.toISOString().split("T")[0]}`,
   );
 
@@ -175,7 +170,6 @@ export async function storeLandingPages(
     });
   }
 
-  console.log(`[Search Console Storage] ✅ ${pages.length} pages stored`);
 }
 
 // ============================================================================
@@ -193,11 +187,8 @@ export async function storeLandingPages(
  * @returns Summary of stored data
  */
 export async function storeSearchConsoleSummary() {
-  console.log(
     "[Search Console Storage] ========================================",
   );
-  console.log("[Search Console Storage] Starting complete summary storage");
-  console.log(
     "[Search Console Storage] ========================================",
   );
 
@@ -209,7 +200,6 @@ export async function storeSearchConsoleSummary() {
       getLandingPages(25),
     ]);
 
-    console.log(
       `[Search Console Storage] Fetched: ${metrics.clicks} clicks, ${queries.length} queries, ${pages.length} pages`,
     );
 
@@ -220,7 +210,6 @@ export async function storeSearchConsoleSummary() {
       storeLandingPages(pages, 30),
     ]);
 
-    console.log(
       "[Search Console Storage] ✅ Complete summary stored successfully",
     );
 
@@ -248,7 +237,6 @@ export async function storeSearchConsoleSummary() {
  * @returns Daily metrics, newest first
  */
 export async function getHistoricalMetrics(days: number = 30) {
-  console.log(
     `[Search Console Storage] Fetching ${days} days of historical metrics`,
   );
 
@@ -258,7 +246,6 @@ export async function getHistoricalMetrics(days: number = 30) {
     take: days,
   });
 
-  console.log(
     `[Search Console Storage] Found ${records.length} historical metric records`,
   );
 
@@ -273,7 +260,6 @@ export async function getHistoricalMetrics(days: number = 30) {
  * @returns Daily query metrics, newest first
  */
 export async function getQueryTrend(query: string, days: number = 30) {
-  console.log(
     `[Search Console Storage] Fetching ${days}-day trend for query: "${query}"`,
   );
 
@@ -283,7 +269,6 @@ export async function getQueryTrend(query: string, days: number = 30) {
     take: days,
   });
 
-  console.log(
     `[Search Console Storage] Found ${records.length} records for query "${query}"`,
   );
 
@@ -298,7 +283,6 @@ export async function getQueryTrend(query: string, days: number = 30) {
  * @returns Daily page metrics, newest first
  */
 export async function getLandingPageTrend(url: string, days: number = 30) {
-  console.log(
     `[Search Console Storage] Fetching ${days}-day trend for page: "${url}"`,
   );
 
@@ -308,7 +292,6 @@ export async function getLandingPageTrend(url: string, days: number = 30) {
     take: days,
   });
 
-  console.log(
     `[Search Console Storage] Found ${records.length} records for page "${url}"`,
   );
 
@@ -329,7 +312,6 @@ export async function getTopQueriesByDate(
   const dateOnly = new Date(date);
   dateOnly.setHours(0, 0, 0, 0);
 
-  console.log(
     `[Search Console Storage] Fetching top ${limit} queries for ${dateOnly.toISOString().split("T")[0]}`,
   );
 
@@ -339,7 +321,6 @@ export async function getTopQueriesByDate(
     take: limit,
   });
 
-  console.log(
     `[Search Console Storage] Found ${records.length} queries for date ${dateOnly.toISOString().split("T")[0]}`,
   );
 
@@ -360,7 +341,6 @@ export async function getTopLandingPagesByDate(
   const dateOnly = new Date(date);
   dateOnly.setHours(0, 0, 0, 0);
 
-  console.log(
     `[Search Console Storage] Fetching top ${limit} pages for ${dateOnly.toISOString().split("T")[0]}`,
   );
 
@@ -370,7 +350,6 @@ export async function getTopLandingPagesByDate(
     take: limit,
   });
 
-  console.log(
     `[Search Console Storage] Found ${records.length} pages for date ${dateOnly.toISOString().split("T")[0]}`,
   );
 

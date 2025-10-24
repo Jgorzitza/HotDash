@@ -90,7 +90,6 @@ export async function createActionAttributionDimension(
       created: true,
     };
 
-    console.log(`[GA4] Custom dimension created: ${result.name}`);
     return result;
 
   } catch (error: any) {
@@ -184,7 +183,6 @@ export async function validateActionAttributionDimension(
       return false;
     }
 
-    console.log("[GA4] hd_action_key custom dimension validated successfully");
     return true;
 
   } catch (error: any) {
@@ -227,7 +225,6 @@ export async function testActionAttributionTracking(
     // 2. Querying GA4 Data API to verify the event was received
     // 3. Checking that the custom dimension value is present
     
-    console.log(`[GA4] Testing action attribution with key: ${testActionKey}`);
     
     // For now, return true as the tracking is handled by the client-side analytics
     // The actual validation would require GA4 Data API queries

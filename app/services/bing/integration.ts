@@ -209,7 +209,6 @@ export class BingIntegration {
       // TODO: Implement database storage when Data agent implements seo_search_console_metrics table
       // This would store metrics in the multi-source table with source = 'bing'
       
-      console.log(`[Bing Integration] Storing ${metrics.length} metrics records`);
       
       // Example of what the database storage would look like:
       // for (const metric of metrics) {

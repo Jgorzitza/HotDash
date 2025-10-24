@@ -56,17 +56,14 @@ export class InventorySocketServer {
 
     // Connection handling
     this.io.on('connection', (socket) => {
-      console.log(`Inventory tracking client connected: ${socket.id}`);
 
       // Handle inventory tracking specific events
       socket.on('join-inventory-room', (room: string) => {
         socket.join(room);
-        console.log(`Client ${socket.id} joined room: ${room}`);
       });
 
       socket.on('leave-inventory-room', (room: string) => {
         socket.leave(room);
-        console.log(`Client ${socket.id} left room: ${room}`);
       });
 
       // Handle real-time inventory requests
@@ -100,7 +97,6 @@ export class InventorySocketServer {
       });
 
       socket.on('disconnect', () => {
-        console.log(`Inventory tracking client disconnected: ${socket.id}`);
       });
     });
 
@@ -116,7 +112,6 @@ export class InventorySocketServer {
   async start(): Promise<void> {
     return new Promise((resolve, reject) => {
       this.httpServer.listen(3001, () => {
-        console.log('Inventory tracking Socket.IO server started on port 3001');
         resolve();
       });
 
@@ -134,7 +129,6 @@ export class InventorySocketServer {
     return new Promise((resolve) => {
       this.io.close(() => {
         this.httpServer.close(() => {
-          console.log('Inventory tracking Socket.IO server stopped');
           resolve();
         });
       });

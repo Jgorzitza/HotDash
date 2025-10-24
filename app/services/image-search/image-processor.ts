@@ -53,12 +53,10 @@ export async function processImage(photoId: string): Promise<ProcessImageResult>
       .single();
 
     if (existing) {
-      console.log(`[Image Processor] Image ${photoId} already processed`);
       throw new Error(`Image ${photoId} already processed`);
     }
 
     // 3. Generate description using GPT-4 Vision
-    console.log(`[Image Processor] Generating description for ${photoId}...`);
     const descriptionResult = await generateImageDescription(
       photo.image_url,
       photo.description // Use customer's description as context
@@ -71,7 +69,6 @@ export async function processImage(photoId: string): Promise<ProcessImageResult>
     );
 
     // 5. Generate embedding from description
-    console.log(`[Image Processor] Generating embedding for ${photoId}...`);
     const embeddingResult = await generateTextEmbedding(searchableDescription);
 
     // 6. Store embedding in database
@@ -121,7 +118,6 @@ export async function processImage(photoId: string): Promise<ProcessImageResult>
       },
     });
 
-    console.log(`[Image Processor] Image ${photoId} processed in ${processingTime}ms`);
 
     return {
       photoId,
@@ -176,11 +172,9 @@ export async function processPendingImages(limit: number = 10): Promise<ProcessI
     }
 
     if (!pendingPhotos || pendingPhotos.length === 0) {
-      console.log("[Image Processor] No pending images to process");
       return [];
     }
 
-    console.log(`[Image Processor] Processing ${pendingPhotos.length} pending images...`);
 
     // Process images sequentially to avoid rate limits
     const results: ProcessImageResult[] = [];
@@ -197,7 +191,6 @@ export async function processPendingImages(limit: number = 10): Promise<ProcessI
       }
     }
 
-    console.log(`[Image Processor] Processed ${results.length}/${pendingPhotos.length} images`);
 
     return results;
   } catch (error: any) {

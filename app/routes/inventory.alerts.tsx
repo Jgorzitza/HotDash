@@ -161,7 +161,6 @@ export default function InventoryAlertsPage() {
 
   const handleCreatePO = async (ropId: string) => {
     // TODO: Navigate to PO creation or trigger PO automation
-    console.log('Create PO for ROP:', ropId);
   };
 
   return (

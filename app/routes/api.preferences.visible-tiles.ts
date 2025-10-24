@@ -59,7 +59,6 @@ export async function action({ request }: ActionFunctionArgs) {
   //     updated_at: new Date().toISOString(),
   //   });
 
-  console.log(
     `[Preferences] Visible tiles saved for ${session.shop}:`,
     visibleTiles,
   );

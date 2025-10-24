@@ -611,7 +611,6 @@ export class SatisfactionTrackingService {
    */
   private async sendEmailSurvey(email: string, surveyLink: string, customerName?: string): Promise<void> {
     // This would integrate with email service
-    console.log(`Sending email survey to ${email}: ${surveyLink}`);
   }
 
   /**
@@ -619,7 +618,6 @@ export class SatisfactionTrackingService {
    */
   private async sendChatSurvey(inquiryId: string, surveyLink: string): Promise<void> {
     // This would integrate with chat system
-    console.log(`Sending chat survey for inquiry ${inquiryId}: ${surveyLink}`);
   }
 
   /**
@@ -627,7 +625,6 @@ export class SatisfactionTrackingService {
    */
   private async sendSMSSurvey(phone: string, surveyLink: string): Promise<void> {
     // This would integrate with SMS service
-    console.log(`Sending SMS survey to ${phone}: ${surveyLink}`);
   }
 
   /**

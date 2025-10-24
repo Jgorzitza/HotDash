@@ -33,7 +33,6 @@ export async function action({ request }: ActionFunctionArgs) {
       );
     }
 
-    console.log('[Content/SEO/Perf Agent] Starting daily analysis...');
 
     // Initialize specialist agents
     const specialists = new SpecialistAgents();
@@ -57,7 +56,6 @@ export async function action({ request }: ActionFunctionArgs) {
       },
     });
 
-    console.log(`[Content/SEO/Perf Agent] Completed in ${duration}ms, generated ${actions.length} actions`);
 
     return Response.json({
       success: true,

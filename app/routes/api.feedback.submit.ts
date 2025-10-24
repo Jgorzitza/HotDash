@@ -139,7 +139,6 @@ export async function action({ request }: ActionFunctionArgs) {
     }
 
     // Log submission for monitoring
-    console.log(
       `Feedback submitted: ${data.id} - ${submission.category} - Rating: ${submission.rating}/5`,
     );
 

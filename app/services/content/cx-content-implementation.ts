@@ -160,7 +160,6 @@ export async function applyCXContent(
       (edge: any) => edge.node.key === metafieldConfig.key,
     );
 
-    console.log(
       `[CX Content] ✅ Applied ${request.contentType} to product ${request.productId}`,
     );
 
@@ -356,7 +355,6 @@ export async function removeCXContent(
       };
     }
 
-    console.log(
       `[CX Content] ✅ Removed ${contentType} from product ${productId}`,
     );
 

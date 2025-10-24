@@ -2,6 +2,7 @@ import "@shopify/shopify-app-react-router/adapters/node";
 import {
   ApiVersion,
   AppDistribution,
+  DeliveryMethod,
   shopifyApp,
 } from "@shopify/shopify-app-react-router/server";
 import { PrismaSessionStorage } from "@shopify/shopify-app-session-storage-prisma";
@@ -21,6 +22,29 @@ const shopify = shopifyApp({
   authPathPrefix: "/auth",
   sessionStorage: new PrismaSessionStorage(prisma),
   distribution: AppDistribution.AppStore,
+  // Register shop-specific webhooks after install/login
+  webhooks: {
+    APP_UNINSTALLED: {
+      deliveryMethod: DeliveryMethod.Http,
+      callbackUrl: "/webhooks/app/uninstalled",
+    },
+    APP_SCOPES_UPDATE: {
+      deliveryMethod: DeliveryMethod.Http,
+      callbackUrl: "/webhooks/app/scopes_update",
+    },
+  },
+  hooks: {
+    // Ensure webhooks are created for each shop post-auth
+    afterAuth: async ({ session }) => {
+      try {
+        await shopify.registerWebhooks({ session });
+        // eslint-disable-next-line no-console
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.error("❌ Failed to register webhooks:", (err as Error)?.message);
+      }
+    },
+  },
   ...(config.customShopDomain
     ? { customShopDomains: [config.customShopDomain] }
     : {}),

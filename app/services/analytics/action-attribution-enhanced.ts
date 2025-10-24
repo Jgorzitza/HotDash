@@ -430,9 +430,6 @@ function generateRecommendations(insights: AttributionInsights): string[] {
  */
 export async function runEnhancedNightlyAttributionUpdate() {
   const startTime = Date.now();
-  console.log("[Enhanced Attribution] ========================================");
-  console.log("[Enhanced Attribution] Starting enhanced nightly ROI update");
-  console.log("[Enhanced Attribution] ========================================");
 
   try {
     // Generate reports for all timeframes
@@ -445,9 +442,6 @@ export async function runEnhancedNightlyAttributionUpdate() {
     const duration = Date.now() - startTime;
     const durationMinutes = (duration / 60000).toFixed(2);
 
-    console.log(`[Enhanced Attribution] ✅ Complete in ${durationMinutes} minutes`);
-    console.log(`[Enhanced Attribution] Reports generated for all timeframes`);
-    console.log(`[Enhanced Attribution] 28d Summary: $${report28d.summary.totalRevenue.toLocaleString()} revenue, ${report28d.summary.totalConversions} conversions`);
 
     // Log comprehensive decision
     await logDecision({

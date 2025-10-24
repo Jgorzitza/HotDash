@@ -27,7 +27,6 @@ export async function exportLaunchMetricsToGA(metrics: LaunchMetrics): Promise<G
   
   // Check if GA is configured
   if (config.mode === 'mock') {
-    console.log('[GA Export] Running in mock mode - skipping actual export');
     return {
       success: true,
       eventsExported: 0,
@@ -195,7 +194,6 @@ async function exportSatisfactionMetrics(metrics: LaunchMetrics, propertyId: str
 async function sendGAEvent(propertyId: string, event: { name: string; params: Record<string, any> }): Promise<void> {
   // TODO: Implement actual GA4 Measurement Protocol API call
   // For now, just log the event
-  console.log('[GA Export] Would send event:', {
     propertyId,
     event,
   });

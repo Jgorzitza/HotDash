@@ -13,7 +13,6 @@ export async function measure<T>(
   const result = await fn();
   const durationMs = Math.round(performance.now() - start);
 
-  console.log(`[Performance] ${name}: ${durationMs}ms`);
 
   return { result, durationMs };
 }

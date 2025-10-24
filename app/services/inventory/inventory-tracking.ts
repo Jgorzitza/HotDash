@@ -69,7 +69,6 @@ export class InventoryTrackingService {
    */
   private setupSocketHandlers() {
     this.io.on('connection', (socket) => {
-      console.log(`Client connected: ${socket.id}`);
 
       // Join inventory tracking room
       socket.join('inventory-tracking');
@@ -77,13 +76,11 @@ export class InventoryTrackingService {
       // Handle subscription to specific variants
       socket.on('subscribe-variant', (variantId: string) => {
         socket.join(`variant-${variantId}`);
-        console.log(`Client ${socket.id} subscribed to variant ${variantId}`);
       });
 
       // Handle unsubscription from variants
       socket.on('unsubscribe-variant', (variantId: string) => {
         socket.leave(`variant-${variantId}`);
-        console.log(`Client ${socket.id} unsubscribed from variant ${variantId}`);
       });
 
       // Handle inventory update requests
@@ -107,7 +104,6 @@ export class InventoryTrackingService {
       });
 
       socket.on('disconnect', () => {
-        console.log(`Client disconnected: ${socket.id}`);
       });
     });
   }

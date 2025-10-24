@@ -71,7 +71,6 @@ export class TicketRoutingService {
     try {
       await this.loadAgents();
       await this.loadRoutingRules();
-      console.log('✅ Ticket routing service initialized');
     } catch (error) {
       console.error('❌ Failed to initialize ticket routing service:', error);
       throw error;
@@ -411,7 +410,6 @@ export class TicketRoutingService {
         timezone: agent.timezone || 'UTC',
       }));
 
-      console.log(`📋 Loaded ${this.agents.length} support agents`);
     } catch (error) {
       console.error('Error loading agents:', error);
       // Initialize with default agents if database fails
@@ -442,7 +440,6 @@ export class TicketRoutingService {
         enabled: rule.enabled,
       }));
 
-      console.log(`📋 Loaded ${this.routingRules.length} routing rules`);
     } catch (error) {
       console.error('Error loading routing rules:', error);
       // Initialize with default rules if database fails

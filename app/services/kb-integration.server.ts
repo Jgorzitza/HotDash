@@ -35,7 +35,6 @@ export interface KBContextSearch {
  */
 export async function queryKB(question: string): Promise<KBQueryResult> {
   try {
-    console.log(`🔍 [KB] Querying: ${question.substring(0, 100)}...`);
     
     // Set up environment variables for KB tool
     const env = {
@@ -118,7 +117,6 @@ export async function searchTaskContext(
   taskDescription: string,
   assignedAgent: string
 ): Promise<KBContextSearch> {
-  console.log(`🔍 [KB] Searching context for task: ${taskId} - ${taskTitle}`);
   
   // Generate search queries based on task content
   const searchQueries = generateSearchQueries(taskTitle, taskDescription, assignedAgent);
@@ -282,7 +280,6 @@ export async function logKBSearch(
       }
     });
     
-    console.log(`✅ [KB] Logged search results for task ${taskId}`);
   } catch (error) {
     console.error(`❌ [KB] Error logging search results: ${error.message}`);
   }
@@ -298,8 +295,6 @@ export async function preTaskKBSearch(
   taskDescription: string,
   assignedAgent: string
 ): Promise<KBContextSearch> {
-  console.log(`\n🔍 [KB] PRE-TASK SEARCH: ${taskId} - ${taskTitle}`);
-  console.log('='.repeat(80));
   
   // Perform KB search
   const searchResults = await searchTaskContext(
@@ -313,27 +308,18 @@ export async function preTaskKBSearch(
   await logKBSearch(taskId, searchResults, assignedAgent);
   
   // Display results
-  console.log(`\n📊 KB SEARCH RESULTS:`);
-  console.log(`   Queries executed: ${searchResults.searchQueries.length}`);
-  console.log(`   Results found: ${searchResults.results.length}`);
-  console.log(`   Recommendations: ${searchResults.recommendations.length}`);
   
-  console.log(`\n💡 RECOMMENDATIONS:`);
   searchResults.recommendations.forEach((rec, i) => {
-    console.log(`   ${i + 1}. ${rec}`);
   });
   
-  console.log(`\n📚 KEY SOURCES:`);
   const allSources = searchResults.results.flatMap(r => r.sources);
   const topSources = allSources
     .sort((a, b) => b.similarity - a.similarity)
     .slice(0, 5);
   
   topSources.forEach((source, i) => {
-    console.log(`   ${i + 1}. ${source.title} (${source.similarity.toFixed(3)})`);
   });
   
-  console.log('\n' + '='.repeat(80));
   
   return searchResults;
 }

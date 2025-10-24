@@ -52,7 +52,6 @@ let isRunning: boolean = false;
  */
 export async function startAutoRefresh(config: AutoRefreshConfig = {}): Promise<void> {
   if (isRunning) {
-    console.log('[KB Auto-Refresh] Already running');
     return;
   }
 
@@ -63,11 +62,9 @@ export async function startAutoRefresh(config: AutoRefreshConfig = {}): Promise<
   } = config;
 
   if (!enabled) {
-    console.log('[KB Auto-Refresh] Disabled by configuration');
     return;
   }
 
-  console.log('[KB Auto-Refresh] Starting auto-refresh system');
 
   // Get refresh service
   const refreshService = getRefreshService();
@@ -98,7 +95,6 @@ export async function startAutoRefresh(config: AutoRefreshConfig = {}): Promise<
     watchChange: true,
     watchUnlink: true,
     onRefreshTriggered: async (files) => {
-      console.log(`[KB Auto-Refresh] Triggering refresh for ${files.length} file(s)`);
       
       // Queue refresh for async processing
       await refreshService.queueRefresh({
@@ -111,7 +107,6 @@ export async function startAutoRefresh(config: AutoRefreshConfig = {}): Promise<
 
   isRunning = true;
 
-  console.log('[KB Auto-Refresh] ✅ Auto-refresh system started');
 
   // Log startup
   await logDecision({
@@ -132,17 +127,14 @@ export async function startAutoRefresh(config: AutoRefreshConfig = {}): Promise<
  */
 export async function stopAutoRefresh(): Promise<void> {
   if (!isRunning || !watcher) {
-    console.log('[KB Auto-Refresh] Not running');
     return;
   }
 
-  console.log('[KB Auto-Refresh] Stopping auto-refresh system');
 
   await watcher.stop();
   watcher = null;
   isRunning = false;
 
-  console.log('[KB Auto-Refresh] ✅ Auto-refresh system stopped');
 
   // Log shutdown
   await logDecision({

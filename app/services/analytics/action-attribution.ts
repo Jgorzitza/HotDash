@@ -103,7 +103,6 @@ export async function getActionAttribution(
 
     // Parse response
     if (!response.rows || response.rows.length === 0) {
-      console.log(
         `[Attribution] No data found for action key: ${actionKey} (${periodDays}d)`,
       );
       return {
@@ -130,7 +129,6 @@ export async function getActionAttribution(
     const conversionRate = sessions > 0 ? (purchases / sessions) * 100 : 0;
     const averageOrderValue = purchases > 0 ? revenue / purchases : 0;
 
-    console.log(
       `[Attribution] ${actionKey} (${periodDays}d): ${sessions} sessions, ${purchases} purchases, $${revenue.toFixed(2)} revenue`,
     );
 
@@ -170,7 +168,6 @@ export async function updateActionROI(
   actionId: string,
   actionKey: string,
 ): Promise<AttributionSummary> {
-  console.log(
     `[Attribution] Updating ROI for action ${actionId} (key: ${actionKey})`,
   );
 
@@ -210,7 +207,6 @@ export async function updateActionROI(
     },
   });
 
-  console.log(
     `[Attribution] ✅ Updated action ${actionId}: 7d=$${roi7d.revenue}, 14d=$${roi14d.revenue}, 28d=$${roi28d.revenue}`,
   );
 
@@ -231,7 +227,6 @@ export async function updateActionROI(
  * @returns Ranked actions (top 10)
  */
 export async function rerankActionQueue() {
-  console.log("[Attribution] Starting Action Queue re-ranking");
 
   // Get all approved actions from last 30 days with tracking keys
   const actions = await prisma.actionQueue.findMany({
@@ -244,7 +239,6 @@ export async function rerankActionQueue() {
     },
   });
 
-  console.log(`[Attribution] Found ${actions.length} actions to update`);
 
   // Update attribution for each action (with rate limiting)
   let updatedCount = 0;
@@ -274,10 +268,8 @@ export async function rerankActionQueue() {
     take: 10,
   });
 
-  console.log(
     `[Attribution] ✅ Re-ranking complete: Updated ${updatedCount} actions`,
   );
-  console.log(
     `[Attribution] Top action: ${rankedActions[0]?.actionKey || "none"} ($${rankedActions[0]?.realizedRevenue28d || 0})`,
   );
 
@@ -295,9 +287,6 @@ export async function rerankActionQueue() {
  */
 export async function runNightlyAttributionUpdate() {
   const startTime = Date.now();
-  console.log("[Attribution] ========================================");
-  console.log("[Attribution] Starting nightly ROI update");
-  console.log("[Attribution] ========================================");
 
   try {
     const rankedActions = await rerankActionQueue();
@@ -305,11 +294,8 @@ export async function runNightlyAttributionUpdate() {
     const duration = Date.now() - startTime;
     const durationMinutes = (duration / 60000).toFixed(2);
 
-    console.log(`[Attribution] ✅ Complete in ${durationMinutes} minutes`);
-    console.log(`[Attribution] Top 3 actions by realized ROI:`);
 
     rankedActions.slice(0, 3).forEach((action, i) => {
-      console.log(
         `  ${i + 1}. ${action.actionKey}: $${action.realizedRevenue28d || 0} (28d)`,
       );
     });

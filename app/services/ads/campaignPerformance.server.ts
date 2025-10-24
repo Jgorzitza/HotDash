@@ -37,14 +37,12 @@ export class CampaignPerformanceService {
 
   async syncCampaignPerformance(customerId: string, refreshToken: string) {
     try {
-      console.log("🔄 Starting campaign performance sync...");
       const campaigns = await googleAdsApiService.fetchCampaigns();
       const performanceData = await googleAdsApiService.getCampaignPerformance();
       const processedData = await this.processCampaignData(campaigns, performanceData);
       await this.storeCampaignData(processedData);
       const alerts = await this.generatePerformanceAlerts(processedData);
       
-      console.log("✅ Campaign performance sync completed");
       return {
         campaigns: processedData.length,
         alerts: alerts.length,
@@ -100,10 +98,7 @@ export class CampaignPerformanceService {
   }
 
   private async storeCampaignData(data: CampaignData[]) {
-    console.log(`📊 Storing ${data.length} campaign records...`);
     for (const record of data) {
-      console.log(`Campaign ${record.campaignId}: ${record.campaignName}`);
-      console.log(`  Spend: $${record.spend.toFixed(2)}, ROAS: ${record.roas.toFixed(2)}x`);
     }
   }
 
@@ -131,7 +126,6 @@ export class CampaignPerformanceService {
 
   async getCampaignPerformanceDashboard() {
     try {
-      console.log("📊 Fetching campaign performance dashboard data...");
       
       const topPerformers = [
         {

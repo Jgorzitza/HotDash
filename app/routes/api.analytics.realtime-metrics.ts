@@ -292,7 +292,6 @@ function generateAlerts(metrics: RealtimeMetrics): Alert[] {
  */
 export async function loader({ request }: LoaderFunctionArgs) {
   try {
-    console.log('[Realtime Metrics API] Fetching metrics...');
     
     // Fetch all metrics in parallel
     const [growthEngine, performance, kpis, health] = await Promise.all([
@@ -313,7 +312,6 @@ export async function loader({ request }: LoaderFunctionArgs) {
     // Generate alerts
     const alerts = generateAlerts(metrics);
     
-    console.log('[Realtime Metrics API] ✅ Metrics fetched successfully');
     
     return Response.json({
       success: true,

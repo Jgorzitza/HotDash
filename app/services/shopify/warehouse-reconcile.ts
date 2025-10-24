@@ -255,7 +255,6 @@ export async function runNightlyWarehouseReconciliation(
   results: ReconciliationResult[];
   errors: string[];
 }> {
-  console.log("[Warehouse Reconcile] Starting nightly reconciliation");
 
   if (!MAIN_WH_ID || !CANADA_WH_ID) {
     throw new Error(
@@ -267,7 +266,6 @@ export async function runNightlyWarehouseReconciliation(
   const negativeProducts =
     await getProductsWithNegativeCanadaInventory(context);
 
-  console.log(
     `[Warehouse Reconcile] Found ${negativeProducts.length} products to reconcile`,
   );
 
@@ -298,7 +296,6 @@ export async function runNightlyWarehouseReconciliation(
 
   const totalReconciled = results.filter((r) => r.adjusted).length;
 
-  console.log(
     `[Warehouse Reconcile] Reconciled ${totalReconciled}/${results.length} products`,
   );
 

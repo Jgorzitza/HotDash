@@ -258,7 +258,6 @@ export async function storeROPSuggestion(
   // For now: return mock suggestion ID
   const suggestionId = `suggestion_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
   
-  console.log(`[ROP Engine] Stored suggestion ${suggestionId} for product ${params.productId}`);
   
   return suggestionId;
 }
@@ -390,6 +389,5 @@ export async function updateROPSuggestionStatus(
   notes?: string
 ): Promise<boolean> {
   // In production: update reorder_suggestions table
-  console.log(`[ROP Engine] Updated suggestion ${suggestionId} to status ${status}`);
   return true;
 }

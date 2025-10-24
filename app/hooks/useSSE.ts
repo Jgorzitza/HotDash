@@ -60,7 +60,6 @@ export function useSSE(url: string, enabled = true) {
       eventSourceRef.current = eventSource;
 
       eventSource.onopen = () => {
-        console.log("[SSE] Connection established");
         setStatus("connected");
         setConnectionQuality("excellent");
         reconnectAttemptsRef.current = 0;
@@ -104,7 +103,6 @@ export function useSSE(url: string, enabled = true) {
         }
 
         reconnectTimeoutRef.current = setTimeout(() => {
-          console.log(
             `[SSE] Reconnecting... (attempt ${reconnectAttemptsRef.current})`,
           );
           eventSource.close();
@@ -231,7 +229,6 @@ export function useSSE(url: string, enabled = true) {
 
   const disconnect = useCallback(() => {
     if (eventSourceRef.current) {
-      console.log("[SSE] Disconnecting");
       eventSourceRef.current.close();
       eventSourceRef.current = null;
     }

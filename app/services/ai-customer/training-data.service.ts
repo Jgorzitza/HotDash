@@ -64,7 +64,6 @@ export class TrainingDataService {
     try {
       await this.loadTrainingData();
       await this.loadKnowledgeBase();
-      console.log('✅ Training data service initialized');
     } catch (error) {
       console.error('❌ Failed to initialize training data service:', error);
       throw error;
@@ -414,7 +413,6 @@ export class TrainingDataService {
         isActive: item.is_active,
       }));
 
-      console.log(`📋 Loaded ${this.trainingData.length} training data entries`);
     } catch (error) {
       console.error('Error loading training data:', error);
       // Initialize with default training data if database fails
@@ -448,7 +446,6 @@ export class TrainingDataService {
         isActive: item.is_active,
       }));
 
-      console.log(`📋 Loaded ${this.knowledgeBase.length} knowledge base entries`);
     } catch (error) {
       console.error('Error loading knowledge base:', error);
       // Initialize with default knowledge base if database fails

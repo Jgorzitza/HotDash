@@ -62,7 +62,6 @@ export async function action({ request }: ActionFunctionArgs) {
     // Run audit for each shop domain
     for (const shopDomain of shopDomains) {
       try {
-        console.log(`[SEO Cron] Starting daily audit for ${shopDomain}`);
         
         // Create audit record in database
         const auditRecord = await prisma.seoAudit.create({
@@ -110,7 +109,6 @@ export async function action({ request }: ActionFunctionArgs) {
           critical: auditResult.summary.criticalIssues,
         });
         
-        console.log(`[SEO Cron] Completed audit for ${shopDomain}: ${auditResult.summary.totalIssues} issues found`);
         
       } catch (error: any) {
         console.error(`[SEO Cron] Failed audit for ${shopDomain}:`, error);
@@ -252,7 +250,6 @@ async function checkForAnomalies(shopDomain: string, auditResult: any) {
   });
 
   if (!previousAudit) {
-    console.log(`[SEO Cron] No previous audit found for ${shopDomain}, skipping anomaly check`);
     return;
   }
 

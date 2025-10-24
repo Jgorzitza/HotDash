@@ -32,7 +32,6 @@ export async function buildRAGContext(
   } = options;
 
   try {
-    console.log(`[KB RAG] Building context for message: "${customerMessage.substring(0, 50)}..."`);
 
     // Perform semantic search
     const searchResults = await semanticSearch({
@@ -46,7 +45,6 @@ export async function buildRAGContext(
     // Extract articles from search results
     const articles = searchResults.map((result) => result.article);
 
-    console.log(`[KB RAG] ✅ Built context with ${articles.length} articles`);
 
     return {
       articles,

@@ -70,7 +70,6 @@ export async function applyCXThemeAction(
 
     // Only apply content-type actions (skip SEO and product_update types)
     if (action.type !== "content") {
-      console.log(
         `[CX Action Applier] Skipping non-content action type: ${action.type}`,
       );
       return {
@@ -109,7 +108,6 @@ export async function applyCXThemeAction(
       };
     }
 
-    console.log(
       `[CX Action Applier] ✅ Applied ${contentType} to product ${productId} (from theme: "${action.metadata.theme}")`,
     );
 
@@ -193,7 +191,6 @@ export async function getApprovedCXThemeActions(
       return fact.value as unknown as CXThemeAction;
     });
 
-    console.log(
       `[CX Action Applier] Found ${actions.length} approved CX theme actions`,
     );
 

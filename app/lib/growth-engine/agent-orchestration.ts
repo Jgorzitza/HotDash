@@ -205,7 +205,6 @@ Payment: ${customerData.paymentMethod || 'N/A'}`;
    */
   logAuditTrail(agent: AgentRole, action: string, mcpRequestId: string, timestamp: string): void {
     if (this.config.auditLogging) {
-      console.log(`AUDIT: ${timestamp} - Agent: ${agent}, Action: ${action}, MCP Request: ${mcpRequestId}`);
     }
   }
 }

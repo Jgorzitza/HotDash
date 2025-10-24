@@ -19,7 +19,6 @@ export async function loader({ request }: LoaderFunctionArgs) {
     const timeframe = (url.searchParams.get('timeframe') as '7d' | '14d' | '28d') || '28d';
     const actionKey = url.searchParams.get('actionKey');
     
-    console.log(`[Action Attribution API] Loading data for timeframe: ${timeframe}, actionKey: ${actionKey || 'all'}`);
 
     if (actionKey) {
       // Get specific action attribution
@@ -92,7 +91,6 @@ export async function action({ request }: LoaderFunctionArgs) {
     const formData = await request.formData();
     const actionType = formData.get('actionType') as string;
     
-    console.log(`[Action Attribution API] Action: ${actionType}`);
 
     switch (actionType) {
       case 'refresh':

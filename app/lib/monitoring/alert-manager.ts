@@ -99,7 +99,6 @@ export class AlertManager {
     alert.acknowledgedAt = new Date().toISOString();
     alert.acknowledgedBy = acknowledgedBy;
 
-    console.log('[AlertManager] Alert acknowledged:', {
       id: alertId,
       by: acknowledgedBy,
     });
@@ -167,7 +166,6 @@ export class AlertManager {
    */
   updateConfig(config: Partial<AlertConfig>): void {
     this.config = { ...this.config, ...config };
-    console.log('[AlertManager] Configuration updated:', this.config);
   }
 
   /**

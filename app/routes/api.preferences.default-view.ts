@@ -47,7 +47,6 @@ export async function action({ request }: ActionFunctionArgs) {
   //     updated_at: new Date().toISOString(),
   //   });
 
-  console.log(
     `[Preferences] Default view saved for ${session.shop}:`,
     defaultView,
   );

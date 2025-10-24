@@ -128,7 +128,6 @@ export default function KnowledgeBasePage() {
         content: "Add Article",
         onAction: () => {
           // TODO: Implement add article modal
-          console.log("Add article clicked");
         },
       }}
     >

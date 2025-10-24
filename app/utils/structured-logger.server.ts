@@ -133,21 +133,16 @@ export class StructuredLogger {
       // Pretty print for development
       const color = this.getColor(entry.level);
       const prefix = `[${entry.timestamp}] [${entry.level.toUpperCase()}] [${entry.service}${entry.module ? `:${entry.module}` : ""}]`;
-      console.log(`${color}${prefix}\x1b[0m ${entry.message}`);
 
       if (entry.metadata && Object.keys(entry.metadata).length > 0) {
-        console.log("  Metadata:", entry.metadata);
       }
 
       if (entry.error) {
-        console.log("  Error:", entry.error.message);
         if (entry.error.stack) {
-          console.log(entry.error.stack);
         }
       }
     } else {
       // JSON output for production
-      console.log(JSON.stringify(entry));
     }
   }
 

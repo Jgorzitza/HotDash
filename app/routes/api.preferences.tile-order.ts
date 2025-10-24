@@ -66,7 +66,6 @@ export async function action({ request }: ActionFunctionArgs) {
   //     updated_at: new Date().toISOString(),
   //   });
 
-  console.log(`[Preferences] Tile order saved for ${session.shop}:`, tileOrder);
 
   return Response.json({ ok: true });
 }

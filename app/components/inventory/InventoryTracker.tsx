@@ -74,7 +74,6 @@ export const InventoryTracker: React.FC<InventoryTrackerProps> = ({
     });
 
     newSocket.on('connect', () => {
-      console.log('Connected to inventory tracking server');
       setIsConnected(true);
       
       // Join inventory tracking room
@@ -87,12 +86,10 @@ export const InventoryTracker: React.FC<InventoryTrackerProps> = ({
     });
 
     newSocket.on('disconnect', () => {
-      console.log('Disconnected from inventory tracking server');
       setIsConnected(false);
     });
 
     newSocket.on('inventory-change', (data: { update: InventoryUpdate; realtimeData: InventoryData }) => {
-      console.log('Inventory change received:', data);
       setInventoryData(prev => 
         prev.map(item => 
           item.variantId === data.realtimeData.variantId ? data.realtimeData : item
@@ -103,7 +100,6 @@ export const InventoryTracker: React.FC<InventoryTrackerProps> = ({
     });
 
     newSocket.on('variant-update', (data: { update: InventoryUpdate; realtimeData: InventoryData }) => {
-      console.log('Variant update received:', data);
       setInventoryData(prev => 
         prev.map(item => 
           item.variantId === data.realtimeData.variantId ? data.realtimeData : item
@@ -114,13 +110,11 @@ export const InventoryTracker: React.FC<InventoryTrackerProps> = ({
     });
 
     newSocket.on('inventory-alert', (alert: InventoryAlert) => {
-      console.log('Inventory alert received:', alert);
       setAlerts(prev => [alert, ...prev]);
       onAlert?.(alert);
     });
 
     newSocket.on('variant-alert', (alert: InventoryAlert) => {
-      console.log('Variant alert received:', alert);
       setAlerts(prev => [alert, ...prev]);
       onAlert?.(alert);
     });

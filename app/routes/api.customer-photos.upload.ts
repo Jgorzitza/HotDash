@@ -202,7 +202,6 @@ async function processAndUploadImage(params: {
     .single();
 
   if (existingPhoto) {
-    console.log(`[Customer Photos Upload] Duplicate image found: ${hash}`);
     return {
       id: existingPhoto.id,
       imageUrl: existingPhoto.image_url,

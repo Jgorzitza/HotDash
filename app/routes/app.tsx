@@ -84,6 +84,7 @@ export default function App() {
               </span>
             )}
           </s-link>
+          <s-link href="/seo/monitoring">SEO Monitoring</s-link>
           <s-link href="/app/additional">Additional page</s-link>
           <s-link href="/app/tools/session-token">Session token tool</s-link>
           {mockMode && <s-badge tone="warning">Mock Mode</s-badge>}

@@ -20,7 +20,6 @@ class Telemetry {
       typeof window !== "undefined" &&
       process.env.NODE_ENV === "production"
     ) {
-      console.log("[Telemetry]", telemetryEvent);
     }
   }
 

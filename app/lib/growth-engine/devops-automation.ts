@@ -341,7 +341,6 @@ export class DevOpsGrowthEngine {
    */
   private async initializeAutoScaling(): Promise<void> {
     // Initialize auto-scaling configuration
-    console.log('Auto-scaling initialized');
   }
 
   /**
@@ -349,7 +348,6 @@ export class DevOpsGrowthEngine {
    */
   private async setupBackup(): Promise<void> {
     // Setup backup configuration
-    console.log('Backup system configured');
   }
 
   /**

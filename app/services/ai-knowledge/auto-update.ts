@@ -44,7 +44,6 @@ export async function detectOutdatedArticles(
   reason: string;
 }>> {
   try {
-    console.log(`[Auto Update] Detecting outdated articles (>${days} days)`);
 
     const cutoffDate = new Date();
     cutoffDate.setDate(cutoffDate.getDate() - days);
@@ -78,7 +77,6 @@ export async function detectOutdatedArticles(
       };
     });
 
-    console.log(`[Auto Update] ✅ Found ${outdated.length} potentially outdated articles`);
     return outdated;
   } catch (error) {
     console.error(`[Auto Update] ❌ Error detecting outdated articles:`, error);
@@ -98,7 +96,6 @@ export async function generateUpdateSuggestion(
   newInformation: string[]
 ): Promise<UpdateSuggestion | null> {
   try {
-    console.log(`[Auto Update] Generating update suggestion for: ${articleId}`);
 
     const article = await getArticleById(articleId);
     if (!article) {
@@ -141,7 +138,6 @@ Updated Answer:`;
 
     const suggestedContent = response.choices[0].message.content || "";
 
-    console.log(`[Auto Update] ✅ Generated update suggestion`);
 
     return {
       articleId,
@@ -169,7 +165,6 @@ export async function applyUpdate(
   autoApprove: boolean = false
 ): Promise<boolean> {
   try {
-    console.log(`[Auto Update] Applying update to: ${suggestion.articleId}`);
 
     // Log the suggestion for review
     await logDecision({
@@ -192,11 +187,9 @@ export async function applyUpdate(
       });
 
       if (result) {
-        console.log(`[Auto Update] ✅ Article updated successfully`);
         return true;
       }
     } else {
-      console.log(`[Auto Update] ⏸️ Update queued for human review`);
     }
 
     return false;
@@ -220,7 +213,6 @@ export async function runAutomatedUpdates(
   updatesApplied: number;
   timestamp: Date;
 }> {
-  console.log(`[Auto Update] Starting automated knowledge base updates`);
 
   try {
     // Detect outdated articles
@@ -233,10 +225,8 @@ export async function runAutomatedUpdates(
     for (const article of outdated.slice(0, 5)) {
       // This would gather new information from conversations
       // For now, skip actual update generation
-      console.log(`[Auto Update] Analyzing: ${article.title}`);
     }
 
-    console.log(`[Auto Update] ✅ Automated updates complete`);
 
     return {
       articlesAnalyzed: outdated.length,
@@ -268,7 +258,6 @@ export async function monitorKBHealth(): Promise<{
   timestamp: Date;
 }> {
   try {
-    console.log(`[Auto Update] Monitoring KB health`);
 
     const totalArticles = await prisma.knowledge_base.count({
       where: {
@@ -289,7 +278,6 @@ export async function monitorKBHealth(): Promise<{
       recommendedActions.push("Generate more FAQ articles from conversations");
     }
 
-    console.log(`[Auto Update] ✅ Health monitoring complete`);
 
     return {
       totalArticles,

@@ -25,6 +25,5 @@ export function initializeMonitoring() {
   // Uptime monitoring runs on schedule
   // Alerting is event-driven
   
-  console.log('[Monitoring] Production monitoring initialized');
 }
 

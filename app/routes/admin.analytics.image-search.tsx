@@ -77,7 +77,6 @@ async function getImageSearchMetrics(): Promise<ImageSearchMetrics> {
     await prisma.$queryRaw`SELECT 1 FROM customer_photos LIMIT 1`;
     featureEnabled = true;
   } catch (error) {
-    console.log('[Image Search Analytics] Tables not yet created - feature not enabled');
   }
   
   if (!featureEnabled) {

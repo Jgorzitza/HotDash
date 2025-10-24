@@ -76,7 +76,6 @@ export class GrowthEngineIntegration {
    */
   async initialize(): Promise<void> {
     try {
-      console.log('Initializing Growth Engine Integration...');
 
       // Initialize Support Agent
       if (this.config.capabilities.mcpEvidence || 
@@ -109,7 +108,6 @@ export class GrowthEngineIntegration {
       this.status.integration.status = 'active';
       this.status.integration.health = this.calculateOverallHealth();
 
-      console.log('Growth Engine Integration initialized successfully');
     } catch (error) {
       console.error('Failed to initialize Growth Engine Integration:', error);
       this.status.integration.status = 'error';

@@ -76,7 +76,6 @@ export async function action({ request }: ActionFunctionArgs) {
     }
 
     // TODO: Store receipt in social_posts table when Data implements it
-    console.log("[Social Publish] Receipt stored:", result.receipt?.id);
 
     const response: PublishResponse = {
       success: true,

@@ -104,7 +104,6 @@ export async function action({ request }: ActionFunctionArgs) {
       );
     }
 
-    console.log(
       `[CX Content API] ✅ Applied ${results.length} content items to product ${body.productId}`,
     );
 

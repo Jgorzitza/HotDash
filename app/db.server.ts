@@ -11,7 +11,6 @@ import { getDatabaseUrl, getAgentTypeFromContext } from './config/database';
 const agentType = getAgentTypeFromContext();
 const databaseUrl = getDatabaseUrl(agentType);
 
-console.log(`🔒 Database client initialized for agent type: ${agentType}`);
 
 const prisma = new PrismaClient({
   datasources: {

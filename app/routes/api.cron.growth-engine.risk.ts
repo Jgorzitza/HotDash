@@ -33,7 +33,6 @@ export async function action({ request }: ActionFunctionArgs) {
       );
     }
 
-    console.log('[Risk Agent] Starting continuous monitoring...');
 
     // Initialize specialist agents
     const specialists = new SpecialistAgents();
@@ -59,7 +58,6 @@ export async function action({ request }: ActionFunctionArgs) {
       });
     }
 
-    console.log(`[Risk Agent] Completed in ${duration}ms, generated ${actions.length} actions`);
 
     return Response.json({
       success: true,

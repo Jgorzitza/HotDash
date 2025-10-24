@@ -72,7 +72,6 @@ export async function action({ request }: ActionFunctionArgs) {
       );
     }
 
-    console.log('[KB Cron] Starting daily knowledge base refresh');
 
     // Log cron job start
     await logDecision({
@@ -120,7 +119,6 @@ export async function action({ request }: ActionFunctionArgs) {
     });
 
     if (result.success) {
-      console.log(`[KB Cron] ✅ Daily refresh complete (${result.durationMs}ms)`);
 
       await logDecision({
         scope: 'build',

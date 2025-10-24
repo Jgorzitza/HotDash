@@ -38,14 +38,12 @@ export async function extractFAQCandidates(
   minOccurrences: number = 3
 ): Promise<FAQCandidate[]> {
   try {
-    console.log(`[FAQ Generator] Extracting FAQ candidates (last ${days} days)`);
 
     // This would analyze conversation patterns
     // For now, return placeholder candidates
 
     const candidates: FAQCandidate[] = [];
 
-    console.log(`[FAQ Generator] ✅ Found ${candidates.length} FAQ candidates`);
     return candidates;
   } catch (error) {
     console.error(`[FAQ Generator] ❌ Error extracting candidates:`, error);
@@ -65,7 +63,6 @@ export async function generateFAQAnswer(
   context: string[]
 ): Promise<string> {
   try {
-    console.log(`[FAQ Generator] Generating answer for: "${question.substring(0, 50)}..."`);
 
     const prompt = `You are a customer support expert. Based on the following customer conversations, generate a clear, helpful FAQ answer for this question.
 
@@ -100,7 +97,6 @@ Answer:`;
 
     const answer = response.choices[0].message.content || "";
 
-    console.log(`[FAQ Generator] ✅ Generated answer (${answer.length} chars)`);
     return answer;
   } catch (error) {
     console.error(`[FAQ Generator] ❌ Error generating answer:`, error);
@@ -118,7 +114,6 @@ export async function createFAQArticle(
   candidate: FAQCandidate
 ): Promise<string | null> {
   try {
-    console.log(`[FAQ Generator] Creating FAQ article: "${candidate.question.substring(0, 50)}..."`);
 
     const result = await ingestDocument({
       title: candidate.question,
@@ -136,7 +131,6 @@ export async function createFAQArticle(
     });
 
     if (result.success) {
-      console.log(`[FAQ Generator] ✅ Created FAQ article: ${result.articleId}`);
       return result.articleId;
     }
 
@@ -162,7 +156,6 @@ export async function runAutomatedFAQGeneration(
   articlesCreated: number;
   timestamp: Date;
 }> {
-  console.log(`[FAQ Generator] Starting automated FAQ generation`);
 
   try {
     // Extract candidates
@@ -189,7 +182,6 @@ export async function runAutomatedFAQGeneration(
       await new Promise((resolve) => setTimeout(resolve, 1000));
     }
 
-    console.log(`[FAQ Generator] ✅ Created ${articlesCreated}/${candidates.length} FAQ articles`);
 
     return {
       candidatesFound: candidates.length,
@@ -222,7 +214,6 @@ export async function identifyKnowledgeGaps(
   suggestedAction: string;
 }>> {
   try {
-    console.log(`[FAQ Generator] Identifying knowledge gaps (last ${days} days)`);
 
     // This would analyze questions that don't have good KB matches
     // For now, return empty array as placeholder
@@ -235,7 +226,6 @@ export async function identifyKnowledgeGaps(
       suggestedAction: string;
     }> = [];
 
-    console.log(`[FAQ Generator] ✅ Found ${gaps.length} knowledge gaps`);
     return gaps;
   } catch (error) {
     console.error(`[FAQ Generator] ❌ Error identifying gaps:`, error);
@@ -258,7 +248,6 @@ export async function improveSearchRelevance(
   priority: "high" | "medium" | "low";
 }>> {
   try {
-    console.log(`[FAQ Generator] Analyzing search relevance (last ${days} days)`);
 
     // This would analyze search queries and their results
     // For now, return empty array as placeholder
@@ -270,7 +259,6 @@ export async function improveSearchRelevance(
       priority: "high" | "medium" | "low";
     }> = [];
 
-    console.log(`[FAQ Generator] ✅ Found ${improvements.length} relevance improvements`);
     return improvements;
   } catch (error) {
     console.error(`[FAQ Generator] ❌ Error analyzing relevance:`, error);

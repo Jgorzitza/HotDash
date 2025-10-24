@@ -160,7 +160,6 @@ export async function applyAutomations(
 
     if (shouldApply) {
       await executeActions(conversation, rule.actions);
-      console.log(
         `[Automation] Applied rule: ${rule.name} to conversation ${conversation.id}`,
       );
     }
@@ -648,7 +647,6 @@ export async function sendAfterHoursReply(
 
   try {
     await sendPrivateNote(config, conversationId, AFTER_HOURS_MESSAGE);
-    console.log(
       `[Automation] Sent after-hours reply to conversation ${conversationId}`,
     );
   } catch (error) {

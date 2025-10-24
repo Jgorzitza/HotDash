@@ -70,7 +70,6 @@ export class KnowledgeBaseRefreshService {
     const requestId = request.requestId || `refresh-${Date.now()}`;
     const startTime = new Date();
 
-    console.log(`[KB Refresh] Starting refresh: ${requestId}`);
 
     try {
       // Call LlamaIndex MCP server refresh_index tool
@@ -95,7 +94,6 @@ export class KnowledgeBaseRefreshService {
         mcpResponse,
       };
 
-      console.log(`[KB Refresh] ✅ Refresh complete: ${requestId} (${durationMs}ms)`);
 
       // Log to decision log
       await logDecision({
@@ -159,7 +157,6 @@ export class KnowledgeBaseRefreshService {
    */
   async queueRefresh(request: RefreshRequest = {}): Promise<void> {
     const requestId = request.requestId || `refresh-${Date.now()}`;
-    console.log(`[KB Refresh] Queueing refresh: ${requestId}`);
 
     this.refreshQueue.push({ ...request, requestId });
 
@@ -210,7 +207,6 @@ export class KnowledgeBaseRefreshService {
       arguments: {},
     };
 
-    console.log(`[KB Refresh] Calling MCP: ${url}`);
 
     const response = await fetch(url, {
       method: 'POST',

@@ -79,11 +79,9 @@ export class KnowledgeBaseWatcher {
    */
   async start(): Promise<void> {
     if (this.watcher) {
-      console.log('[KB Watcher] Already watching');
       return;
     }
 
-    console.log(`[KB Watcher] Starting watcher for: ${this.config.watchPath}`);
 
     // Initialize chokidar watcher
     this.watcher = chokidar.watch(this.config.watchPath, {
@@ -117,7 +115,6 @@ export class KnowledgeBaseWatcher {
       this.status.filesWatched = fileCount;
       this.status.isWatching = true;
       
-      console.log(`[KB Watcher] Ready - watching ${fileCount} files`);
       
       // Log startup to decision log
       logDecision({
@@ -147,7 +144,6 @@ export class KnowledgeBaseWatcher {
       return;
     }
 
-    console.log('[KB Watcher] Stopping watcher');
 
     if (this.debounceTimer) {
       clearTimeout(this.debounceTimer);
@@ -187,7 +183,6 @@ export class KnowledgeBaseWatcher {
       return;
     }
 
-    console.log(`[KB Watcher] File ${event}: ${filePath}`);
     
     this.pendingFiles.add(filePath);
 
@@ -214,7 +209,6 @@ export class KnowledgeBaseWatcher {
       return;
     }
 
-    console.log(`[KB Watcher] Triggering refresh for ${files.length} file(s)`);
 
     this.status.lastRefreshTrigger = new Date();
     this.status.refreshCount++;

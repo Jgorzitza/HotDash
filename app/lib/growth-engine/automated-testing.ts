@@ -122,7 +122,6 @@ export class AutomatedTestingEngine {
    */
   private async initializeTestEnvironments(): Promise<void> {
     // Initialize test environments based on configuration
-    console.log('Test environments initialized');
   }
 
   /**
@@ -130,7 +129,6 @@ export class AutomatedTestingEngine {
    */
   private async setupTestRunners(): Promise<void> {
     // Setup test runners for different test types
-    console.log('Test runners configured');
   }
 
   /**

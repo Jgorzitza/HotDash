@@ -107,7 +107,6 @@ export class GrowthEnginePerformance {
         this.startAutoOptimization();
       }
 
-      console.log('Growth Engine Performance optimization initialized');
     } catch (error) {
       console.error('Failed to initialize performance optimization:', error);
       throw error;

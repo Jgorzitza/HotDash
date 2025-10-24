@@ -121,7 +121,6 @@ export class GrowthEngineProduction {
    */
   async initialize(): Promise<void> {
     try {
-      console.log('Initializing Growth Engine Production Service...');
 
       // Initialize core components
       await this.initializeIntegration();
@@ -148,7 +147,6 @@ export class GrowthEngineProduction {
       this.status.service.status = 'active';
       this.status.service.uptime = Date.now() - this.startTime.getTime();
 
-      console.log('Growth Engine Production Service initialized successfully');
     } catch (error) {
       console.error('Failed to initialize Growth Engine Production Service:', error);
       this.status.service.status = 'error';
@@ -413,7 +411,6 @@ export class GrowthEngineProduction {
    */
   private async initializeSecurity(): Promise<void> {
     // Initialize security features
-    console.log('Security features initialized');
   }
 
   /**
@@ -421,7 +418,6 @@ export class GrowthEngineProduction {
    */
   private async initializeHealthChecks(): Promise<void> {
     // Initialize health check endpoints
-    console.log('Health checks initialized');
   }
 
   /**
@@ -446,7 +442,6 @@ export class GrowthEngineProduction {
   private async logRequest(request: any): Promise<void> {
     if (this.config.security.auditLogging) {
       // Log request to audit system
-      console.log('Request logged for audit:', request);
     }
   }
 
@@ -456,7 +451,6 @@ export class GrowthEngineProduction {
   private async logResponse(request: any, response: any): Promise<void> {
     if (this.config.security.auditLogging) {
       // Log response to audit system
-      console.log('Response logged for audit:', response);
     }
   }
 

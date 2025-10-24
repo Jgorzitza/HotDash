@@ -93,7 +93,6 @@ export class ResponseAutomationService {
     try {
       await this.loadTemplates();
       await this.loadWorkflows();
-      console.log('✅ Response automation service initialized');
     } catch (error) {
       console.error('❌ Failed to initialize response automation service:', error);
       throw error;
@@ -612,7 +611,6 @@ export class ResponseAutomationService {
         lastUsed: template.last_used,
       }));
 
-      console.log(`📋 Loaded ${this.templates.length} response templates`);
     } catch (error) {
       console.error('Error loading templates:', error);
       // Initialize with default templates if database fails
@@ -643,7 +641,6 @@ export class ResponseAutomationService {
         autoApproveAfter: workflow.auto_approve_after || 240,
       }));
 
-      console.log(`📋 Loaded ${this.workflows.length} approval workflows`);
     } catch (error) {
       console.error('Error loading workflows:', error);
       // Initialize with default workflows if database fails

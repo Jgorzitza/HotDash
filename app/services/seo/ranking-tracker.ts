@@ -154,7 +154,6 @@ async function storeCurrentRankings(rankings: RankingData[]): Promise<void> {
       skipDuplicates: true
     });
 
-    console.log(`[Ranking Tracker] Stored ${records.length} rankings`);
   } catch (error) {
     console.error('[Ranking Tracker] Failed to store rankings:', error);
   }
@@ -244,7 +243,6 @@ async function storeRankingAlerts(alerts: RankingAlert[]): Promise<void> {
       skipDuplicates: true
     });
 
-    console.log(`[Ranking Tracker] Stored ${records.length} alerts`);
   } catch (error) {
     console.error('[Ranking Tracker] Failed to store alerts:', error);
   }
@@ -301,7 +299,6 @@ export async function resolveAlert(alertId: string, resolution: string): Promise
       }
     });
 
-    console.log(`[Ranking Tracker] Resolved alert: ${alertId}`);
   } catch (error) {
     console.error('[Ranking Tracker] Failed to resolve alert:', error);
   }

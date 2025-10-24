@@ -78,7 +78,6 @@ export async function action({ request }: ActionFunctionArgs) {
       );
     }
 
-    console.log(
       `[CX Actions API] ✅ Applied ${result.contentType} to product ${result.productId}`,
     );
 

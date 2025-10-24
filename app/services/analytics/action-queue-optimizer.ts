@@ -196,7 +196,6 @@ export class ActionQueueOptimizer {
    * Re-rank all pending actions using optimized algorithm
    */
   static async rerankActions(version: string = 'v3_ml'): Promise<RankingResult[]> {
-    console.log(`[Optimizer] Re-ranking actions with version: ${version}`);
     
     // Get all pending actions
     const actions = await prisma.action_queue.findMany({
@@ -204,7 +203,6 @@ export class ActionQueueOptimizer {
       orderBy: { created_at: 'desc' }
     });
     
-    console.log(`[Optimizer] Found ${actions.length} pending actions`);
     
     // Calculate scores for each action
     const results: RankingResult[] = [];
@@ -239,8 +237,6 @@ export class ActionQueueOptimizer {
     // Sort by score descending
     results.sort((a, b) => b.score - a.score);
     
-    console.log(`[Optimizer] ✅ Re-ranked ${results.length} actions`);
-    console.log(`[Optimizer] Top 3 scores: ${results.slice(0, 3).map(r => r.score.toFixed(2)).join(', ')}`);
     
     // Log decision
     await logDecision({
@@ -264,7 +260,6 @@ export class ActionQueueOptimizer {
    * Update historical performance metrics for an action type
    */
   static async updateHistoricalMetrics(actionType: string): Promise<void> {
-    console.log(`[Optimizer] Updating historical metrics for type: ${actionType}`);
     
     // Get all executed actions of this type
     const executedActions = await prisma.action_queue.findMany({
@@ -275,7 +270,6 @@ export class ActionQueueOptimizer {
     });
     
     if (executedActions.length === 0) {
-      console.log(`[Optimizer] No executed actions found for type: ${actionType}`);
       return;
     }
     
@@ -302,7 +296,6 @@ export class ActionQueueOptimizer {
       }
     });
     
-    console.log(`[Optimizer] ✅ Updated metrics for ${actionType}: ${executionCount} executions, ${successCount} successes, $${avgRealizedROI.toFixed(2)} avg ROI`);
   }
   
   /**
@@ -318,7 +311,6 @@ export class ActionQueueOptimizer {
       recommendation: string;
     };
   }> {
-    console.log('[Optimizer] Running A/B test on ranking algorithms');
     
     const v1Results = await this.rerankActions('v1_basic');
     const v2Results = await this.rerankActions('v2_hybrid');
@@ -338,10 +330,6 @@ export class ActionQueueOptimizer {
       recommendation = 'v2_hybrid';
     }
     
-    console.log(`[Optimizer] A/B Test Results:`);
-    console.log(`  - Top action differs: ${topActionDifference}`);
-    console.log(`  - Avg score delta (v3 - v1): ${avgScoreDelta.toFixed(2)}`);
-    console.log(`  - Recommendation: ${recommendation}`);
     
     return {
       v1: v1Results,

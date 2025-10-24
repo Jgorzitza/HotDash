@@ -43,14 +43,12 @@ export async function action({ request }: ActionFunctionArgs) {
   }
 
   try {
-    console.log(
       `[CX Themes] Processing ${payload.themes.length} themes for ${shopDomain}`,
     );
 
     // 1. Convert themes to Action cards
     const actions = await processCXThemes(payload.themes, shopDomain);
 
-    console.log(
       `[CX Themes] Generated ${actions.length} actions from ${payload.themes.length} themes`,
     );
 

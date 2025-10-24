@@ -108,7 +108,6 @@ export function showNotification(options: NotificationOptions): Notification | n
 
   const preferences = getNotificationPreferences();
   if (!preferences.enabled) {
-    console.log("Notifications disabled by user");
     return null;
   }
 

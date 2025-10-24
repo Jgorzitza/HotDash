@@ -1,24 +1,70 @@
-import type { LoaderFunctionArgs, MetaFunction } from "react-router";
+import type { LoaderFunctionArgs, LinksFunction, MetaFunction } from "react-router";
 import { redirect, Form, useLoaderData } from "react-router";
 
 import { login } from "../../shopify.server";
 
 import styles from "./styles.module.css";
 
+const LANDING_PAGE_CANONICAL_URL = "https://hotdash.fly.dev/";
+
 export const meta: MetaFunction = () => {
+  const title = "Hot Dash | Shopify Control Center for Real-time Analytics";
+  const description =
+    "Hot Dash is the Shopify control center that unifies real-time analytics, inventory management, customer experience, and growth automation in one dashboard.";
+  const imageUrl = "https://hotdash.fly.dev/og-image.png";
+
   return [
-    { title: "Hot Dash - Shopify Control Center | Real-time Analytics & Inventory Management" },
-    { name: "description", content: "Centralized control center for Shopify stores. Real-time analytics, inventory management, customer experience, and growth automation in one dashboard." },
-    { name: "keywords", content: "shopify analytics, inventory management, shopify dashboard, ecommerce analytics, shopify control center" },
-    { property: "og:title", content: "Hot Dash - Shopify Control Center" },
-    { property: "og:description", content: "Centralized control center for Shopify stores with real-time analytics and automation." },
+    { title },
+    { name: "description", content: description },
+    {
+      name: "keywords",
+      content:
+        "shopify analytics, inventory management, ecommerce dashboard, real-time analytics, shopify automation",
+    },
+    { property: "og:title", content: title },
+    { property: "og:description", content: description },
     { property: "og:type", content: "website" },
-    { property: "og:image", content: "/og-image.png" },
+    { property: "og:url", content: LANDING_PAGE_CANONICAL_URL },
+    { property: "og:site_name", content: "Hot Dash" },
+    { property: "og:image", content: imageUrl },
     { name: "twitter:card", content: "summary_large_image" },
-    { name: "twitter:title", content: "Hot Dash - Shopify Control Center" },
-    { name: "twitter:description", content: "Real-time analytics and inventory management for Shopify stores." },
-    { name: "twitter:image", content: "/og-image.png" },
+    { name: "twitter:title", content: title },
+    { name: "twitter:description", content: description },
+    { name: "twitter:image", content: imageUrl },
+    { name: "twitter:site", content: "@hotdash" },
+    { name: "twitter:creator", content: "@hotdash" },
   ];
+};
+
+export const links: LinksFunction = () => {
+  return [{ rel: "canonical", href: LANDING_PAGE_CANONICAL_URL }];
+};
+
+const landingPageStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  name: "Hot Dash",
+  url: LANDING_PAGE_CANONICAL_URL,
+  applicationCategory: "BusinessApplication",
+  operatingSystem: "Web",
+  description:
+    "Hot Dash helps Shopify brands unify analytics, inventory control, customer experience, and growth automation in one real-time dashboard.",
+  publisher: {
+    "@type": "Organization",
+    name: "Hot Dash",
+    url: LANDING_PAGE_CANONICAL_URL,
+  },
+  offers: {
+    "@type": "Offer",
+    availability: "https://schema.org/PreOrder",
+    priceCurrency: "USD",
+    price: "0",
+  },
+  potentialAction: {
+    "@type": "Action",
+    name: "Request Shopify App Install",
+    target: "https://hotdash.fly.dev/auth/login",
+  },
 };
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
@@ -36,6 +82,13 @@ export default function App() {
 
   return (
     <div className={styles.index}>
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(landingPageStructuredData),
+        }}
+      />
       <div className={styles.content}>
         <h1 className={styles.heading}>Hot Dash - Your Shopify Control Center</h1>
         <p className={styles.text}>

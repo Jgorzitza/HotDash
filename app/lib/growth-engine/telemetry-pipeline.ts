@@ -67,7 +67,6 @@ export class GSCBulkExport {
    * Uses real production data from Google Search Console
    */
   async getGSCData(startDate: string, endDate: string): Promise<GSCData[]> {
-    console.log(`[Telemetry Pipeline] Fetching GSC data from ${startDate} to ${endDate}`);
 
     try {
       // Fetch top queries and landing pages from Search Console API
@@ -76,7 +75,6 @@ export class GSCBulkExport {
         getLandingPages(100) // Get top 100 pages
       ]);
 
-      console.log(`[Telemetry Pipeline] Fetched ${queries.length} queries, ${pages.length} pages from GSC`);
 
       // Transform to GSCData format
       // Combine query and page data by matching pages
@@ -99,7 +97,6 @@ export class GSCBulkExport {
         }
       }
 
-      console.log(`[Telemetry Pipeline] Matched ${gscData.length} query-page pairs`);
 
       return gscData;
     } catch (error: any) {
@@ -136,7 +133,6 @@ export class GA4DataAPI {
    * Uses real production data from GA4 Data API
    */
   async getGA4Data(startDate: string, endDate: string): Promise<GA4Data[]> {
-    console.log(`[Telemetry Pipeline] Fetching GA4 data from ${startDate} to ${endDate}`);
 
     if (!this.client) {
       console.warn('[Telemetry Pipeline] GA4 client not available (mode not set to direct), using empty data');
@@ -150,7 +146,6 @@ export class GA4DataAPI {
         end: endDate
       });
 
-      console.log(`[Telemetry Pipeline] Fetched ${sessions.length} landing pages from GA4`);
 
       // Transform to GA4Data format
       // Note: GA4 API doesn't provide all metrics in one call, so we'll use what's available
@@ -164,7 +159,6 @@ export class GA4DataAPI {
         date: startDate
       }));
 
-      console.log(`[Telemetry Pipeline] Transformed ${ga4Data.length} GA4 records`);
 
       return ga4Data;
     } catch (error: any) {
@@ -328,7 +322,6 @@ export class ActionQueueEmitter {
         console.warn('[Telemetry Pipeline] QA_SKIP_DB=1 - skipping DB store for action');
         return;
       }
-      console.log('[Telemetry Pipeline] Storing action in database:', action.target);
 
       await prisma.action_queue.create({
         data: {
@@ -351,7 +344,6 @@ export class ActionQueueEmitter {
         }
       });
 
-      console.log('[Telemetry Pipeline] ✅ Action stored successfully');
 
       // Log decision
       await logDecision({
@@ -421,10 +413,6 @@ export class TelemetryPipeline {
     const startDate = new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
     const endDate = new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
 
-    console.log(`\n${'='.repeat(80)}`);
-    console.log(`[Telemetry Pipeline] Starting daily pipeline`);
-    console.log(`[Telemetry Pipeline] Date range: ${startDate} to ${endDate}`);
-    console.log('='.repeat(80));
 
     try {
       // Identify opportunities (includes GSC + GA4 fetch)
@@ -432,10 +420,8 @@ export class TelemetryPipeline {
       const opportunities = await this.transform.identifyOpportunities(startDate, endDate);
       const transformTime = Date.now() - transformStart;
 
-      console.log(`\n[Telemetry Pipeline] Found ${opportunities.length} opportunities in ${transformTime}ms`);
 
       if (opportunities.length === 0) {
-        console.log('[Telemetry Pipeline] No opportunities found, pipeline complete');
 
         await logDecision({
           scope: 'growth-engine',
@@ -483,13 +469,6 @@ export class TelemetryPipeline {
       const emitTime = Date.now() - emitStart;
       const totalTime = Date.now() - pipelineStart;
 
-      console.log(`\n[Telemetry Pipeline] ✅ Pipeline completed successfully`);
-      console.log(`  - Opportunities found: ${opportunities.length}`);
-      console.log(`  - Actions emitted: ${actionsEmitted}`);
-      console.log(`  - Total time: ${totalTime}ms`);
-      console.log(`  - Transform time: ${transformTime}ms`);
-      console.log(`  - Emit time: ${emitTime}ms`);
-      console.log('='.repeat(80) + '\n');
 
       // Log completion
       await logDecision({

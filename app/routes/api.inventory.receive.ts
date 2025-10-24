@@ -108,7 +108,6 @@ export async function action({ request }: ActionFunctionArgs) {
     // For now, log the sync intention
     for (const update of alcUpdates) {
       // await syncInventoryCostToShopify(update.variantId, update.newALC);
-      console.log(
         `[Inventory] Would sync ALC to Shopify: ${update.variantId} -> $${update.newALC}`,
       );
     }

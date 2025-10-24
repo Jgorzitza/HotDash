@@ -87,12 +87,10 @@ export async function enforceCanadaWarehouseZero(
   try {
     // In production: query Shopify for all variants in Canada warehouse
     // For now: mock the operation
-    console.log(`[Reconciliation] Setting Canada warehouse available=0 for ${shopDomain}`);
     
     // Mock: Update 25 variants
     variantsUpdated = 25;
     
-    console.log(`[Reconciliation] Updated ${variantsUpdated} variants in Canada warehouse`);
     
     return {
       success: true,
@@ -166,7 +164,6 @@ export async function recalculateVirtualBundleStock(
           });
           
           // Update virtual stock in database
-          console.log(`[Reconciliation] Updated ${bundle.name}: ${currentStock} → ${expectedStock}`);
           bundlesUpdated++;
         }
         
@@ -219,7 +216,6 @@ export async function syncInventoryToShopify(
     for (const adjustment of adjustments) {
       try {
         // Mock Shopify inventory adjustment
-        console.log(`[Reconciliation] Shopify sync: ${adjustment.bundleId} → ${adjustment.adjustment}`);
         adjustmentsProcessed++;
       } catch (error: any) {
         errors.push({
@@ -312,7 +308,6 @@ export async function logReconciliationResults(
       shopify_sync_success: result.shopifySyncSuccess
     };
 
-    console.log(`[Reconciliation] Logged results:`, logEntry);
   } catch (error: any) {
     console.error(`[Reconciliation] Failed to log results:`, error);
   }
@@ -336,7 +331,6 @@ export async function runNightlyWarehouseReconciliation(
       message,
       bundleId
     });
-    console.log(`[Reconciliation] ${level.toUpperCase()}: ${message}`);
   };
 
   log('info', `Starting nightly warehouse reconciliation for ${params.shopDomain}`);

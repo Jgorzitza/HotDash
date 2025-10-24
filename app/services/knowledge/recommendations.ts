@@ -40,7 +40,6 @@ export async function getRecommendedArticles(
   limit: number = 3
 ): Promise<KBArticle[]> {
   try {
-    console.log(`[KB Recommendations] Getting recommendations for: "${question.substring(0, 50)}..."`);
 
     // Perform semantic search with quality filtering
     const results = await semanticSearch({
@@ -55,7 +54,6 @@ export async function getRecommendedArticles(
       .sort((a, b) => b.confidenceScore - a.confidenceScore)
       .slice(0, limit);
 
-    console.log(`[KB Recommendations] ✅ Found ${recommended.length} recommendations`);
     return recommended;
   } catch (error) {
     console.error(`[KB Recommendations] ❌ Error getting recommendations:`, error);
@@ -75,7 +73,6 @@ export async function identifyKnowledgeGaps(
   days: number = 7
 ): Promise<Recommendation[]> {
   try {
-    console.log(`[KB Recommendations] Identifying knowledge gaps (last ${days} days)`);
 
     const recommendations: Recommendation[] = [];
 
@@ -87,7 +84,6 @@ export async function identifyKnowledgeGaps(
     // 2. Cluster similar questions
     // 3. Recommend creating articles for clusters
 
-    console.log(`[KB Recommendations] ✅ Found ${recommendations.length} knowledge gaps`);
     return recommendations;
   } catch (error) {
     console.error(`[KB Recommendations] ❌ Error identifying gaps:`, error);
@@ -107,7 +103,6 @@ export async function identifyKnowledgeGaps(
  */
 export async function recommendArticlesForUpdate(): Promise<Recommendation[]> {
   try {
-    console.log(`[KB Recommendations] Finding articles needing updates`);
 
     const recommendations: Recommendation[] = [];
 
@@ -156,7 +151,6 @@ export async function recommendArticlesForUpdate(): Promise<Recommendation[]> {
       }
     }
 
-    console.log(`[KB Recommendations] ✅ Found ${recommendations.length} articles needing updates`);
     return recommendations;
   } catch (error) {
     console.error(`[KB Recommendations] ❌ Error recommending updates:`, error);
@@ -176,7 +170,6 @@ export async function recommendArticlesForUpdate(): Promise<Recommendation[]> {
  */
 export async function recommendArticlesForArchival(): Promise<Recommendation[]> {
   try {
-    console.log(`[KB Recommendations] Finding articles for archival`);
 
     const recommendations: Recommendation[] = [];
     const ninetyDaysAgo = new Date();
@@ -236,7 +229,6 @@ export async function recommendArticlesForArchival(): Promise<Recommendation[]> 
       });
     }
 
-    console.log(`[KB Recommendations] ✅ Found ${recommendations.length} articles for archival`);
     return recommendations;
   } catch (error) {
     console.error(`[KB Recommendations] ❌ Error recommending archival:`, error);
@@ -262,7 +254,6 @@ export async function getTrendingTopics(
   currentVolume: number;
 }>> {
   try {
-    console.log(`[KB Recommendations] Analyzing trending topics (last ${days} days)`);
 
     // This would analyze conversation patterns and search queries
     // For now, return empty array as placeholder
@@ -275,7 +266,6 @@ export async function getTrendingTopics(
       currentVolume: number;
     }> = [];
 
-    console.log(`[KB Recommendations] ✅ Found ${trends.length} trending topics`);
     return trends;
   } catch (error) {
     console.error(`[KB Recommendations] ❌ Error analyzing trends:`, error);
@@ -295,7 +285,6 @@ export async function getRecommendationsDashboard(): Promise<{
   timestamp: Date;
 }> {
   try {
-    console.log(`[KB Recommendations] Building recommendations dashboard`);
 
     const [gaps, updates, archival] = await Promise.all([
       identifyKnowledgeGaps(7),
@@ -303,7 +292,6 @@ export async function getRecommendationsDashboard(): Promise<{
       recommendArticlesForArchival(),
     ]);
 
-    console.log(`[KB Recommendations] ✅ Dashboard complete`);
 
     return {
       gaps,

@@ -41,7 +41,6 @@ export function PerformanceOptimizationDashboard({
 
     const interval = setInterval(() => {
       // Trigger refresh (would be handled by parent component)
-      console.log("Auto-refreshing performance data...");
     }, 30000); // Every 30 seconds
 
     return () => clearInterval(interval);

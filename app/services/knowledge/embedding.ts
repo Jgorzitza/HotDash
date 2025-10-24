@@ -33,7 +33,6 @@ export async function generateEmbedding(
   const { text, model = DEFAULT_EMBEDDING_MODEL } = request;
 
   try {
-    console.log(`[KB Embedding] Generating embedding for text (${text.length} chars)`);
 
     const response = await openai.embeddings.create({
       model,
@@ -44,7 +43,6 @@ export async function generateEmbedding(
     const embedding = response.data[0].embedding;
     const usage = response.usage;
 
-    console.log(`[KB Embedding] ✅ Generated embedding (${embedding.length} dimensions)`);
 
     return {
       embedding,
@@ -72,7 +70,6 @@ export async function generateEmbeddingsBatch(
   model: string = DEFAULT_EMBEDDING_MODEL
 ): Promise<number[][]> {
   try {
-    console.log(`[KB Embedding] Generating batch embeddings for ${texts.length} texts`);
 
     const response = await openai.embeddings.create({
       model,
@@ -82,7 +79,6 @@ export async function generateEmbeddingsBatch(
 
     const embeddings = response.data.map((item) => item.embedding);
 
-    console.log(`[KB Embedding] ✅ Generated ${embeddings.length} embeddings`);
 
     return embeddings;
   } catch (error) {

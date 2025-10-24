@@ -47,7 +47,6 @@ export async function action({ request }: ActionFunctionArgs) {
   //     updated_at: new Date().toISOString(),
   //   });
 
-  console.log(`[Preferences] Theme saved for ${session.shop}:`, theme);
 
   return Response.json({ ok: true });
 }

@@ -8,7 +8,7 @@
  * - Automated issue resolution workflow
  */
 
-import { type LoaderFunctionArgs } from "react-router";
+import { type LoaderFunctionArgs, type MetaFunction } from "react-router";
 import { useLoaderData } from "react-router";
 import {
   Page,
@@ -43,6 +43,24 @@ interface LoaderData {
   healthScore: number;
   timestamp: string;
 }
+
+export const meta: MetaFunction = () => {
+  return [
+    { title: "SEO Health Monitoring Dashboard | Hot Dash" },
+    {
+      name: "description",
+      content:
+        "Monitor keyword rankings, crawl anomalies, search console coverage, and SEO health alerts for your Shopify store inside Hot Dash.",
+    },
+    { name: "robots", content: "noindex, nofollow" },
+    { property: "og:title", content: "SEO Health Monitoring Dashboard" },
+    {
+      property: "og:description",
+      content:
+        "Centralized SEO monitoring with health scores, ranking alerts, and traffic anomaly detection for Shopify brands.",
+    },
+  ];
+};
 
 export async function loader({ request }: LoaderFunctionArgs) {
   try {
@@ -354,4 +372,3 @@ export default function SEOMonitoringDashboard() {
     </Page>
   );
 }
-

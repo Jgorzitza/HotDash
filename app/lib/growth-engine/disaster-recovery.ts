@@ -493,7 +493,6 @@ export class DisasterRecoveryEngine {
     
     // Execute immediate response
     for (const action of scenario.response.immediate) {
-      console.log(`Immediate response: ${action}`);
     }
     
     // Execute recovery plan

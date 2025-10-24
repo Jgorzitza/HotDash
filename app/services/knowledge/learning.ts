@@ -109,7 +109,6 @@ export async function extractLearning(
   const { approvalId, aiDraft, humanFinal, grades, customerQuestion, reviewer } = request;
 
   try {
-    console.log(`[KB Learning] Extracting learning from approval: ${approvalId}`);
 
     // Calculate edit metrics
     const editDistance = calculateEditDistance(aiDraft, humanFinal);
@@ -118,7 +117,6 @@ export async function extractLearning(
     // Classify learning type
     const learningType = classifyLearningType(aiDraft, humanFinal, grades);
 
-    console.log(`[KB Learning] Edit ratio: ${editRatio.toFixed(2)}, Type: ${learningType}`);
 
     // Store learning edit (would need kb_learning_edits table)
     // For now, log to decision_log
@@ -147,7 +145,6 @@ export async function extractLearning(
 
     // High-quality approval (grades ≥ 4, edit_ratio < 0.1)
     if (grades.tone >= 4 && grades.accuracy >= 4 && grades.policy >= 4 && editRatio < 0.1) {
-      console.log(`[KB Learning] High-quality approval - increasing confidence`);
       confidenceChange = 0.05;
       // Would update KB article confidence here
       kbArticleUpdated = true;
@@ -155,7 +152,6 @@ export async function extractLearning(
 
     // Significant edit (edit_ratio ≥ 0.3, grades ≥ 4) - create new article
     if (editRatio >= 0.3 && grades.tone >= 4 && grades.accuracy >= 4) {
-      console.log(`[KB Learning] Significant edit - creating new KB article`);
       
       const result = await ingestDocument({
         title: customerQuestion,
@@ -180,12 +176,10 @@ export async function extractLearning(
 
     // Low grade (any ≤ 2) - decrease confidence
     if (grades.tone <= 2 || grades.accuracy <= 2 || grades.policy <= 2) {
-      console.log(`[KB Learning] Low grade - decreasing confidence`);
       confidenceChange = -0.1;
       kbArticleUpdated = true;
     }
 
-    console.log(`[KB Learning] ✅ Learning extracted successfully`);
 
     return {
       editCreated: true,
@@ -224,12 +218,10 @@ export async function detectRecurringIssues(
   lastSeen: Date;
 }>> {
   try {
-    console.log(`[KB Learning] Detecting recurring issues (last ${days} days)`);
 
     // This would query conversation embeddings and find clusters
     // For now, return empty array as placeholder
     
-    console.log(`[KB Learning] ✅ Recurring issues detection complete`);
     return [];
   } catch (error) {
     console.error(`[KB Learning] ❌ Error detecting recurring issues:`, error);
@@ -246,7 +238,6 @@ export async function detectRecurringIssues(
  */
 export async function archiveStaleArticles(): Promise<number> {
   try {
-    console.log(`[KB Learning] Archiving stale articles`);
 
     const ninetyDaysAgo = new Date();
     ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90);
@@ -282,7 +273,6 @@ export async function archiveStaleArticles(): Promise<number> {
       archivedCount++;
     }
 
-    console.log(`[KB Learning] ✅ Archived ${archivedCount} stale articles`);
     return archivedCount;
   } catch (error) {
     console.error(`[KB Learning] ❌ Error archiving articles:`, error);

@@ -405,11 +405,6 @@ export async function refreshDailyData(): Promise<void> {
 
     // In production, store in seo_rankings table
     // For now, just cache the results
-    console.log(`[Search Console Enhanced] Refreshed data for ${dateStr}`);
-    console.log(`  Total clicks: ${snapshot.totalClicks}`);
-    console.log(`  Total impressions: ${snapshot.totalImpressions}`);
-    console.log(`  Avg CTR: ${(snapshot.avgCtr * 100).toFixed(2)}%`);
-    console.log(`  Avg position: ${snapshot.avgPosition.toFixed(1)}`);
 
     const duration = Date.now() - startTime;
     appMetrics.gaApiCall("refreshDailyData", true, duration);

@@ -33,12 +33,10 @@ function selectClient() {
 
   switch (config.mode) {
     case "direct":
-      console.log("[GA] Using direct API client");
       return { client: createDirectGaClient(config.propertyId), config };
 
     case "mock":
     default:
-      console.log("[GA] Using mock client");
       return { client: createMockGaClient(), config };
   }
 }

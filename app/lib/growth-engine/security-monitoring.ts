@@ -268,7 +268,6 @@ export class SecurityMonitoringEngine {
    */
   async assessVulnerabilities(): Promise<void> {
     // Simulate vulnerability assessment
-    console.log('Assessing vulnerabilities...');
   }
 
   /**
@@ -345,7 +344,6 @@ export class SecurityMonitoringEngine {
    */
   private async initializeComplianceChecks(): Promise<void> {
     // Initialize compliance check framework
-    console.log('Compliance checks initialized');
   }
 
   /**

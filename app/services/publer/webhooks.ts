@@ -98,7 +98,6 @@ export async function processWebhookEvent(
   try {
     const { event, job_id, status, posts } = payload;
 
-    console.log(
       `[Publer Webhook] Event: ${event}, Job: ${job_id}, Status: ${status}`,
     );
 

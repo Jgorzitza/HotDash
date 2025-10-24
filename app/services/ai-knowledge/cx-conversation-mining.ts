@@ -122,15 +122,12 @@ async function extractChatwootConversations(days: number = 30) {
  * @returns Number of conversations embedded
  */
 export async function embedConversations(): Promise<number> {
-  console.log("[CX Mining] Extracting conversations from Chatwoot");
 
   // 1. Extract last 30 days of conversations
   const conversations = await extractChatwootConversations(30);
 
-  console.log(`[CX Mining] Found ${conversations.length} conversations`);
 
   if (conversations.length === 0) {
-    console.log("[CX Mining] No conversations to embed");
     return 0;
   }
 
@@ -179,7 +176,6 @@ export async function embedConversations(): Promise<number> {
     await new Promise((resolve) => setTimeout(resolve, 100));
   }
 
-  console.log(`[CX Mining] ✅ Embedded ${embeddedCount} conversations`);
 
   return embeddedCount;
 }
@@ -359,7 +355,6 @@ export async function generateCXProductActions(): Promise<ProductAction[]> {
  * @returns Summary of mining results
  */
 export async function runNightlyCXMining() {
-  console.log(
     "[CX Mining] Starting nightly conversation analysis",
     new Date().toISOString(),
   );
@@ -371,12 +366,10 @@ export async function runNightlyCXMining() {
     // 2. Detect themes
     const themes = await detectRecurringThemes(3, 7);
 
-    console.log(`[CX Mining] Found ${themes.length} recurring themes`);
 
     // 3. Generate actions (handed off to Product agent)
     const actions = await generateCXProductActions();
 
-    console.log(`[CX Mining] Generated ${actions.length} Action cards`);
 
     // Log results
     const summary = {
@@ -391,7 +384,6 @@ export async function runNightlyCXMining() {
       })),
     };
 
-    console.log("[CX Mining] Summary:", JSON.stringify(summary, null, 2));
 
     return summary;
   } catch (error) {

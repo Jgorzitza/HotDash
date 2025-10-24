@@ -152,24 +152,20 @@ export class GrowthEngineAIService {
    */
   async initialize(): Promise<void> {
     try {
-      console.log("🚀 Initializing Growth Engine AI...");
 
       // Initialize Action Attribution
       if (this.config.actionAttribution.enabled) {
         await this.initializeActionAttribution();
-        console.log("✅ Action Attribution initialized");
       }
 
       // Initialize CX to Product Loop
       if (this.config.cxProductLoop.enabled) {
         await this.initializeCXProductLoop();
-        console.log("✅ CX to Product Loop initialized");
       }
 
       // Initialize Memory Systems
       if (this.config.memorySystems.enabled) {
         await this.initializeMemorySystems();
-        console.log("✅ Memory Systems initialized");
       }
 
       // Initialize Advanced AI Features
@@ -177,10 +173,8 @@ export class GrowthEngineAIService {
           this.config.advancedFeatures.guardrails || 
           this.config.advancedFeatures.approvalFlows) {
         await this.initializeAdvancedFeatures();
-        console.log("✅ Advanced AI Features initialized");
       }
 
-      console.log("🎉 Growth Engine AI initialization complete!");
     } catch (error) {
       console.error("❌ Growth Engine AI initialization failed:", error);
       this.status.status = "error";
@@ -295,7 +289,6 @@ export class GrowthEngineAIService {
     }
 
     // Initialize tracking
-    console.log(`📊 Action Attribution initialized with GA4 Property: ${this.config.actionAttribution.ga4PropertyId}`);
   }
 
   /**
@@ -308,7 +301,6 @@ export class GrowthEngineAIService {
       analysisWindow: this.config.cxProductLoop.analysisWindow,
     };
 
-    console.log(`🔄 CX to Product Loop initialized with analysis window: ${config.analysisWindow} days`);
   }
 
   /**
@@ -321,7 +313,6 @@ export class GrowthEngineAIService {
       conversationRetention: this.config.memorySystems.conversationRetention,
     };
 
-    console.log(`🧠 Memory Systems initialized with retention: ${config.conversationRetention} days`);
   }
 
   /**
@@ -338,7 +329,6 @@ export class GrowthEngineAIService {
       await this.configureDefaultApprovalFlows();
     }
 
-    console.log("🤖 Advanced AI Features initialized with handoffs, guardrails, and approval flows");
   }
 
   /**
@@ -446,14 +436,12 @@ export class GrowthEngineAIService {
    * Configure default guardrails
    */
   private async configureDefaultGuardrails(): Promise<void> {
-    console.log("🔒 Configuring default guardrails for PII detection and content filtering");
   }
 
   /**
    * Configure default approval flows
    */
   private async configureDefaultApprovalFlows(): Promise<void> {
-    console.log("✅ Configuring default approval flows for high-risk actions and CEO agent operations");
   }
 }
 

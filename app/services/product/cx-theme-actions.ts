@@ -287,7 +287,6 @@ export async function addCXActionsToQueue(
     facts.push(fact);
   }
 
-  console.log(`[Product] ✅ Added ${actions.length} CX theme actions to queue`);
 
   return {
     added: actions.length,

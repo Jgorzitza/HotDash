@@ -23,7 +23,6 @@ export async function ingestDocument(
   const { title, content, category, tags, source, createdBy, metadata = {} } = request;
 
   try {
-    console.log(`[KB Ingestion] Ingesting document: ${title}`);
 
     // Prepare text for embedding
     const embeddingText = combineQuestionAnswer(title, content, category);
@@ -52,7 +51,6 @@ export async function ingestDocument(
       },
     });
 
-    console.log(`[KB Ingestion] ✅ Document ingested: ${article.id}`);
 
     return {
       articleId: article.id,
@@ -81,7 +79,6 @@ export async function ingestDocument(
 export async function ingestDocumentsBatch(
   requests: IngestionRequest[]
 ): Promise<IngestionResult[]> {
-  console.log(`[KB Ingestion] Batch ingesting ${requests.length} documents`);
 
   const results: IngestionResult[] = [];
 
@@ -94,7 +91,6 @@ export async function ingestDocumentsBatch(
   }
 
   const successCount = results.filter((r) => r.success).length;
-  console.log(`[KB Ingestion] ✅ Batch complete: ${successCount}/${requests.length} successful`);
 
   return results;
 }
@@ -117,7 +113,6 @@ export async function updateArticle(
   }>
 ): Promise<KBArticle | null> {
   try {
-    console.log(`[KB Ingestion] Updating article: ${articleId}`);
 
     // If content or title changed, regenerate embedding
     let embeddingUpdate: any = {};
@@ -152,7 +147,6 @@ export async function updateArticle(
       },
     });
 
-    console.log(`[KB Ingestion] ✅ Article updated: ${articleId}`);
 
     return mapToKBArticle(updated);
   } catch (error) {
@@ -169,13 +163,11 @@ export async function updateArticle(
  */
 export async function deleteArticle(articleId: string): Promise<boolean> {
   try {
-    console.log(`[KB Ingestion] Deleting article: ${articleId}`);
 
     await prisma.knowledge_base.delete({
       where: { id: articleId },
     });
 
-    console.log(`[KB Ingestion] ✅ Article deleted: ${articleId}`);
     return true;
   } catch (error) {
     console.error(`[KB Ingestion] ❌ Error deleting article:`, error);

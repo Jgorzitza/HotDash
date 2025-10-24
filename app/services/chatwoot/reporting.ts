@@ -577,9 +577,6 @@ export async function emailReport(
 ): Promise<void> {
   // Placeholder for email integration
   // Would integrate with SendGrid, Postmark, or similar
-  console.log("[Reporting] Email report to:", recipients);
-  console.log("[Reporting] Report type:", report.report_type);
-  console.log("[Reporting] Period:", report.period);
 }
 
 /**
@@ -588,5 +585,4 @@ export async function emailReport(
 export async function saveReport(report: SupportReport): Promise<void> {
   // Placeholder for database persistence
   // Would save to Supabase for historical tracking
-  console.log("[Reporting] Save report:", report.report_type, report.period);
 }
