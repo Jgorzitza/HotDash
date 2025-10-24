@@ -43,15 +43,7 @@ describe("GA Configuration", () => {
       expect(config.propertyId).toBe("123456789");
     });
 
-    it("should use mcp mode when GA_MODE=mcp", () => {
-      process.env.GA_MODE = "mcp";
-      process.env.GA_MCP_HOST = "https://mcp.example.com";
-
-      const config = getGaConfig();
-
-      expect(config.mode).toBe("mcp");
-      expect(config.mcpHost).toBe("https://mcp.example.com");
-    });
+    // GA MCP mode no longer supported
 
     it("should prioritize GA_MODE over GA_USE_MOCK", () => {
       process.env.GA_MODE = "direct";
@@ -88,13 +80,7 @@ describe("GA Configuration", () => {
       expect(config.propertyId).toBe("custom-prop-123");
     });
 
-    it("should include mcpHost when provided", () => {
-      process.env.GA_MCP_HOST = "https://analytics-mcp.fly.dev";
-
-      const config = getGaConfig();
-
-      expect(config.mcpHost).toBe("https://analytics-mcp.fly.dev");
-    });
+    // GA MCP host no longer supported
 
     it("should handle empty GA_MODE string", () => {
       process.env.GA_MODE = "";

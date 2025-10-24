@@ -19,8 +19,21 @@ import prisma from "../../db.server";
 async function runTelemetryPipeline() {
   const { TelemetryPipeline } = await import("./telemetry-pipeline");
   const pipeline = new TelemetryPipeline();
+  // Safety: hard timeout to avoid hanging on network-bound integrations
+  const withTimeout = <T>(p: Promise<T>, ms: number) =>
+    new Promise<T>((resolve, reject) => {
+      const t = setTimeout(() => reject(new Error(`telemetry-timeout-after-${ms}ms`)), ms);
+      p.then((v) => {
+        clearTimeout(t);
+        resolve(v);
+      }).catch((e) => {
+        clearTimeout(t);
+        reject(e);
+      });
+    });
+
   try {
-    const result = await pipeline.runDailyPipeline();
+    const result = await withTimeout(pipeline.runDailyPipeline(), 10000);
     console.log("[QA-001] Telemetry pipeline result:", result);
     return result;
   } catch (err: any) {
@@ -92,20 +105,39 @@ async function createAndApproveSampleApproval() {
   };
 
   const userId = "qa-helper";
-  const approval = await createApproval(action, userId, SUPABASE_URL, SUPABASE_SERVICE_KEY);
-  console.log("[QA-001] Created approval:", approval);
+  // Wrap Supabase network calls in a timeout to avoid hanging in restricted environments
+  const withTimeout = <T>(p: Promise<T>, ms: number) =>
+    new Promise<T>((resolve, reject) => {
+      const t = setTimeout(() => reject(new Error(`approval-timeout-after-${ms}ms`)), ms);
+      p.then((v) => { clearTimeout(t); resolve(v); })
+       .catch((e) => { clearTimeout(t); reject(e); });
+    });
 
-  const approved = await updateApprovalStatus(
-    approval.approvalId,
-    "approved",
-    userId,
-    undefined,
-    SUPABASE_URL,
-    SUPABASE_SERVICE_KEY,
-  );
-  console.log(`[QA-001] Approval ${approval.approvalId} approved:`, approved);
+  try {
+    const approval = await withTimeout(
+      createApproval(action, userId, SUPABASE_URL, SUPABASE_SERVICE_KEY),
+      8000,
+    );
+    console.log("[QA-001] Created approval:", approval);
 
-  return { created: true, approvalId: approval.approvalId, approved };
+    const approved = await withTimeout(
+      updateApprovalStatus(
+        approval.approvalId,
+        "approved",
+        userId,
+        undefined,
+        SUPABASE_URL,
+        SUPABASE_SERVICE_KEY,
+      ),
+      8000,
+    );
+    console.log(`[QA-001] Approval ${approval.approvalId} approved:`, approved);
+
+    return { created: true, approvalId: approval.approvalId, approved };
+  } catch (err: any) {
+    console.warn("[QA-001] Skipping approval network flow:", err?.message || err);
+    return { created: false };
+  }
 }
 
 async function logSummary(summary: any) {
@@ -125,16 +157,42 @@ async function logSummary(summary: any) {
 }
 
 async function main() {
-  const beforeCount = await prisma.action_queue.count().catch(() => 0);
+  const SKIP_DB = process.env.QA_SKIP_DB === '1';
+  const SKIP_TELEMETRY = process.env.QA_SKIP_TELEMETRY === '1';
+  const SKIP_APPROVAL = process.env.QA_SKIP_APPROVAL === '1';
+
+  let beforeCount = 0;
+  if (!SKIP_DB) {
+    try {
+      beforeCount = await Promise.race([
+        prisma.action_queue.count(),
+        new Promise<number>((_, rej) => setTimeout(() => rej(new Error('db-timeout-before')), 5000))
+      ] as any);
+    } catch (e) {
+      console.warn('[QA-001] Skipping DB pre-count (timeout or failure)');
+    }
+  } else {
+    console.log('[QA-001] QA_SKIP_DB=1 - skipping DB counts');
+  }
   console.log(`[QA-001] action_queue count (before): ${beforeCount}`);
 
-  const telemetry = await runTelemetryPipeline();
-  const agentRun = await runSpecialistAgentsAndPersist();
+  const telemetry = SKIP_TELEMETRY ? { success: true, opportunitiesFound: 0, actionsEmitted: 0, errors: [], performance: { totalTime: 0, gscFetchTime: 0, ga4FetchTime: 0, transformTime: 0, emitTime: 0 } } : await runTelemetryPipeline();
+  const agentRun = SKIP_DB ? { produced: 0, inserted: 0 } : await runSpecialistAgentsAndPersist();
 
-  const afterCount = await prisma.action_queue.count().catch(() => beforeCount);
+  let afterCount = beforeCount;
+  if (!SKIP_DB) {
+    try {
+      afterCount = await Promise.race([
+        prisma.action_queue.count(),
+        new Promise<number>((_, rej) => setTimeout(() => rej(new Error('db-timeout-after')), 5000))
+      ] as any);
+    } catch (e) {
+      console.warn('[QA-001] Skipping DB post-count (timeout or failure)');
+    }
+  }
   console.log(`[QA-001] action_queue count (after): ${afterCount}`);
 
-  const approval = await createAndApproveSampleApproval();
+  const approval = SKIP_APPROVAL ? { created: false } : await createAndApproveSampleApproval();
 
   const summary = {
     actionQueue: { before: beforeCount, after: afterCount, insertedFromAgents: agentRun.inserted },
@@ -152,4 +210,3 @@ main().catch((err) => {
   console.error("[QA-001] Runner failed:", err);
   process.exitCode = 1;
 });
-

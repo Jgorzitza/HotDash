@@ -324,6 +324,10 @@ export class ActionQueueEmitter {
    */
   private async storeAction(action: ActionQueueItem, opportunity: OpportunityData): Promise<void> {
     try {
+      if (process.env.QA_SKIP_DB === '1') {
+        console.warn('[Telemetry Pipeline] QA_SKIP_DB=1 - skipping DB store for action');
+        return;
+      }
       console.log('[Telemetry Pipeline] Storing action in database:', action.target);
 
       await prisma.action_queue.create({
