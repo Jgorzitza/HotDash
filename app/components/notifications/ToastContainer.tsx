@@ -23,7 +23,7 @@ export function ToastContainer({ toasts, onDismiss }: ToastContainerProps) {
         position: "fixed",
         top: "var(--occ-space-4)",
         right: "var(--occ-space-4)",
-        zIndex: 10000,
+        zIndex: 9998, // Below modals (9999) - Design Audit H1
         display: "flex",
         flexDirection: "column",
         gap: "var(--occ-space-2)",

@@ -201,7 +201,7 @@ export function ActionQueueCard({
             onClick={() => onViewDetails(action.id)}
             className="action-queue-card__button action-queue-card__button--secondary"
           >
-            View Details
+            View Details →
           </button>
         )}
 

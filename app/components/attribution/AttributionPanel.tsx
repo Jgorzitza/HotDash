@@ -515,7 +515,7 @@ function ActionRow({
             cursor: "pointer",
           }}
         >
-          View Details
+          View Details →
         </button>
       </td>
     </tr>

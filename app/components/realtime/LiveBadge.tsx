@@ -107,7 +107,7 @@ export function LiveBadge({
         fontWeight: "var(--occ-font-weight-semibold)",
         position: "relative",
         animation:
-          isPulsing || showPulse ? "occ-pulse 1s ease-in-out" : undefined,
+          isPulsing || showPulse ? "occ-pulse 2s ease-in-out" : undefined, // Standardized to 2s - Design Audit H2
       }}
     >
       {count > 0 && (
