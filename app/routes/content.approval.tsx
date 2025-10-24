@@ -33,7 +33,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     };
   } catch (error: any) {
     console.error("Error loading content approvals:", error);
-    return {
+    return data({
       approvals: [],
       total: 0,
       stats: {

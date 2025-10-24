@@ -66,10 +66,10 @@ export async function loader({ request }: LoaderFunctionArgs) {
       year: parseInt(year),
       stats,
       scheduledItems: items
-    });
+    };
   } catch (error: any) {
     console.error("Error loading content calendar:", error);
-    return {
+    return data({
       calendar: [],
       month: parseInt(month),
       year: parseInt(year),
