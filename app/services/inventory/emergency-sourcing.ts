@@ -433,3 +433,43 @@ export async function calculateEmergencySourcing(input: any): Promise<any> {
 
   return result;
 }
+
+/**
+ * Get emergency sourcing history
+ */
+export async function getEmergencySourcingHistory(filters?: any): Promise<any[]> {
+  await logDecision({
+    scope: "build",
+    actor: "inventory",
+    action: "get_emergency_sourcing_history",
+    rationale: `Retrieving emergency sourcing history`,
+    evidenceUrl: "app/services/inventory/emergency-sourcing.ts",
+    status: "in_progress",
+    progressPct: 0,
+  });
+
+  // For now, return mock history
+  // In a real implementation, this would query the database
+  const history = [
+    {
+      id: "1",
+      variantId: "variant-1",
+      bundleProductId: "bundle-1",
+      decision: "approved",
+      netBenefit: 150.0,
+      createdAt: new Date().toISOString(),
+    },
+  ];
+
+  await logDecision({
+    scope: "build",
+    actor: "inventory",
+    action: "get_emergency_sourcing_history_complete",
+    rationale: `Retrieved ${history.length} emergency sourcing records`,
+    evidenceUrl: "app/services/inventory/emergency-sourcing.ts",
+    status: "completed",
+    progressPct: 100,
+  });
+
+  return history;
+}
