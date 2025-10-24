@@ -8,6 +8,15 @@
 
 **⚠️ CRITICAL: Manager follows same tool-first rules as agents. Training data is outdated.**
 
+**🚨 NEW (2025-10-24): Read CRITICAL_MCP_ENFORCEMENT.md FIRST**
+
+- [ ] **Read Critical Enforcement Doc**:
+  ```bash
+  # MANDATORY - Read before reviewing any engineer PRs
+  cat docs/runbooks/CRITICAL_MCP_ENFORCEMENT.md
+  ```
+  **Why**: Engineer nearly reversed production fixes by not using MCP tools. This doc prevents that.
+
 **MCP TOOL PRIORITY** (Effective 2025-10-21):
 
 1. **Shopify Dev MCP** → FIRST for Polaris + Shopify APIs
@@ -194,6 +203,15 @@ npx tsx --env-file=.env scripts/manager/query-questions.ts  # Questions waiting 
 ### 5.3 Issues & PRs (gate sanity) (60–90 sec)
 
 For each **Issue (label: task)** and its linked PR:
+
+- [ ] **🚨 MCP ENFORCEMENT (CRITICAL - Check FIRST)**:
+  - [ ] MCP Evidence JSONL present OR "non-code change" stated
+  - [ ] Codebase-retrieval used to understand current state (for code changes)
+  - [ ] View tool used to read existing files (for code changes)
+  - [ ] Validation used (Shopify/Polaris/library code)
+  - [ ] NO red flag phrases: "fixed based on experience", "applied standard pattern", "cleaned up code"
+  - [ ] PR explains why change won't break existing fixes
+  - **If ANY missing → REJECT immediately** (see docs/runbooks/CRITICAL_MCP_ENFORCEMENT.md)
 
 - [ ] **Scope Gate:** Problem + Acceptance Criteria present in Issue
 - [ ] **Sandbox:** Issue lists **Allowed paths**; PR body repeats them

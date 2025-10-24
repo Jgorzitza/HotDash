@@ -280,9 +280,18 @@ test(agent-name): add tests
 - **Dev agents** (Cursor/Codex/Claude): follow runbooks & directions; no Agent SDK.
 - **In‑app agents** (OpenAI Agents SDK): HITL enforced for `ai-customer` using built‑in interruptions.
 
-## MCP Tools (MANDATORY - Updated 2025-10-21)
+## MCP Tools (MANDATORY - Updated 2025-10-24)
+
+**🚨 CRITICAL (2025-10-24)**: Engineer nearly reversed production fixes by not using MCP tools. See `docs/runbooks/CRITICAL_MCP_ENFORCEMENT.md` for full enforcement details.
 
 **ALL agents (including Manager) MUST use MCP tools BEFORE writing code** - non-negotiable
+
+**BEFORE ANY CODE CHANGE**:
+1. ✅ Pull MCP docs (Shopify Dev → Context7 → Web)
+2. ✅ Use codebase-retrieval to understand current state
+3. ✅ Use view tool to read existing files
+4. ✅ Verify change won't break existing fixes
+5. ✅ Validate with appropriate MCP tool
 
 **MCP TOOL PRIORITY** (Effective 2025-10-21):
 
@@ -417,17 +426,34 @@ test(agent-name): add tests
 
 ### Enforcement (ALL Agents Including Manager)
 
+**🚨 CRITICAL**: See `docs/runbooks/CRITICAL_MCP_ENFORCEMENT.md` for full enforcement details and consequences.
+
 **MUST DO**:
 
 - ✅ Pull docs BEFORE writing code (not after)
+- ✅ Use codebase-retrieval to understand current state
+- ✅ Use view tool to read existing files
+- ✅ Verify change won't break existing fixes
 - ✅ Log tool usage via MCP Evidence JSONL (artifacts/) or in feedback markdown
 - ✅ Quote specific requirement from docs
 - ✅ Apply official patterns (not training data)
+- ✅ Validate with appropriate MCP tool
 
 **MUST NOT**:
 
 - ❌ Guess library behavior from training data (it's 6-12 months old)
+- ❌ Assume you know current codebase state from memory
+- ❌ Make changes without verifying against current code
+- ❌ Skip MCP tools to "save time" (costs more in failed deploys)
 - ❌ Deploy without verifying against docs
+
+**RED FLAGS** (Auto-reject):
+
+- ❌ "Fixed based on experience"
+- ❌ "Applied standard pattern"
+- ❌ "Cleaned up code"
+- ❌ No MCP evidence for code changes
+- ❌ No codebase-retrieval for understanding current state
 
 ---
 
