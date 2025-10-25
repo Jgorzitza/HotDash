@@ -92,22 +92,24 @@ jobs:
           PR_BODY: ${{ github.event.pull_request.body }}
         run: |
           python3 - <<'PY'
-import os, re, sys
+            import os
+            import re
+            import sys
 
-body = os.environ.get("PR_BODY", "")
+            body = os.environ.get("PR_BODY", "")
 
-if not re.search(r"^## Dev MCP Check", body, re.MULTILINE):
-    sys.stderr.write("❌ PR body missing '## Dev MCP Check' section\n")
-    sys.stderr.write("Required block including verification checklist is missing.\n")
-    sys.exit(1)
+            if not re.search(r"^## Dev MCP Check", body, re.MULTILINE):
+                sys.stderr.write("❌ PR body missing '## Dev MCP Check' section\n")
+                sys.stderr.write("Required block including verification checklist is missing.\n")
+                sys.exit(1)
 
-if not re.search(r"Verified:\s*No[^\n]*mcp.*dev|Verified:\s*No[^\n]*dev.*mcp", body, re.IGNORECASE):
-    sys.stderr.write("❌ Dev MCP Check section does not indicate verification\n")
-    sys.stderr.write("Must include a line such as 'Verified: No mcp.*dev or dev.*mcp imports in app/ (searched with grep)'.\n")
-    sys.exit(1)
+            if not re.search(r"Verified:\s*No[^\n]*(?:mcp.*dev|dev.*mcp)", body, re.IGNORECASE):
+                sys.stderr.write("❌ Dev MCP Check section does not indicate verification\n")
+                sys.stderr.write("Must include a line such as 'Verified: No mcp.*dev or dev.*mcp imports in app/ (searched with grep)'.\n")
+                sys.exit(1)
 
-print("✅ Dev MCP Check section validation passed")
-PY
+            print("✅ Dev MCP Check section validation passed")
+          PY
 
       - name: Report results
         run: |
