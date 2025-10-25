@@ -60,7 +60,7 @@ jobs:
         run: npm ci
 
       - name: Check for Dev MCP imports in production code
-        if: steps.diff.outputs.count != '0'
+        if: ${{ steps.diff.outputs.count != '0' }}
         shell: bash
         run: |
           set -euo pipefail
@@ -104,13 +104,13 @@ jobs:
           echo "✅ No Dev MCP imports found in production code"
 
       - name: Skip scan (no applicable files)
-        if: steps.diff.outputs.count == '0'
+        if: ${{ steps.diff.outputs.count == '0' }}
         run: |
           echo "✅ No TypeScript changes detected; skipping Dev MCP enforcement for this run"
 
       # PR-body check ONLY on pull_request events (pushes have no PR body)
       - name: Check PR body for Dev MCP Check section
-        if: github.event_name == 'pull_request'
+        if: ${{ github.event_name == 'pull_request' }}
         env:
           PR_BODY: ${{ github.event.pull_request.body }}
         shell: bash
