@@ -1,6 +1,69 @@
 # Agent Database Guide - Which Database to Use
 
-**CRITICAL: We have TWO separate databases. Use the RIGHT one for your task.**
+**🚨 CRITICAL: Read this BEFORE writing ANY database code 🚨**
+
+## TL;DR - The Only Thing You Need to Know
+
+**For logging YOUR progress/feedback:**
+```bash
+cp scripts/agent/log-feedback.ts /tmp/my-feedback.ts
+code /tmp/my-feedback.ts
+npx tsx --env-file=.env /tmp/my-feedback.ts
+```
+
+**For EVERYTHING ELSE (your actual work):**
+```typescript
+import prisma from './app/db.server';
+```
+
+**That's it. Stop overthinking it.**
+
+---
+
+## Common Errors & Fixes
+
+### Error: "audit_log table does not exist"
+**Problem:** There is NO `audit_log` table in ANY database.
+
+**Fix:** Use `pii_audit_log` instead:
+```typescript
+import prisma from './app/db.server';
+await prisma.pii_audit_log.create({...});  // ✅ CORRECT
+```
+
+### Error: "SeoAudit does not exist in current database"
+**Problem:** You're using KB database for production work.
+
+**Fix:** Use production database:
+```typescript
+import prisma from './app/db.server';  // NOT kbPrisma!
+await prisma.seoAudit.create({...});   // ✅ CORRECT
+```
+
+### Error: "DecisionLog does not exist in current database"
+**Problem:** You're using production database for feedback.
+
+**Fix:** Use template pattern or logDecision():
+```bash
+cp scripts/agent/log-feedback.ts /tmp/my-feedback.ts
+code /tmp/my-feedback.ts
+npx tsx --env-file=.env /tmp/my-feedback.ts
+```
+
+---
+
+## The Problem
+
+Agents keep trying to use tables that don't exist because they're confused about which database to use.
+
+**Common errors:**
+- ❌ "audit_log table does not exist" - Because there IS NO `audit_log` table (use `pii_audit_log` instead)
+- ❌ "SeoAudit not in KB database" - Because KB database is ONLY for feedback, not SEO work
+- ❌ "DecisionLog not in production" - Because DecisionLog is ONLY in KB database
+
+---
+
+## We Have TWO Databases
 
 ## The Two Databases
 
@@ -16,10 +79,13 @@ import prisma from './app/db.server';
 - Session (Shopify OAuth)
 - DashboardFact (analytics)
 - knowledge_base (KB articles)
-- audit_log (security auditing)
-- SeoAudit (SEO tracking)
+- pii_audit_log (PII security auditing) - **NOTE: NOT `audit_log`**
+- SeoAudit (SEO tracking - camelCase)
+- seo_audits (SEO tracking - snake_case)
 - action_queue (agent actions)
 - And 100+ other business tables
+
+**⚠️ IMPORTANT:** There is NO `audit_log` table. Use `pii_audit_log` instead.
 
 **When to use:**
 - ✅ Querying Shopify data
@@ -54,23 +120,28 @@ import kbPrisma from './app/kb-db.server';
 ```typescript
 // DON'T DO THIS
 import kbPrisma from './app/kb-db.server';
-await kbPrisma.audit_log.create(...);  // ❌ audit_log is NOT in KB database
-await kbPrisma.seoAudit.create(...);   // ❌ SeoAudit is NOT in KB database
+await kbPrisma.pii_audit_log.create(...);  // ❌ pii_audit_log is NOT in KB database
+await kbPrisma.seoAudit.create(...);       // ❌ SeoAudit is NOT in KB database
 ```
 
 **Error you'll get:**
 ```
-Invalid `prisma.audit_log.create()` invocation:
-The table `public.audit_log` does not exist in the current database.
+Invalid `prisma.pii_audit_log.create()` invocation:
+The table `public.pii_audit_log` does not exist in the current database.
 ```
+
+**Why:** KB database ONLY has DecisionLog and TaskAssignment. Everything else is in Production DB.
 
 ### ✅ CORRECT: Use production database for production work
 ```typescript
 // DO THIS
 import prisma from './app/db.server';
-await prisma.audit_log.create(...);   // ✅ audit_log is in production DB
-await prisma.seoAudit.create(...);    // ✅ SeoAudit is in production DB
+await prisma.pii_audit_log.create(...);  // ✅ pii_audit_log is in production DB
+await prisma.seoAudit.create(...);       // ✅ SeoAudit is in production DB (camelCase)
+await prisma.seo_audits.create(...);     // ✅ seo_audits is in production DB (snake_case)
 ```
+
+**⚠️ NOTE:** There is NO `audit_log` table. Use `pii_audit_log` instead.
 
 ### ❌ WRONG: Using production database for feedback
 ```typescript
@@ -136,7 +207,9 @@ await kbPrisma.seoAudit.create({...});  // ❌ SeoAudit not in KB DB
 ```typescript
 // For SEO work (production feature):
 import prisma from './app/db.server';
-await prisma.seoAudit.create({...});    // ✅ SeoAudit in production DB
+await prisma.seoAudit.create({...});    // ✅ SeoAudit in production DB (camelCase)
+// OR
+await prisma.seo_audits.create({...});  // ✅ seo_audits in production DB (snake_case)
 
 // For logging your progress:
 import { logDecision } from './app/services/decisions.server';
@@ -147,6 +220,8 @@ await logDecision({
   rationale: 'Completed SEO audit for homepage',
 });
 ```
+
+**⚠️ NOTE:** Use `pii_audit_log` for security auditing, NOT `audit_log` (doesn't exist).
 
 ### DATA Agent
 
@@ -205,8 +280,8 @@ await logDecision({
 | Daily feedback | KB | Template pattern |
 | Shopify data | Production | `import prisma from './app/db.server'` |
 | Analytics | Production | `import prisma from './app/db.server'` |
-| Security audit | Production | `import prisma from './app/db.server'` |
-| SEO tracking | Production | `import prisma from './app/db.server'` |
+| PII Security audit | Production | `prisma.pii_audit_log` (NOT audit_log) |
+| SEO tracking | Production | `prisma.seoAudit` or `prisma.seo_audits` |
 | Customer data | Production | `import prisma from './app/db.server'` |
 | Orders | Production | `import prisma from './app/db.server'` |
 
@@ -216,8 +291,10 @@ await logDecision({
 **Cause:** You're using the wrong database
 
 **Fix:** Check which database has that table:
-- `audit_log`, `SeoAudit`, `DashboardFact`, `Session`, etc. → Production DB
+- `pii_audit_log` (NOT audit_log), `SeoAudit`, `DashboardFact`, `Session`, etc. → Production DB
 - `DecisionLog`, `TaskAssignment` → KB DB
+
+**Common mistake:** Trying to use `audit_log` - this table DOES NOT EXIST. Use `pii_audit_log` instead.
 
 ### "Invalid Prisma Client"
 **Cause:** You're importing the wrong client
