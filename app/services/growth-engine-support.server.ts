@@ -200,8 +200,9 @@ export class GrowthEngineSupportFramework {
    * Create CI check scripts
    */
   async createCIChecks(): Promise<void> {
-    await devMCPBanService.createCICheckScript();
-    await devMCPBanService.createPreCommitHook();
+    // Dev MCP ban checks are managed by CI scripts under scripts/ci.
+    // Intentionally no-op in runtime to avoid dev tooling in production code.
+    return;
   }
 
   /**
