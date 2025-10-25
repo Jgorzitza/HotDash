@@ -18,6 +18,9 @@ artifacts/**/*.json
 # Playwright reports
 playwright-report/
 
+# KB search outputs (ephemeral, do not commit)
+kb-search-*.json
+
 # Node
 node_modules/
 
@@ -38,9 +41,7 @@ test-results/
 .env
 .env.*
 
-package-lock.json
-yarn.lock
-pnpm-lock.yaml
+# Allow lock files (required by CI)
 
 /extensions/*/dist
 apps/**/dist/
@@ -50,6 +51,11 @@ packages/dev-kb-prisma/
 # Secrets and evidence archives
 vault/
 artifacts/
+# Unignore specific evidence files for CI guards
+!artifacts/**/
+!artifacts/**/mcp/*.jsonl
+!artifacts/**/heartbeat*.ndjson
+!artifacts/**/logs/*.ndjson
 
 # Ignore shopify files created during app dev
 .shopify/*
