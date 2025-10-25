@@ -14,6 +14,15 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
       
+    - name: Determine changed source files
+      id: diff
+      run: |
+        git fetch origin ${{ github.base_ref }} --depth=1
+        git diff --name-only origin/${{ github.base_ref }}...HEAD > changed.txt
+        grep -E '\.(ts|tsx)$' changed.txt > changed-ts.txt || true
+        count=$(wc -l < changed-ts.txt | tr -d ' ')
+        echo "count=$count" >> $GITHUB_OUTPUT
+
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
@@ -24,13 +33,19 @@ jobs:
       run: npm ci
       
     - name: Enforce Database-Driven Process
+      if: steps.diff.outputs.count != '0'
       run: |
         echo "🔍 ENFORCEMENT: Database-Driven Workflow Compliance"
         echo "=================================================="
+        FILES=$(cat changed-ts.txt)
+        if [ -z "$FILES" ]; then
+          echo "✅ No TypeScript changes detected; skipping enforcement"
+          exit 0
+        fi
         
         # Check for markdown direction file usage
         echo "📋 Checking for markdown direction file usage..."
-        if grep -r "docs/directions/" app/ --include="*.ts" --include="*.tsx" | grep -v "archived"; then
+        if grep -i "docs/directions/" $FILES | grep -v "archived"; then
           echo "❌ VIOLATION: Agents reading markdown direction files"
           echo "   Action: Use database queries instead of markdown files"
           echo "   Command: npx tsx --env-file=.env scripts/agent/get-my-tasks.ts <agent>"
@@ -39,7 +54,7 @@ jobs:
         
         # Check for feedback markdown usage (should use logDecision)
         echo "📊 Checking for markdown feedback usage..."
-        if grep -r "feedback/.*\.md" app/ --include="*.ts" --include="*.tsx" | grep -v "logDecision"; then
+        if grep -i "feedback/.*\.md" $FILES | grep -v "logDecision"; then
           echo "❌ VIOLATION: Agents using markdown feedback instead of logDecision()"
           echo "   Action: Use logDecision() for all progress reporting"
           echo "   Import: import { logDecision } from '~/services/decisions.server'"
@@ -48,14 +63,14 @@ jobs:
         
         # Check for database task querying
         echo "🗄️ Checking for database task querying..."
-        if ! grep -r "getMyTasks\|get-my-tasks" app/ --include="*.ts" --include="*.tsx"; then
+        if ! grep -i "getMyTasks\|get-my-tasks" $FILES; then
           echo "⚠️ WARNING: No database task querying found"
           echo "   Recommendation: Agents should query tasks from database"
         fi
         
         # Check for logDecision usage
         echo "📈 Checking for logDecision() usage..."
-        if ! grep -r "logDecision" app/ --include="*.ts" --include="*.tsx"; then
+        if ! grep -i "logDecision" $FILES; then
           echo "❌ VIOLATION: No logDecision() calls found"
           echo "   Action: Agents must log progress via logDecision()"
           echo "   Required: All progress reporting must use database"
@@ -67,3 +82,8 @@ jobs:
         echo "   - No markdown feedback usage"
         echo "   - logDecision() usage detected"
         echo "   - Database-driven process enforced"
+
+    - name: Skip enforcement (no applicable files)
+      if: steps.diff.outputs.count == '0'
+      run: |
+        echo "✅ No TypeScript changes detected; skipping database workflow enforcement"

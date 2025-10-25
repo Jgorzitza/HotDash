@@ -16,22 +16,36 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      
+
+      - name: Determine changed source files
+        id: diff
+        run: |
+          git fetch origin ${{ github.base_ref }} --depth=1
+          git diff --name-only origin/${{ github.base_ref }}...HEAD > changed.txt
+          grep -E '\.(ts|tsx)$' changed.txt > changed-ts.txt || true
+          count=$(wc -l < changed-ts.txt | tr -d ' ')
+          echo "count=$count" >> $GITHUB_OUTPUT
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
-      
+
       - name: Install dependencies
         run: npm ci
-      
+
       - name: Check for Dev MCP imports in production code
+        if: steps.diff.outputs.count != '0'
         run: |
+          FILES=$(cat changed-ts.txt)
+          if [ -z "$FILES" ]; then
+            echo "✅ No TypeScript/Tsx files changed; skipping Dev MCP scan"
+            exit 0
+          fi
           echo "🔍 Checking for Dev MCP imports in production code..."
           
-          # Check for Dev MCP imports in app directory
-          if grep -r "mcp.*dev\|dev.*mcp" app/ --include="*.ts" --include="*.tsx" -i; then
+          if grep -i "mcp.*dev\|dev.*mcp" $FILES; then
             echo "❌ Dev MCP imports detected in production code"
             echo "Dev MCP is for development/staging ONLY"
             echo "Production builds MUST FAIL if Dev MCP detected"
@@ -50,7 +64,12 @@ jobs:
           fi
           
           echo "✅ No Dev MCP imports found in production code"
-      
+
+      - name: Skip scan (no applicable files)
+        if: steps.diff.outputs.count == '0'
+        run: |
+          echo "✅ No TypeScript changes detected; skipping Dev MCP enforcement for this PR"
+
       - name: Check PR body for Dev MCP Check section
         run: |
           echo "🔍 Checking for Dev MCP Check section in PR body..."
