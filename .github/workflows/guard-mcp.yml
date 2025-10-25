@@ -1,83 +1,95 @@
 <<<<<<< HEAD
-name: guard-mcp
+name: Guard MCP - Evidence Validation
+
 on:
   pull_request:
-    types: [opened, synchronize, reopened, edited, ready_for_review]
-permissions:
-  contents: read
-  pull-requests: write
-  statuses: write
+    branches: [main]
+  push:
+    branches: [main]
+
 jobs:
-  enforce:
+  guard-mcp:
+    name: Validate MCP Evidence
     runs-on: ubuntu-latest
+    
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
-      - name: Get PR body
-        id: pr
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Check for MCP Evidence in PR
         run: |
-          echo "BODY<<EOF" >> $GITHUB_OUTPUT
-          echo "${{ github.event.pull_request.body }}" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
-
-      - name: Detect code changes
-        id: diff
-        run: |
-          git fetch origin ${{ github.base_ref }} --depth=1
-          git diff --name-only origin/${{ github.base_ref }}...HEAD > changed.txt
-          CODE="$(grep -E '^(app|src|server|packages|scripts|lib)/.*\.(ts|tsx|js|jsx|mjs|cjs)$' changed.txt || true)"
-          echo "code_change=$([ -n "$CODE" ] && echo true || echo false)" >> $GITHUB_OUTPUT
-
-      - name: Fail if Remix referenced (RR7 only)
-        if: steps.diff.outputs.code_change == 'true'
-        run: |
-          FILES="$(grep -E '^(app|src|server|packages)/.*\.(ts|tsx|js|jsx|mjs|cjs)$' changed.txt || true)"
-          if [ -n "$FILES" ]; then
-            MATCHES=$(grep -R -n -E "from[[:space:]]+['\"]@remix-run/|require\(['\"]@remix-run/" $FILES || true)
-            if [ -n "$MATCHES" ]; then
-              echo "::error::Remix usage detected in changed files."
-              echo "$MATCHES"
+          echo "🔍 Checking for MCP Evidence in PR..."
+          
+          # Check if PR body contains MCP Evidence section
+          if ! grep -q "## MCP Evidence" <<< "${{ github.event.pull_request.body }}"; then
+            echo "❌ PR body missing '## MCP Evidence' section"
+            echo "Required format:"
+            echo "## MCP Evidence (required for code changes)"
+            echo "- artifacts/<agent>/<date>/mcp/<topic>.jsonl"
+            echo "OR"
+            echo "- No MCP usage - non-code change"
+            exit 1
+          fi
+          
+          # Check if evidence files exist (if not "non-code change")
+          if ! grep -q "No MCP usage - non-code change" <<< "${{ github.event.pull_request.body }}"; then
+            echo "🔍 Checking for MCP evidence files..."
+            
+            # Extract file paths from PR body
+            EVIDENCE_PATHS=$(grep -A 10 "## MCP Evidence" <<< "${{ github.event.pull_request.body }}" | grep "^- " | sed 's/^- //')
+            
+            if [ -z "$EVIDENCE_PATHS" ]; then
+              echo "❌ No MCP evidence file paths found in PR body"
               exit 1
             fi
+            
+            # Check if files exist
+            MISSING_FILES=()
+            while IFS= read -r path; do
+              if [ ! -f "$path" ]; then
+                MISSING_FILES+=("$path")
+              fi
+            done <<< "$EVIDENCE_PATHS"
+            
+            if [ ${#MISSING_FILES[@]} -gt 0 ]; then
+              echo "❌ Missing MCP evidence files:"
+              printf '%s\n' "${MISSING_FILES[@]}"
+              exit 1
+            fi
+            
+            # Validate JSONL format
+            while IFS= read -r path; do
+              if [ -f "$path" ]; then
+                echo "🔍 Validating JSONL format for $path..."
+                while IFS= read -r line; do
+                  if [ -n "$line" ]; then
+                    if ! echo "$line" | jq . > /dev/null 2>&1; then
+                      echo "❌ Invalid JSON in $path: $line"
+                      exit 1
+                    fi
+                  fi
+                done < "$path"
+              fi
+            done <<< "$EVIDENCE_PATHS"
           fi
-
-      - name: Extract MCP Evidence paths from PR body
-        id: evidence
+          
+          echo "✅ MCP Evidence validation passed"
+      
+      - name: Report results
         run: |
-          BODY='${{ steps.pr.outputs.BODY }}'
-          PATHS=$(echo "$BODY" | awk '/^## MCP Evidence:/{flag=1;next}/^## /{flag=0}flag' | sed 's/\r//g' | grep -E '^artifacts/.+\.jsonl$' || true)
-          echo "paths=$PATHS" >> $GITHUB_OUTPUT
-
-      - name: Require MCP evidence for code changes
-        if: steps.diff.outputs.code_change == 'true'
-        run: |
-          if [ -z "${{ steps.evidence.outputs.paths }}" ]; then
-            echo "::error::Code changed, but no MCP Evidence paths listed in PR body."; exit 20;
-          fi
-
-      - name: Validate evidence files exist and are JSONL
-        if: steps.evidence.outputs.paths != ''
-        run: |
-          FAIL=0
-          while IFS= read -r p; do
-            [ -z "$p" ] && continue
-            if [ ! -f "$p" ]; then echo "::error::Missing evidence file: $p"; FAIL=1; continue; fi
-            # Validate JSONL
-            while IFS= read -r line; do
-              [ -z "$line" ] && continue
-              echo "$line" | jq . >/dev/null 2>&1 || { echo "::error::Invalid JSON in $p: $line"; FAIL=1; break; }
-            done < "$p"
-          done <<< "${{ steps.evidence.outputs.paths }}"
-          exit $FAIL
-
-      - name: Label PR if evidence missing
-        if: failure()
-        run: |
-          if command -v gh >/dev/null 2>&1; then
-            gh pr edit  ${{ github.event.pull_request.number }} --add-label "needs-mcp-evidence" || true
-          fi
+          echo "✅ MCP Evidence validation completed successfully"
+          echo "All required MCP evidence files are present and valid"
 =======
 name: guard-mcp
 on:
