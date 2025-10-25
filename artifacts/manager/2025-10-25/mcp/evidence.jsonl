@@ -1,0 +1,1 @@
+{"ts": "2025-10-25T17:42:47Z", "actor": "manager", "action": "mcp_evidence", "files": ["scripts/policy/check-docs.mjs", ".github/workflows/rr7-guard.yml"], "notes": "RR7 guard + docs policy remediation"}
