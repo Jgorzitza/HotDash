@@ -28,12 +28,16 @@ if [ -f .env ]; then
   source .env
 fi
 
-# For production, we need the direct IPv6 connection
-# Format: postgres://user:pass@db.project.supabase.co:5432/postgres
-PROD_DB_URL="postgres://postgres.mmbjiyhsvniqxibzgyvx:Th3rm0caf3%2F67%21@db.mmbjiyhsvniqxibzgyvx.supabase.co:5432/postgres?connect_timeout=30"
+# For production, use env-provided direct connection (no hardcoded secrets)
+# Provide via: export PROD_DATABASE_URL=postgres://user:pass@host:5432/postgres
+if [ -z "$PROD_DATABASE_URL" ]; then
+  echo "❌ Missing PROD_DATABASE_URL (postgres connection string). Set this from the secure vault before running."
+  echo "   Hint: see vault/occ/supabase/ for environment-specific values"
+  exit 1
+fi
 
-echo "Setting DATABASE_URL (IPv6 direct connection)..."
-flyctl secrets set DATABASE_URL="$PROD_DB_URL" --app hotdash-production --stage
+echo "Setting DATABASE_URL (IPv6 direct connection from env)..."
+flyctl secrets set DATABASE_URL="$PROD_DATABASE_URL" --app hotdash-production --stage
 
 # Set other required secrets
 if [ -n "$SHOPIFY_API_KEY" ]; then

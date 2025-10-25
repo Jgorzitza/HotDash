@@ -245,7 +245,7 @@ admin_key:             # CEO testing, emergency
 
 **Langfuse Admin:**
 - Email: `justin@hotrodan.com`
-- Password: `HotRod@n2024!LLM` (CHANGE after first login)
+- Password: `[REDACTED – see vault/hotrodan/llm-gateway-secrets.json]` (rotate on first login)
 
 **Rotation Schedule:** Quarterly (every 90 days)
 
@@ -416,4 +416,3 @@ admin_key:             # CEO testing, emergency
 ---
 
 **Infrastructure build starts now. Regular dev team: KEEP BUILDING AGENTS - this is just infrastructure work in parallel.**
-

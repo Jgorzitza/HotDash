@@ -39,8 +39,8 @@ Found in app/root.tsx lines 30-31:
 - Prevents React from mounting
 
 #### Issue 2: Wrong Shopify API Credentials
-- Production had wrong SHOPIFY_API_KEY: 1cc8a9d174849054
-- Correct SHOPIFY_API_KEY: 4f72376ea61be956c860dd020552124d
+- Production had wrong SHOPIFY_API_KEY (redacted in repo)
+- Correct SHOPIFY_API_KEY (redacted in repo)
 - Caused HTTP 410 "OAuth error: application_cannot_be_found"
 - App couldn't authenticate with Shopify
 
@@ -49,6 +49,7 @@ Found in app/root.tsx lines 30-31:
 2. Removed SEO optimizer calls generating invalid HTML strings
 3. Use React Router's proper <Meta /> component instead
 4. Updated Fly secrets with correct SHOPIFY_API_KEY and SHOPIFY_API_SECRET
+   - Source of truth: vault-managed secrets (see vault/occ/shopify/ or Fly secrets store)
 
 ### Files Modified
 1. app/root.tsx - Removed invalid div wrappers in head element
@@ -132,4 +133,3 @@ async function saveFeedback() {
 }
 
 saveFeedback().catch(console.error);
-
