@@ -20,10 +20,11 @@ jobs:
       - name: Determine changed source files
         id: diff
         env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha }}
-          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          BASE_REF: ${{ github.event.pull_request.base.ref }}
         run: |
-          git fetch origin $BASE_SHA --depth=1
+          git fetch origin $BASE_REF --depth=200
+          BASE_SHA=$(git rev-parse origin/$BASE_REF)
+          HEAD_SHA=$(git rev-parse HEAD)
           git diff --name-only $BASE_SHA $HEAD_SHA > changed.txt
           grep -E '\.(ts|tsx)$' changed.txt > changed-ts.txt || true
           count=$(wc -l < changed-ts.txt | tr -d ' ')
@@ -47,8 +48,12 @@ jobs:
             exit 0
           fi
           echo "🔍 Checking for Dev MCP imports in production code..."
+          echo "Files scanned:"
+          cat changed-ts.txt
           
-          if grep -i "mcp.*dev\|dev.*mcp" $FILES; then
+          MATCHES=$(grep -inE "mcp.*dev|dev.*mcp" $FILES || true)
+          if [ -n "$MATCHES" ]; then
+            echo "$MATCHES"
             echo "❌ Dev MCP imports detected in production code"
             echo "Dev MCP is for development/staging ONLY"
             echo "Production builds MUST FAIL if Dev MCP detected"
@@ -88,9 +93,9 @@ jobs:
           fi
           
           # Check if section indicates verification
-          if ! grep -q "Verified: No" <<< "${{ github.event.pull_request.body }}"; then
+          if ! grep -qiE "Verified:.*no.*mcp.*dev|Verified:.*no.*dev.*mcp" <<< "${{ github.event.pull_request.body }}"; then
             echo "❌ Dev MCP Check section does not indicate verification"
-            echo "Must include: 'Verified: No \`mcp.*dev\` or \`dev.*mcp\` imports in app/ (searched with grep)'"
+            echo "Must include a verification line such as: 'Verified: No \\`mcp.*dev\\` or \\`dev.*mcp\\` imports in app/ (searched with grep)'"
             exit 1
           fi
           

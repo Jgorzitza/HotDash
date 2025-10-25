@@ -17,10 +17,11 @@ jobs:
     - name: Determine changed source files
       id: diff
       env:
-        BASE_SHA: ${{ github.event.pull_request.base.sha }}
-        HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        BASE_REF: ${{ github.event.pull_request.base.ref }}
       run: |
-        git fetch origin $BASE_SHA --depth=1
+        git fetch origin $BASE_REF --depth=200
+        BASE_SHA=$(git rev-parse origin/$BASE_REF)
+        HEAD_SHA=$(git rev-parse HEAD)
         git diff --name-only $BASE_SHA $HEAD_SHA > changed.txt
         grep -E '\.(ts|tsx)$' changed.txt > changed-ts.txt || true
         count=$(wc -l < changed-ts.txt | tr -d ' ')
@@ -45,6 +46,8 @@ jobs:
           echo "✅ No TypeScript changes detected; skipping enforcement"
           exit 0
         fi
+        echo "Files scanned:"
+        cat changed-ts.txt
         
         # Check for markdown direction file usage
         echo "📋 Checking for markdown direction file usage..."
