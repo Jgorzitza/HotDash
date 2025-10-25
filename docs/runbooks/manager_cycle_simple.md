@@ -7,9 +7,10 @@
 
 ---
 
-## 🚨 CRITICAL: DATABASE-FIRST APPROACH
+## 🚨 CRITICAL: DATABASE-FIRST + MCP-GATED APPROACH
 
 **Single Source of Truth**: decision_log table in database
+**Validation Gate**: All code/integration decisions must pass MCP enforcement
 
 **ALWAYS:**
 - ✅ Query decision_log FIRST before making any assumptions
@@ -17,18 +18,21 @@
 - ✅ Verify task completion status in decision_log
 - ✅ Check for blockers in decision_log
 - ✅ Review agent progress in decision_log
+ - ✅ Apply MCP validation where applicable before approving changes
 
 **NEVER:**
 - ❌ Assume tasks incomplete without checking decision_log
 - ❌ Assign already-completed work
 - ❌ Rely solely on artifacts/ directory for status
 - ❌ Skip database verification
+ - ❌ Approve PRs without MCP evidence/validation (see CRITICAL_MCP_ENFORCEMENT)
 
 **Why This Matters:**
 - Agents log ALL work to decision_log (100% compliance)
 - Agents may not create artifacts/ directories immediately
 - Database is real-time, artifacts may lag
 - Assigning completed work wastes agent time
+ - MCP validation prevents training-data mistakes and reversions (security & API changes)
 
 **Lesson Learned (2025-10-24):**
 - Manager assigned BLOCKER-003, BLOCKER-005, SQL fixes
@@ -36,6 +40,8 @@
 - Agents had logged everything correctly
 - Manager did NOT check database first
 - **Result**: Wasted time, incorrect assignments
+  
+Additionally, PRs without MCP evidence and validation almost reversed working production fixes (see docs/runbooks/CRITICAL_MCP_ENFORCEMENT.md). Always require: evidence JSONL, codebase retrieval, and validator passes.
 
 **Golden Rule**: When in doubt, query decision_log!
 
@@ -258,6 +264,72 @@ rm artifacts/manager/$DATE/design_conflicts.md 2>/dev/null
 **Acceptance**: Either no conflicts (file deleted) OR conflict report created and CEO approval obtained
 
 ---
+
+## 4) ASSIGN & UPDATE DIRECTION (5–10 min) [DATABASE-DRIVEN]
+
+Objective: Assign/resize tasks via database (no markdown edits). Record Allowed paths and DoD.
+
+Steps:
+
+```bash
+# Single task (env vars inline or exported beforehand)
+AGENT=engineer TASK_ID=ENG-NEW TITLE="<title>" DESC="<direction>" \
+  CRITERIA="Works|Tests pass" PATHS="app/**|scripts/**" PRIORITY=P1 HOURS=3 \
+  npx tsx --env-file=.env scripts/manager/assign-task.ts
+
+# Mark blockers/constraints without changing status to "completed"
+TASK_ID=ENG-NEW REASON="blocked by XYZ" ENV=dev DB=production \
+  npx tsx --env-file=.env scripts/manager/mark-task-blocked.ts
+```
+
+Acceptance:
+- ✅ Tasks exist in DB with owner, DoD, Allowed paths
+- ✅ Dependencies noted; blockers marked where needed
+- ✅ No markdown direction files edited
+
+Safety:
+- Use Allowed paths to constrain diffs
+- For production-only ops, include constraints in payload (no destructive ops)
+- Require MCP evidence/validation on PRs touching Shopify/Polaris/libraries
+
+---
+
+## 5) MCP ENFORCEMENT GATE (2–3 min)
+
+Before approving/merging any PRs born from this cycle, verify:
+- ✅ Evidence JSONL present in artifacts/<agent>/<date>/mcp
+- ✅ Codebase retrieval + file reads used
+- ✅ Validator used where applicable:
+  - Shopify GraphQL → validate_graphql_codeblocks
+  - Polaris components → validate_component_codeblocks
+  - Libraries (Prisma/Router/TS) → Context7 docs pulled
+- ❌ Reject if red-flag phrases appear or evidence is missing
+
+Reference: docs/runbooks/CRITICAL_MCP_ENFORCEMENT.md
+
+---
+
+## 6) LOG & MONITOR (throughout day)
+
+Run quick status checks every 1–2 hours:
+
+```bash
+npx tsx --env-file=.env scripts/manager/query-agent-status.ts
+npx tsx --env-file=.env scripts/manager/query-blocked-tasks.ts
+```
+
+When notified of completion, get details:
+
+```bash
+npx tsx --env-file=.env scripts/manager/query-task-details.ts <TASK-ID>
+```
+
+If blocker cleared: update dependent agents’ next tasks immediately (DB updates only).
+
+Acceptance:
+- ✅ Status/blocked updates visible in DB
+- ✅ Direction changes reflected without touching markdown
+
 
 ## 4) MARK DONE & CLEAN PLAN (10 min) [DATABASE-DRIVEN]
 

@@ -8,17 +8,22 @@
 
 import { type ActionFunctionArgs, type LoaderFunctionArgs} from 'react-router';
 import { aiChatbot} from '~/services/ai-customer/chatbot.service.js';
-import { ticketRoutingService} from '~/services/ai-customer/ticket-routing.service.js';
-import { responseAutomationService} from '~/services/ai-customer/response-automation.service.js';
-import { satisfactionTrackingService} from '~/services/ai-customer/satisfaction-tracking.service.js';
-import { storefrontSubAgent} from '~/services/ai-customer/storefront-sub-agent.service.js';
-import { accountsSubAgent} from '~/services/ai-customer/accounts-sub-agent.service.js';
+import { getTicketRoutingService} from '~/services/ai-customer/ticket-routing.service.js';
+import { getResponseAutomationService} from '~/services/ai-customer/response-automation.service.js';
+import { getSatisfactionTrackingService} from '~/services/ai-customer/satisfaction-tracking.service.js';
+import { getStorefrontSubAgent} from '~/services/ai-customer/storefront-sub-agent.service.js';
+import { getAccountsSubAgent} from '~/services/ai-customer/accounts-sub-agent.service.js';
 import { logDecision} from '~/services/decisions.server.js';
 
 export async function loader({ request }: LoaderFunctionArgs) {
   try {
     const url = new URL(request.url);
     const action = url.searchParams.get('action');
+    const routingService = getTicketRoutingService();
+    const automationService = getResponseAutomationService();
+    const satisfactionService = getSatisfactionTrackingService();
+    const storefrontAgent = getStorefrontSubAgent();
+    const accountsAgent = getAccountsSubAgent();
 
     switch (action) {
       case 'pending-responses':
@@ -30,27 +35,27 @@ export async function loader({ request }: LoaderFunctionArgs) {
         return Response.json({ success: true, data: metrics });
 
       case 'routing-stats':
-        await ticketRoutingService.initialize();
-        const routingStats = await ticketRoutingService.getRoutingStats();
+        await routingService.initialize();
+        const routingStats = await routingService.getRoutingStats();
         return Response.json({ success: true, data: routingStats });
 
       case 'automation-metrics':
-        await responseAutomationService.initialize();
-        const automationMetrics = await responseAutomationService.getAutomationMetrics();
+        await automationService.initialize();
+        const automationMetrics = await automationService.getAutomationMetrics();
         return Response.json({ success: true, data: automationMetrics });
 
       case 'satisfaction-metrics':
         const endDate = new Date().toISOString();
         const startDate = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(); // 30 days ago
-        const satisfactionMetrics = await satisfactionTrackingService.getSatisfactionMetrics(startDate, endDate);
+        const satisfactionMetrics = await satisfactionService.getSatisfactionMetrics(startDate, endDate);
         return Response.json({ success: true, data: satisfactionMetrics });
 
       case 'storefront-metrics':
-        const storefrontMetrics = await storefrontSubAgent.getPerformanceMetrics();
+        const storefrontMetrics = await storefrontAgent.getPerformanceMetrics();
         return Response.json({ success: true, data: storefrontMetrics });
 
       case 'accounts-metrics':
-        const accountsMetrics = await accountsSubAgent.getPerformanceMetrics();
+        const accountsMetrics = await accountsAgent.getPerformanceMetrics();
         return Response.json({ success: true, data: accountsMetrics });
 
       default:
@@ -58,6 +63,10 @@ export async function loader({ request }: LoaderFunctionArgs) {
     }
   } catch (error) {
     console.error('Error in AI customer chatbot loader:', error);
+    if (error instanceof Error && error.message.includes('Supabase credentials not configured')) {
+      return Response.json({ success: false, error: 'Supabase not configured' }, { status: 503 });
+    }
+
     return Response.json({ success: false, error: 'Internal server error' }, { status: 500 });
   }
 }
@@ -66,6 +75,10 @@ export async function action({ request }: ActionFunctionArgs) {
   try {
     const formData = await request.formData();
     const action = formData.get('action') as string;
+    const routingService = getTicketRoutingService();
+    const automationService = getResponseAutomationService();
+    const satisfactionService = getSatisfactionTrackingService();
+    const storefrontAgent = getStorefrontSubAgent();
 
     switch (action) {
       case 'process-inquiry': {
@@ -84,12 +97,12 @@ export async function action({ request }: ActionFunctionArgs) {
         const aiResponse = await aiChatbot.processInquiry(inquiryData);
 
         // Route inquiry to appropriate agent/team
-        await ticketRoutingService.initialize();
-        const routingResult = await ticketRoutingService.routeInquiry(aiResponse.inquiryId, inquiryData);
+        await routingService.initialize();
+        const routingResult = await routingService.routeInquiry(aiResponse.inquiryId, inquiryData);
 
         // Generate automated response
-        await responseAutomationService.initialize();
-        const automatedResponse = await responseAutomationService.generateAutomatedResponse(
+        await automationService.initialize();
+        const automatedResponse = await automationService.generateAutomatedResponse(
           { id: aiResponse.inquiryId, ...inquiryData },
           { confidence: aiResponse.confidence, inquiryType: 'general' }
         );
@@ -109,13 +122,13 @@ export async function action({ request }: ActionFunctionArgs) {
         const approverId = formData.get('approverId') as string;
         const finalResponse = formData.get('finalResponse') as string;
 
-        await responseAutomationService.approveResponse(responseId, approverId, finalResponse);
+        await automationService.approveResponse(responseId, approverId, finalResponse);
         
         // Send the approved response
-        await responseAutomationService.sendResponse(responseId);
+        await automationService.sendResponse(responseId);
 
         // Send satisfaction survey
-        await satisfactionTrackingService.sendSatisfactionSurvey(
+        await satisfactionService.sendSatisfactionSurvey(
           formData.get('inquiryId') as string,
           responseId
         );
@@ -128,7 +141,7 @@ export async function action({ request }: ActionFunctionArgs) {
         const approverId = formData.get('approverId') as string;
         const rejectionReason = formData.get('rejectionReason') as string;
 
-        await responseAutomationService.rejectResponse(responseId, approverId, rejectionReason);
+        await automationService.rejectResponse(responseId, approverId, rejectionReason);
 
         return Response.json({ success: true, message: 'Response rejected' });
       }
@@ -142,7 +155,7 @@ export async function action({ request }: ActionFunctionArgs) {
         const comment = formData.get('comment') as string;
         const tags = JSON.parse(formData.get('tags') as string || '[]');
 
-        const feedback = await satisfactionTrackingService.recordFeedback(
+        const feedback = await satisfactionService.recordFeedback(
           inquiryId,
           responseId,
           customerId,
@@ -161,7 +174,7 @@ export async function action({ request }: ActionFunctionArgs) {
         const startDate = formData.get('startDate') as string;
         const endDate = formData.get('endDate') as string;
 
-        const report = await satisfactionTrackingService.generateSatisfactionReport(startDate, endDate);
+        const report = await satisfactionService.generateSatisfactionReport(startDate, endDate);
 
         return Response.json({ success: true, data: report });
       }
@@ -173,7 +186,7 @@ export async function action({ request }: ActionFunctionArgs) {
         const sortBy = formData.get('sortBy') as string;
         const limit = parseInt(formData.get('limit') as string || '20');
 
-        const result = await storefrontSubAgent.searchProducts(customerId, query, filters, sortBy, limit);
+        const result = await storefrontAgent.searchProducts(customerId, query, filters, sortBy, limit);
 
         return Response.json({ success: true, data: result });
       }
@@ -184,7 +197,7 @@ export async function action({ request }: ActionFunctionArgs) {
         const variantId = formData.get('variantId') as string;
         const location = formData.get('location') as string;
 
-        const result = await storefrontSubAgent.checkAvailability(customerId, productId, variantId, location);
+        const result = await storefrontAgent.checkAvailability(customerId, productId, variantId, location);
 
         return Response.json({ success: true, data: result });
       }
@@ -194,7 +207,7 @@ export async function action({ request }: ActionFunctionArgs) {
         const token = formData.get('token') as string;
         const limit = parseInt(formData.get('limit') as string || '10');
 
-        const result = await accountsSubAgent.getCustomerOrders(customerId, token, limit);
+        const result = await accountsAgent.getCustomerOrders(customerId, token, limit);
 
         return Response.json({ success: true, data: result });
       }
@@ -204,7 +217,7 @@ export async function action({ request }: ActionFunctionArgs) {
         const orderId = formData.get('orderId') as string;
         const token = formData.get('token') as string;
 
-        const result = await accountsSubAgent.getOrderDetails(customerId, orderId, token);
+        const result = await accountsAgent.getOrderDetails(customerId, orderId, token);
 
         return Response.json({ success: true, data: result });
       }
@@ -213,7 +226,7 @@ export async function action({ request }: ActionFunctionArgs) {
         const customerId = formData.get('customerId') as string;
         const token = formData.get('token') as string;
 
-        const result = await accountsSubAgent.getCustomerAccountInfo(customerId, token);
+        const result = await accountsAgent.getCustomerAccountInfo(customerId, token);
 
         return Response.json({ success: true, data: result });
       }
@@ -223,7 +236,7 @@ export async function action({ request }: ActionFunctionArgs) {
         const token = formData.get('token') as string;
         const preferences = JSON.parse(formData.get('preferences') as string || '{}');
 
-        const result = await accountsSubAgent.updateCustomerPreferences(customerId, token, preferences);
+        const result = await accountsAgent.updateCustomerPreferences(customerId, token, preferences);
 
         return Response.json({ success: true, data: { updated: result } });
       }
@@ -233,6 +246,10 @@ export async function action({ request }: ActionFunctionArgs) {
     }
   } catch (error) {
     console.error('Error in AI customer chatbot action:', error);
+    if (error instanceof Error && error.message.includes('Supabase credentials not configured')) {
+      return Response.json({ success: false, error: 'Supabase not configured' }, { status: 503 });
+    }
+
     return Response.json({ success: false, error: 'Internal server error' }, { status: 500 });
   }
 }

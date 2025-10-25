@@ -6,7 +6,7 @@
  * Dismisses (rejects) an action in the queue
  */
 
-import { json, type ActionFunctionArgs } from "react-router";
+import { type ActionFunctionArgs } from "react-router";
 import { ActionQueueService } from "~/services/action-queue/action-queue.service";
 
 export async function action({ params, request }: ActionFunctionArgs) {
@@ -14,7 +14,7 @@ export async function action({ params, request }: ActionFunctionArgs) {
     const { id } = params;
     
     if (!id) {
-      return json({ error: "Action ID is required" }, { status: 400 });
+      return Response.json({ error: "Action ID is required" }, { status: 400 });
     }
 
     // TODO: Get operator ID from session
@@ -22,13 +22,12 @@ export async function action({ params, request }: ActionFunctionArgs) {
 
     const action = await ActionQueueService.rejectAction(id, operatorId);
 
-    return json({ success: true, action });
+    return Response.json({ success: true, action });
   } catch (error) {
     console.error("Error dismissing action:", error);
-    return json(
+    return Response.json(
       { error: error instanceof Error ? error.message : "Unknown error" },
       { status: 500 }
     );
   }
 }
-

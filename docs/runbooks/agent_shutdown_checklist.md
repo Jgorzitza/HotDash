@@ -23,7 +23,7 @@
     }
   });
   ```
-- [ ] Log final status via `logDecision()`:
+- [ ] Log final status via `logDecision()` (this is the source of truth):
   ```typescript
   await logDecision({
     scope: "build",
@@ -35,9 +35,11 @@
     rationale: "Shutdown - {TASK-ID} {status}, {evidence summary}",
     evidenceUrl: "artifacts/<agent>/2025-10-22/final-status.md",
     durationActual: 4.5,
-    nextAction: "Resume testing tomorrow", // or 'Task complete'
+  nextAction: "Resume testing tomorrow", // or 'Task complete'
   });
   ```
+  - Include `taskId` for DB‑assigned tasks so Manager can auto‑reconcile direction.
+  - Do not leave stale `in_progress` if you actually finished — set `status: "completed"`.
 - [ ] (Optional) Ensure markdown feedback file has final notes if needed
 - [ ] Ensure PR body includes:
   - `Refs #<issue>` or `Fixes #<issue>` (when DoD is fully met)
@@ -78,6 +80,10 @@ await logDecision({
   blockedBy: null, // or dependency task ID
 });
 ```
+
+Shutdown guardrails (near launch):
+- Do not create doc‑only tasks unless explicitly assigned; focus on code/tests.
+- Do not run destructive DB/infra commands — all operations must be additive‑only.
 
 **OPTIONAL: Markdown backup** (if you want detailed notes):
 

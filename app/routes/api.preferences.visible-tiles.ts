@@ -59,9 +59,12 @@ export async function action({ request }: ActionFunctionArgs) {
   //     updated_at: new Date().toISOString(),
   //   });
 
-    `[Preferences] Visible tiles saved for ${session.shop}:`,
-    visibleTiles,
-  );
+  if (process.env.NODE_ENV !== "production") {
+    console.info(
+      `[Preferences] Visible tiles saved for ${session.shop}:`,
+      visibleTiles,
+    );
+  }
 
   return Response.json({ ok: true });
 }

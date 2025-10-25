@@ -5,26 +5,16 @@ FROM node:20-slim
 
 WORKDIR /app
 
-# Copy package files first for better caching
+# Copy package files and prebuilt dist
 COPY apps/llamaindex-mcp-server/package*.json ./apps/llamaindex-mcp-server/
-COPY apps/llamaindex-mcp-server/tsconfig.json ./apps/llamaindex-mcp-server/
+COPY apps/llamaindex-mcp-server/dist ./apps/llamaindex-mcp-server/dist
 
-# Copy source files
-COPY apps/llamaindex-mcp-server/src ./apps/llamaindex-mcp-server/src
+# Copy archived llama-workflow CLI (fallback bundle)
+COPY docs/_archive/2025-10-15-prebundle/scripts/ai/llama-workflow ./docs/_archive/2025-10-15-prebundle/scripts/ai/llama-workflow
 
-# Copy llama-workflow CLI (already built)
-COPY scripts/ai/llama-workflow/dist ./scripts/ai/llama-workflow/dist
-COPY scripts/ai/llama-workflow/package.json ./scripts/ai/llama-workflow/
-
-# Install MCP server dependencies (including devDependencies for build)
+# Install runtime dependencies only
 WORKDIR /app/apps/llamaindex-mcp-server
-RUN npm ci
-
-# Build TypeScript
-RUN npm run build
-
-# Remove devDependencies after build
-RUN npm prune --production
+RUN npm install --omit=dev
 
 # Expose port
 EXPOSE 8080

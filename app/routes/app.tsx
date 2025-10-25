@@ -11,6 +11,8 @@ import { ToastProvider } from "../contexts/ToastContext";
 import { useSSE } from "../hooks/useSSE";
 import { LiveBadge } from "../components/realtime/LiveBadge";
 import { ConnectionIndicator } from "../components/realtime/ConnectionIndicator";
+import { ChatwootUnreadIndicator } from "../components/notifications/ChatwootUnreadIndicator";
+import type { UnreadMessagesResponse } from "./api.chatwoot.unread";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   // Bypass auth in test/mock mode for E2E testing
@@ -34,11 +36,33 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     console.error("Failed to load approval counts:", error);
   }
 
+  let chatwootUnreadCount = 0;
+  try {
+    const unreadUrl = new URL("/api/chatwoot/unread", request.url);
+    const unreadResponse = await fetch(unreadUrl.toString(), {
+      headers: {
+        Cookie: request.headers.get("cookie") ?? "",
+      },
+    });
+
+    if (unreadResponse.ok) {
+      const unreadBody = (await unreadResponse.json()) as UnreadMessagesResponse;
+      chatwootUnreadCount = Math.max(
+        0,
+        unreadBody.data?.unread_count ?? 0,
+      );
+    }
+  } catch (error) {
+    console.error("Failed to load Chatwoot unread count:", error);
+    chatwootUnreadCount = 0;
+  }
+
   // Return API key for App Bridge initialization
   return {
     apiKey: process.env.SHOPIFY_API_KEY || "",
     mockMode: isTestMode,
     pendingCount,
+    chatwootUnreadCount,
   };
 };
 
@@ -47,6 +71,7 @@ export default function App() {
     apiKey,
     mockMode,
     pendingCount: initialPendingCount,
+    chatwootUnreadCount,
   } = useLoaderData<typeof loader>();
 
   // Real-time SSE connection (Phase 5 - ENG-023, ENG-024)
@@ -89,7 +114,16 @@ export default function App() {
           <s-link href="/app/tools/session-token">Session token tool</s-link>
           {mockMode && <s-badge tone="warning">Mock Mode</s-badge>}
           {/* Connection indicator (Phase 5 - ENG-023) */}
-          <div slot="actions" style={{ marginLeft: "auto" }}>
+          <div
+            slot="actions"
+            style={{
+              marginLeft: "auto",
+              display: "flex",
+              gap: "var(--occ-space-4)",
+              alignItems: "center",
+            }}
+          >
+            <ChatwootUnreadIndicator count={chatwootUnreadCount} />
             <ConnectionIndicator
               status={sseStatus}
               lastHeartbeat={lastHeartbeat}

@@ -53,6 +53,82 @@ Authorization: Bearer YOUR_API_TOKEN
 
 ---
 
+## Production Verification (Supabase DB)
+
+Use this checklist to verify the production Chatwoot installation is fully connected to the correct database and available to the HotDash app.
+
+Prerequisites:
+- Production Chatwoot base URL: `https://hotdash-chatwoot.fly.dev`
+- Account ID: `3` (verify in Chatwoot UI if uncertain)
+- Valid API token (Profile → Access Token) stored securely (vault)
+- HotDash production app on Fly: `hotdash-production`
+
+1) Set Fly secrets on production (staged)
+
+```
+fly secrets set \
+  CHATWOOT_BASE_URL="https://hotdash-chatwoot.fly.dev" \
+  CHATWOOT_API_TOKEN="<api-token>" \
+  CHATWOOT_TOKEN="<api-token>" \
+  CHATWOOT_ACCOUNT_ID="3" \
+  -a hotdash-production --stage
+```
+
+Note: Secrets are staged until the next deploy/restart. Apply during a safe window.
+
+2) Quick service health (Chatwoot)
+
+```
+curl -sS -o /dev/null -w "API: %{http_code}\n" https://hotdash-chatwoot.fly.dev/api
+```
+
+Expect `API: 200` with JSON like `{ "version": "..." }`.
+
+3) Authenticated API probe (requires token)
+
+```
+export CHATWOOT_BASE_URL=https://hotdash-chatwoot.fly.dev
+export CHATWOOT_API_TOKEN=<api-token>
+curl -sS -o /dev/null -w "Auth: %{http_code}\n" \
+  -H "api_access_token: $CHATWOOT_API_TOKEN" \
+  "$CHATWOOT_BASE_URL/api/v1/accounts/3/conversations?per_page=1"
+```
+
+Expect `Auth: 200`.
+
+4) Database connectivity and schema (Chatwoot app)
+
+Confirm the Chatwoot app is connected to the intended production database (Supabase). If schema-related errors appear in logs, run migrations/prepare within the Chatwoot app:
+
+```
+fly logs -a hotdash-chatwoot -n 200
+fly ssh console -a hotdash-chatwoot -C "sh -lc 'bundle exec rails db:migrate:status'"
+# If initial bootstrap is needed:
+fly ssh console -a hotdash-chatwoot -C "sh -lc 'DISABLE_DATABASE_ENVIRONMENT_CHECK=1 bundle exec rails db:schema:load'"
+```
+
+Record evidence under `artifacts/ops/chatwoot-health/` and link it from the task or DecisionLog entry.
+
+5) App-side integration check (HotDash)
+
+Run the scripted health check from the repo to confirm both service and authenticated probes pass:
+
+```
+CHATWOOT_BASE_URL=https://hotdash-chatwoot.fly.dev \
+CHATWOOT_API_TOKEN=<api-token> \
+CHATWOOT_ACCOUNT_ID=3 \
+npm run -s ops:check-chatwoot-health
+```
+
+Both checks should pass (200). The script writes an artifact in `artifacts/ops/chatwoot-health`.
+
+6) Do not touch staging
+
+All verification should be performed against production resources only (per current direction). Do not modify staging apps or secrets while production is being validated.
+
+
+---
+
 ## Common API Endpoints
 
 ### Account Information
@@ -462,4 +538,3 @@ fly logs -a hotdash-chatwoot
 ---
 
 **For API-based integrations, always use Account ID: 3**
-

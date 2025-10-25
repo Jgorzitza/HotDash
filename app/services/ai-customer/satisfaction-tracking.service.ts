@@ -7,7 +7,7 @@
  * @module app/services/ai-customer/satisfaction-tracking.service
  */
 
-import { createClient } from '@supabase/supabase-js';
+import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 import { logDecision } from '../decisions.server.js';
 
 export interface CustomerFeedback {
@@ -67,7 +67,7 @@ export interface SatisfactionReport {
 }
 
 export class SatisfactionTrackingService {
-  private supabase: ReturnType<typeof createClient>;
+  private supabase: SupabaseClient | null;
   private satisfactionThresholds = {
     excellent: 4.5,
     good: 3.5,
@@ -75,11 +75,31 @@ export class SatisfactionTrackingService {
     poor: 1.5,
   };
 
-  constructor() {
-    this.supabase = createClient(
-      process.env.SUPABASE_URL!,
-      process.env.SUPABASE_ANON_KEY!
-    );
+  constructor(options: {
+    supabaseUrl?: string | null;
+    supabaseKey?: string | null;
+  } = {}) {
+    const supabaseUrl = options.supabaseUrl ?? process.env.SUPABASE_URL;
+    const supabaseKey = options.supabaseKey ?? process.env.SUPABASE_ANON_KEY;
+
+    if (supabaseUrl && supabaseKey) {
+      this.supabase = createClient(supabaseUrl, supabaseKey);
+    } else {
+      this.supabase = null;
+    }
+  }
+
+  private getSupabase(): SupabaseClient | null {
+    return this.supabase;
+  }
+
+  private requireSupabase(): SupabaseClient {
+    const supabase = this.getSupabase();
+    if (!supabase) {
+      throw new Error('Supabase credentials not configured');
+    }
+
+    return supabase;
   }
 
   /**
@@ -103,8 +123,47 @@ export class SatisfactionTrackingService {
       // Determine if follow-up is required
       const followUpRequired = this.requiresFollowUp(feedback.rating, feedback.comment);
 
+      const supabase = this.getSupabase();
+      const now = new Date().toISOString();
+      if (!supabase) {
+        const mockFeedback: CustomerFeedback = {
+          id: `mock-feedback-${Date.now()}`,
+          inquiryId,
+          responseId,
+          customerId,
+          rating: feedback.rating,
+          category: feedback.category,
+          comment: feedback.comment,
+          tags: feedback.tags,
+          followUpRequired,
+          sentiment,
+          createdAt: now,
+        };
+
+        await logDecision({
+          scope: 'build',
+          actor: 'ai-customer',
+          taskId: 'AI-CUSTOMER-001',
+          status: 'in_progress',
+          progressPct: 60,
+          action: 'feedback_recorded',
+          rationale: `Recorded customer feedback with rating ${feedback.rating}/5 (mock storage)` ,
+          evidenceUrl: `app/services/ai-customer/satisfaction-tracking.service.ts`,
+          payload: {
+            feedbackId: mockFeedback.id,
+            rating: feedback.rating,
+            category: feedback.category,
+            followUpRequired,
+            sentiment,
+            storage: 'memory',
+          },
+        });
+
+        return mockFeedback;
+      }
+
       // Create feedback record
-      const { data: customerFeedback, error } = await this.supabase
+      const { data: customerFeedback, error } = await supabase
         .from('customer_feedback')
         .insert({
           inquiry_id: inquiryId,
@@ -159,8 +218,14 @@ export class SatisfactionTrackingService {
    */
   async sendSatisfactionSurvey(inquiryId: string, responseId: string): Promise<void> {
     try {
+      const supabase = this.getSupabase();
+      if (!supabase) {
+        console.warn('Supabase not configured; skipping satisfaction survey send');
+        return;
+      }
+
       // Get inquiry details
-      const { data: inquiry, error: inquiryError } = await this.supabase
+      const { data: inquiry, error: inquiryError } = await supabase
         .from('customer_inquiries')
         .select('customer_email, customer_name, channel')
         .eq('id', inquiryId)
@@ -217,7 +282,12 @@ export class SatisfactionTrackingService {
     endDate: string
   ): Promise<SatisfactionMetrics> {
     try {
-      const { data: feedback, error } = await this.supabase
+      const supabase = this.getSupabase();
+      if (!supabase) {
+        return this.getEmptyMetrics();
+      }
+
+      const { data: feedback, error } = await supabase
         .from('customer_feedback')
         .select('*')
         .gte('created_at', startDate)
@@ -373,7 +443,12 @@ export class SatisfactionTrackingService {
    */
   private async createAlert(alert: Omit<SatisfactionAlert, 'id' | 'createdAt' | 'acknowledged'>): Promise<void> {
     try {
-      await this.supabase
+      const supabase = this.getSupabase();
+      if (!supabase) {
+        return;
+      }
+
+      await supabase
         .from('satisfaction_alerts')
         .insert({
           type: alert.type,
@@ -409,6 +484,11 @@ export class SatisfactionTrackingService {
     endDate: string
   ): Promise<{ averageRating: number }> {
     try {
+      const supabase = this.getSupabase();
+      if (!supabase) {
+        return { averageRating: 0 };
+      }
+
       const start = new Date(startDate);
       const end = new Date(endDate);
       const periodLength = end.getTime() - start.getTime();
@@ -416,7 +496,7 @@ export class SatisfactionTrackingService {
       const previousStart = new Date(start.getTime() - periodLength);
       const previousEnd = new Date(end.getTime() - periodLength);
 
-      const { data: feedback, error } = await this.supabase
+      const { data: feedback, error } = await supabase
         .from('customer_feedback')
         .select('rating')
         .gte('created_at', previousStart.toISOString())
@@ -452,7 +532,12 @@ export class SatisfactionTrackingService {
     endDate: string
   ): Promise<Array<{ issue: string; frequency: number; impact: number }>> {
     try {
-      const { data: feedback, error } = await this.supabase
+      const supabase = this.getSupabase();
+      if (!supabase) {
+        return [];
+      }
+
+      const { data: feedback, error } = await supabase
         .from('customer_feedback')
         .select('tags, rating, comment')
         .gte('created_at', startDate)
@@ -570,7 +655,12 @@ export class SatisfactionTrackingService {
     endDate: string
   ): Promise<SatisfactionAlert[]> {
     try {
-      const { data: alerts, error } = await this.supabase
+      const supabase = this.getSupabase();
+      if (!supabase) {
+        return [];
+      }
+
+      const { data: alerts, error } = await supabase
         .from('satisfaction_alerts')
         .select('*')
         .gte('created_at', startDate)
@@ -652,6 +742,14 @@ export class SatisfactionTrackingService {
 }
 
 /**
- * Default satisfaction tracking service instance
+ * Lazily instantiate satisfaction tracking service so SSR can operate in mock mode without Supabase.
  */
-export const satisfactionTrackingService = new SatisfactionTrackingService();
+let satisfactionTrackingServiceSingleton: SatisfactionTrackingService | null = null;
+
+export function getSatisfactionTrackingService(): SatisfactionTrackingService {
+  if (!satisfactionTrackingServiceSingleton) {
+    satisfactionTrackingServiceSingleton = new SatisfactionTrackingService();
+  }
+
+  return satisfactionTrackingServiceSingleton;
+}

@@ -99,6 +99,7 @@ export class AlertManager {
     alert.acknowledgedAt = new Date().toISOString();
     alert.acknowledgedBy = acknowledgedBy;
 
+    console.info("[AlertManager] Alert acknowledged:", {
       id: alertId,
       by: acknowledgedBy,
     });
@@ -135,6 +136,16 @@ export class AlertManager {
       .sort((a, b) => 
         new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
       );
+  }
+
+  /**
+   * Get alerts created within the last N hours
+   */
+  getRecentAlerts(hours: number = 24): Alert[] {
+    const cutoff = Date.now() - hours * 60 * 60 * 1000;
+    return this.alerts.filter(
+      (alert) => new Date(alert.timestamp).getTime() >= cutoff,
+    );
   }
 
   /**
@@ -251,4 +262,3 @@ export function getAlertStats() {
 export function updateAlertConfig(config: Partial<AlertConfig>): void {
   AlertManager.getInstance().updateConfig(config);
 }
-

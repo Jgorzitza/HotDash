@@ -29,7 +29,7 @@ import { useBannerAlerts } from "../hooks/useBannerAlerts";
 import { useSSE } from "../hooks/useSSE";
 import { useNotifications } from "../hooks/useNotifications";
 import { ConnectionStatusIndicator } from "../components/indicators/ConnectionStatusIndicator";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { appMetrics } from "~/utils/metrics.server";
 
 // @dnd-kit imports for drag & drop tile reordering (ENG-014)
@@ -71,6 +71,10 @@ import { ServiceError } from "../services/types";
 import type { IdeaPoolResponse } from "./api.analytics.idea-pool";
 import type { CEOAgentStatsResponse } from "./api.ceo-agent.stats";
 import type { UnreadMessagesResponse } from "./api.chatwoot.unread";
+import {
+  getDefaultPreferences,
+  getUserPreferences,
+} from "../services/userPreferences";
 
 export const meta: MetaFunction = () => {
   return [
@@ -170,8 +174,23 @@ export const loader: LoaderFunction = async ({
     requestId: request.headers.get("x-request-id"),
   });
 
-  // TODO (Phase 11): Load visibleTiles from Supabase user_preferences
-  const visibleTiles = DEFAULT_TILE_ORDER; // Default: all tiles visible
+  let visibleTiles = DEFAULT_TILE_ORDER;
+  try {
+    const preferences = await getUserPreferences(
+      context.shopDomain,
+      context.operatorEmail,
+    );
+
+    if (preferences?.visible_tiles?.length) {
+      visibleTiles = normalizeVisibleTiles(preferences.visible_tiles);
+    } else {
+      const defaults = getDefaultPreferences();
+      visibleTiles = normalizeVisibleTiles(defaults.visible_tiles);
+    }
+  } catch (error) {
+    console.error("Failed to load dashboard preferences", error);
+    visibleTiles = DEFAULT_TILE_ORDER;
+  }
 
   const payload = {
     mode: "live",
@@ -692,6 +711,19 @@ const DEFAULT_TILE_ORDER = [
   "growth-engine-analytics",
 ];
 
+function normalizeVisibleTiles(preferences: string[]): string[] {
+  const allowed = new Set(DEFAULT_TILE_ORDER);
+  const filtered = DEFAULT_TILE_ORDER.filter((tileId) =>
+    preferences.includes(tileId) && allowed.has(tileId),
+  );
+
+  if (filtered.length >= 2) {
+    return filtered;
+  }
+
+  return DEFAULT_TILE_ORDER;
+}
+
 export default function OperatorDashboard() {
   const data = useLoaderData<LoaderData>();
   const tileOrderFetcher = useFetcher();
@@ -702,10 +734,42 @@ export default function OperatorDashboard() {
 
   // Drag & Drop: Tile order state (ENG-014)
   const [tileOrder, setTileOrder] = useState<string[]>(DEFAULT_TILE_ORDER);
+  const [visibleTiles, setVisibleTiles] = useState<string[]>(data.visibleTiles);
+  const preferencesChannelRef = useRef<BroadcastChannel | null>(null);
+
+  useEffect(() => {
+    setVisibleTiles(data.visibleTiles);
+  }, [data.visibleTiles]);
+
+  useEffect(() => {
+    if (typeof window === "undefined" || !("BroadcastChannel" in window)) {
+      return;
+    }
+
+    const channel = new BroadcastChannel("hotdash-preferences");
+    preferencesChannelRef.current = channel;
+
+    channel.onmessage = (event) => {
+      const message = event.data as {
+        type?: string;
+        visibleTiles?: string[];
+      };
+
+      if (message?.type === "visibleTilesUpdate" && Array.isArray(message.visibleTiles)) {
+        setVisibleTiles(normalizeVisibleTiles(message.visibleTiles));
+      }
+    };
+
+    return () => {
+      channel.close();
+      preferencesChannelRef.current = null;
+    };
+  }, []);
 
   // ENG-015: Filter tiles based on visibility preferences
+  const visibleTilesSet = useMemo(() => new Set(visibleTiles), [visibleTiles]);
   const visibleTileIds = tileOrder.filter((tileId) =>
-    data.visibleTiles.includes(tileId),
+    visibleTilesSet.has(tileId),
   );
 
   // Track refreshing tiles (Phase 5 - ENG-025)

@@ -32,14 +32,8 @@ kill_timeout = "30s"
     handlers = ["tls", "http"]
     force_https = true
 
-  [[services.http_checks]]
-    interval = "30s"
-    grace_period = "30s"
-    method = "get"
-    path = "/health"
-    timeout = "5s"
 
-  [[services.concurrency]]
+  [services.concurrency]
     type = "requests"
     hard_limit = 150
     soft_limit = 120
@@ -61,22 +55,8 @@ kill_timeout = "30s"
     handlers = ["tls", "http"]
     force_https = true
 
-  [[services.http_checks]]
-    interval = "30s"
-    grace_period = "45s"
-    method = "get"
-    path = "/api/health"
-    timeout = "5s"
 
 [[vm]]
   memory_mb = 2048
   cpu_kind = "shared"
-  cpus = 1
-
-[checks.langfuse-worker]
-  type = "tcp"
-  port = 3030
-  timeout = "5s"
-  interval = "30s"
-  grace_period = "45s"
-  processes = ["worker"]
+  cpus = 2

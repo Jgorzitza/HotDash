@@ -8,7 +8,7 @@
  * @module app/services/ai-customer/accounts-sub-agent.service
  */
 
-import { createClient } from '@supabase/supabase-js';
+import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 import { logDecision } from '../decisions.server.js';
 
 export interface CustomerAccountQuery {
@@ -98,25 +98,27 @@ export interface ABACPolicy {
 }
 
 export class AccountsSubAgent {
-  private _supabase?: ReturnType<typeof createClient>;
+  private supabase: SupabaseClient | null;
   private mcpEnabled: boolean;
 
-  constructor(supabaseClient?: ReturnType<typeof createClient>) {
-    this._supabase = supabaseClient;
+  constructor(options: {
+    supabaseClient?: SupabaseClient | null;
+    supabaseUrl?: string | null;
+    supabaseKey?: string | null;
+  } = {}) {
+    if (options.supabaseClient) {
+      this.supabase = options.supabaseClient;
+    } else {
+      const supabaseUrl = options.supabaseUrl ?? process.env.SUPABASE_URL;
+      const supabaseKey = options.supabaseKey ?? process.env.SUPABASE_ANON_KEY;
+      this.supabase = supabaseUrl && supabaseKey ? createClient(supabaseUrl, supabaseKey) : null;
+    }
+
     this.mcpEnabled = process.env.CUSTOMER_ACCOUNTS_MCP_ENABLED === 'true';
   }
 
-  /**
-   * Get Supabase client (lazy initialization)
-   */
-  private get supabase(): ReturnType<typeof createClient> {
-    if (!this._supabase) {
-      this._supabase = createClient(
-        process.env.SUPABASE_URL!,
-        process.env.SUPABASE_ANON_KEY!
-      );
-    }
-    return this._supabase;
+  private getSupabase(): SupabaseClient | null {
+    return this.supabase;
   }
 
   /**
@@ -665,7 +667,19 @@ export class AccountsSubAgent {
     piiAccessCount: number;
   }> {
     try {
-      const { data: queries, error } = await this.supabase
+      const supabase = this.getSupabase();
+      if (!supabase) {
+        return {
+          totalQueries: 0,
+          successfulQueries: 0,
+          averageResponseTime: 0,
+          mcpEnabled: this.mcpEnabled,
+          abacViolations: 0,
+          piiAccessCount: 0,
+        };
+      }
+
+      const { data: queries, error } = await supabase
         .from('customer_account_queries')
         .select('*');
 
@@ -703,9 +717,28 @@ export class AccountsSubAgent {
       };
     }
   }
+
+  /**
+   * Compatibility wrapper for tools expecting updatePreferences helper.
+   */
+  async updatePreferences(
+    customerId: string,
+    token: string,
+    preferences: Partial<CustomerAccountInfo['preferences']>
+  ): Promise<boolean> {
+    return this.updateCustomerPreferences(customerId, token, preferences);
+  }
 }
 
 /**
- * Default Accounts Sub-Agent instance
+ * Lazily instantiate Accounts Sub-Agent so tests can run without Supabase credentials.
  */
-export const accountsSubAgent = new AccountsSubAgent();
+let accountsSubAgentSingleton: AccountsSubAgent | null = null;
+
+export function getAccountsSubAgent(): AccountsSubAgent {
+  if (!accountsSubAgentSingleton) {
+    accountsSubAgentSingleton = new AccountsSubAgent();
+  }
+
+  return accountsSubAgentSingleton;
+}

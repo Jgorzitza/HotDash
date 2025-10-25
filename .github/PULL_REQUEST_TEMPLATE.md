@@ -41,8 +41,8 @@ Fixes #
 - [ ] No TypeScript `any` types added (or justified in comments)
 - [ ] Error handling added for async operations
 - [ ] No hardcoded values (use environment variables)
-- [ ] Code follows React Router 7 patterns
-- [ ] Shopify API calls use MCP tools (if applicable)
+- [ ] React Router 7 compliance: uses `Response.json()` (no Remix `json()`); no `@remix-run/*` imports in app runtime
+- [ ] Shopify/Polaris compliance: validated via Shopify Dev MCP tools (see MCP Validation below)
 - [ ] Database queries use Supabase RPC (if applicable)
 
 ## Risk & Mitigations
@@ -103,3 +103,8 @@ Fixes #
 - [ ] No obvious performance issues
 - [ ] Rollback plan is clear and tested
 - [ ] Approved for merge
+
+## MCP Validation (Required when applicable)
+- [ ] Polaris UI changes validated with Shopify Dev MCP `validate_component_codeblocks`
+- [ ] Shopify Admin GraphQL changes validated with Shopify Dev MCP `validate_graphql_codeblocks`
+- [ ] Library patterns verified with Context7 MCP (React Router, Prisma, TS)

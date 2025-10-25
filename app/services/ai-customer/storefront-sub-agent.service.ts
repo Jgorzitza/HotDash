@@ -7,7 +7,7 @@
  * @module app/services/ai-customer/storefront-sub-agent.service
  */
 
-import { createClient } from '@supabase/supabase-js';
+import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 import { logDecision } from '../decisions.server.js';
 
 export interface StorefrontQuery {
@@ -91,15 +91,26 @@ export interface PolicyQueryResult {
 }
 
 export class StorefrontSubAgent {
-  private supabase: ReturnType<typeof createClient>;
+  private supabase: SupabaseClient | null;
   private mcpEnabled: boolean;
 
-  constructor() {
-    this.supabase = createClient(
-      process.env.SUPABASE_URL!,
-      process.env.SUPABASE_ANON_KEY!
-    );
+  constructor(options: {
+    supabaseUrl?: string | null;
+    supabaseKey?: string | null;
+  } = {}) {
+    const supabaseUrl = options.supabaseUrl ?? process.env.SUPABASE_URL;
+    const supabaseKey = options.supabaseKey ?? process.env.SUPABASE_ANON_KEY;
+
+    if (supabaseUrl && supabaseKey) {
+      this.supabase = createClient(supabaseUrl, supabaseKey);
+    } else {
+      this.supabase = null;
+    }
     this.mcpEnabled = process.env.STOREFRONT_MCP_ENABLED === 'true';
+  }
+
+  private getSupabase(): SupabaseClient | null {
+    return this.supabase;
   }
 
   /**
@@ -613,7 +624,18 @@ export class StorefrontSubAgent {
     errorRate: number;
   }> {
     try {
-      const { data: queries, error } = await this.supabase
+      const supabase = this.getSupabase();
+      if (!supabase) {
+        return {
+          totalQueries: 0,
+          successfulQueries: 0,
+          averageResponseTime: 0,
+          mcpEnabled: this.mcpEnabled,
+          errorRate: 0,
+        };
+      }
+
+      const { data: queries, error } = await supabase
         .from('storefront_queries')
         .select('*');
 
@@ -651,6 +673,14 @@ export class StorefrontSubAgent {
 }
 
 /**
- * Default Storefront Sub-Agent instance
+ * Lazily instantiate Storefront Sub-Agent for mock environments without Supabase.
  */
-export const storefrontSubAgent = new StorefrontSubAgent();
+let storefrontSubAgentSingleton: StorefrontSubAgent | null = null;
+
+export function getStorefrontSubAgent(): StorefrontSubAgent {
+  if (!storefrontSubAgentSingleton) {
+    storefrontSubAgentSingleton = new StorefrontSubAgent();
+  }
+
+  return storefrontSubAgentSingleton;
+}

@@ -36,43 +36,51 @@ The HotDash knowledge base uses LlamaIndex TypeScript to provide the CEO Agent w
 
 **Location**: `data/support/*.md`
 
-**Current Documents** (6 total, ~52 KB):
+**Current Documents** (7 total, ~70 KB):
 
-1. `common-questions-faq.md` - General FAQ
+1. `common-questions-faq.md` - General FAQ and high-volume intents
 2. `exchange-process.md` - Exchange procedures
 3. `order-tracking.md` - Tracking information
-4. `product-troubleshooting.md` - Product support
+4. `product-troubleshooting.md` - Product support flows
 5. `refund-policy.md` - Return and refund policies
 6. `shipping-policy.md` - Shipping options and costs
+7. `warranty-policy.md` - Warranty and replacement guidelines
 
 **Format**: Markdown files with natural language content
 
-### Query Engine
+### Query Engine (MCP)
 
-**Implementation**: `app/services/rag/ceo-knowledge-base.ts`
+**Implementation**: `apps/llamaindex-mcp-server/src/server.ts`
 
-**Function**: `queryKnowledgeBase(query: string): Promise<QueryResult>`
+**Available Tools**:
 
-**Response Format**:
+- `query_support` – semantic search over support FAQs/policies
+- `knowledge_base_stats` – metadata snapshot for dashboards
+- `refresh_index` – rebuilds vector store from `data/support/`
+- `insight_report` – telemetry-driven summaries (optional)
 
-```typescript
+**Client Integrations**:
+
+- Customer agents invoke `answer_from_docs` (`apps/agent-service/src/tools/rag.ts`)
+- CEO agent delegates to MCP via `packages/agents/src/ai-ceo.ts`
+- `LLAMAINDEX_MCP_URL` defaults to `https://hotdash-llamaindex-mcp.fly.dev/mcp`
+
+**Response Format** (per MCP spec):
+
+```json
 {
-  answer: string; // LLM-synthesized answer
-  sources: Array<{
-    document: string; // Source document filename
-    relevance: number; // Similarity score
-    snippet?: string; // Text excerpt
-  }>;
-  confidence: "high" | "medium" | "low";
+  "content": [
+    { "type": "text", "text": "Answer with citations" }
+  ]
 }
 ```
 
-**Configuration**:
+**Runtime Configuration**:
 
-- LLM: GPT-3.5-turbo (temperature 0.1)
-- Embeddings: text-embedding-3-small
-- Chunk size: 512 tokens
-- Retrieval: Top 3 similar chunks (`similarityTopK: 3`)
+- Embeddings: OpenAI `text-embedding-3-small`
+- Chunk size: 512 tokens, 0 overlap (see `index_metadata.json`)
+- Default retrieval: `similarityTopK = 5` (override via tool args)
+- Persisted index path: `packages/memory/indexes/operator_knowledge`
 
 ---
 
@@ -102,17 +110,27 @@ The HotDash knowledge base uses LlamaIndex TypeScript to provide the CEO Agent w
 
 ### Query the Knowledge Base
 
-```typescript
-import { queryKnowledgeBase } from "app/services/rag/ceo-knowledge-base";
+```bash
+# List tools (expect query_support, knowledge_base_stats, refresh_index, insight_report)
+curl -s -X POST \
+  https://hotdash-llamaindex-mcp.fly.dev/mcp/tools/list \
+  -H 'Content-Type: application/json' \
+  -d '{}'
 
-// Example query
-const result = await queryKnowledgeBase(
-  "What is our return policy for damaged items?",
-);
+# Query support KB via MCP (top 3 results)
+curl -s -X POST \
+  https://hotdash-llamaindex-mcp.fly.dev/mcp/tools/call \
+  -H 'Content-Type: application/json' \
+  -d '{
+        "name": "query_support",
+        "arguments": { "q": "What is the return window?", "topK": 3 }
+      }'
 
-console.log(result.answer); // "Items damaged during shipping..."
-console.log(result.sources); // [{ document: "refund-policy.md", ... }]
-console.log(result.confidence); // "high" | "medium" | "low"
+# From agent service (answer_from_docs tool)
+const answer = await answerFromDocs.execute({
+  question: "What is our return policy for damaged items?",
+  topK: 3,
+});
 ```
 
 ### Rebuild Index
@@ -120,14 +138,21 @@ console.log(result.confidence); // "high" | "medium" | "low"
 When documents are added or updated:
 
 ```bash
-# Check index status
-npx tsx scripts/rag/maintain-index.ts status
+# 1. Rebuild local vector store (persisted under packages/memory/indexes/operator_knowledge)
+npx tsx scripts/rag/build-index.ts --skip-test
 
-# Rebuild from source documents
-npx tsx scripts/rag/maintain-index.ts rebuild
+# 2. Capture metadata for auditing / release notes
+cat packages/memory/indexes/operator_knowledge/index_metadata.json \
+  > artifacts/ai-knowledge/$(date +%Y-%m-%d)/index-build.json
 
-# Verify integrity
-npx tsx scripts/rag/maintain-index.ts verify
+# 3. (Optional) Semantic evaluation before QA handoff
+npx tsx scripts/rag/semantic-evaluation.ts --topK 3 --days 7
+
+# 4. Refresh running MCP instance (requires DevOps task if Fly app is paused)
+curl -s -X POST \
+  https://hotdash-llamaindex-mcp.fly.dev/mcp/tools/call \
+  -H 'Content-Type: application/json' \
+  -d '{ "name": "refresh_index", "arguments": { "full": true } }'
 ```
 
 ### Run Tests
@@ -155,9 +180,11 @@ npx tsx scripts/rag/test-and-optimize.ts --verbose
 **Process**:
 
 1. Update document files in `data/support/`
-2. Run `npx tsx scripts/rag/maintain-index.ts rebuild`
-3. Verify with `npx tsx scripts/rag/maintain-index.ts verify`
-4. Test queries with `npx tsx scripts/rag/test-and-optimize.ts`
+2. Run `npx tsx scripts/rag/build-index.ts --skip-test`
+3. Inspect `index_metadata.json` (document count, chunk config, build time)
+4. Optionally run `npx tsx scripts/rag/test-and-optimize.ts` for regression coverage
+5. Coordinate with DevOps to execute MCP `refresh_index` if Fly app is active
+6. Log MCP evidence (`artifacts/<agent>/<date>/mcp/*.jsonl`) for CI guardrails
 
 ### Version Tracking
 
@@ -170,7 +197,7 @@ Index metadata includes:
 Access via maintenance script:
 
 ```bash
-npx tsx scripts/rag/maintain-index.ts status
+jq '.' packages/memory/indexes/operator_knowledge/index_metadata.json
 ```
 
 ### Future: Shopify Integration
@@ -242,9 +269,9 @@ OPENAI_API_KEY=sk-...
 
 **Solution**:
 
-```bash
-npx tsx scripts/rag/maintain-index.ts rebuild
-```
+ ```bash
+  npx tsx scripts/rag/build-index.ts --skip-test
+  ```
 
 ### Slow queries (>2000ms)
 
@@ -267,7 +294,7 @@ npx tsx scripts/rag/maintain-index.ts rebuild
 1. Run verbose tests: `npx tsx scripts/rag/test-and-optimize.ts --verbose`
 2. Check which categories are failing
 3. Review source documents for coverage
-4. Verify index is recent: `npx tsx scripts/rag/maintain-index.ts status`
+4. Verify index is recent: `jq '.buildTime' packages/memory/indexes/operator_knowledge/index_metadata.json`
 
 **Common fixes**:
 
@@ -282,11 +309,11 @@ npx tsx scripts/rag/maintain-index.ts rebuild
 **Solution**:
 
 ```bash
-# Verify what's wrong
-npx tsx scripts/rag/maintain-index.ts verify
+# Inspect metadata / chunk stats
+jq '.' packages/memory/indexes/operator_knowledge/index_metadata.json
 
 # Rebuild to fix
-npx tsx scripts/rag/maintain-index.ts rebuild
+npx tsx scripts/rag/build-index.ts --skip-test
 ```
 
 ---
@@ -300,7 +327,7 @@ npx tsx scripts/rag/maintain-index.ts rebuild
 3. Include all relevant information
 4. Rebuild index:
    ```bash
-   npx tsx scripts/rag/maintain-index.ts rebuild
+   npx tsx scripts/rag/build-index.ts --skip-test
    ```
 5. Test coverage:
    ```bash
@@ -334,14 +361,14 @@ npx tsx scripts/rag/maintain-index.ts rebuild
 
 - **LlamaIndex TypeScript**: https://ts.llamaindex.ai/
 - **OpenAI Embeddings**: https://platform.openai.com/docs/guides/embeddings
-- **Scripts**:
+- **Scripts / Entry Points**:
   - Build: `scripts/rag/build-index.ts`
-  - Query: `app/services/rag/ceo-knowledge-base.ts`
-  - Maintain: `scripts/rag/maintain-index.ts`
+  - MCP Server: `apps/llamaindex-mcp-server/src/server.ts`
+  - Agent Tool: `apps/agent-service/src/tools/rag.ts`
   - Test: `scripts/rag/test-and-optimize.ts`
 
 ---
 
-**Last Updated**: 2025-10-21  
+**Last Updated**: 2025-10-25  
 **Status**: Production Ready  
 **Owner**: AI-Knowledge Agent

@@ -50,21 +50,41 @@ function log(level, message, data = null) {
 }
 
 async function checkRailsHealth(baseUrl) {
-  const url = `${baseUrl}/rails/health`;
+  // Chatwoot exposes an API health JSON at `/api`.
+  // Prefer that over Rails default endpoints which may not be mounted.
+  const url = `${baseUrl}/api`;
   const start = Date.now();
 
   try {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), TIMEOUT_MS);
 
-    const response = await fetch(url, {
-      method: "GET",
-      signal: controller.signal,
-    });
+    let response;
+    let attempts = 0;
+    let lastErr;
+    while (attempts < 3) {
+      try {
+        response = await fetch(url, { method: "GET", signal: controller.signal });
+        break;
+      } catch (e) {
+        lastErr = e;
+        attempts += 1;
+        if (attempts < 3) await new Promise((r) => setTimeout(r, 300 * attempts));
+      }
+    }
 
     clearTimeout(timeoutId);
     const duration = Date.now() - start;
-
+    if (!response) {
+      return {
+        name: "rails_health",
+        url,
+        status: "fail",
+        error: lastErr?.message || "fetch failed",
+        duration: `${duration}ms`,
+        timestamp: new Date().toISOString(),
+      };
+    }
     return {
       name: "rails_health",
       url,
@@ -88,45 +108,62 @@ async function checkRailsHealth(baseUrl) {
   }
 }
 
-async function checkAuthenticatedAPI(baseUrl, token) {
-  const url = `${baseUrl}/api/v1/profile`;
+async function checkAuthenticatedAPI(baseUrl, token, accountId) {
+  // Use an account-scoped endpoint that requires valid token.
+  const url = `${baseUrl}/api/v1/accounts/${accountId}/conversations?per_page=1`;
   const start = Date.now();
 
   try {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), TIMEOUT_MS);
+    const attempt = async (headers, headerUsed) => {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), TIMEOUT_MS);
+      const resp = await fetch(url, { method: "GET", headers, signal: controller.signal });
+      clearTimeout(timeoutId);
+      return { resp, headerUsed };
+    };
 
-    const response = await fetch(url, {
-      method: "GET",
-      headers: {
-        api_access_token: token,
-        "Content-Type": "application/json",
-      },
-      signal: controller.signal,
-    });
+    // Try api_access_token first, then Authorization: Bearer fallback, with simple retries
+    let resp, headerUsed;
+    let attempts = 0;
+    while (attempts < 3) {
+      ({ resp, headerUsed } = await attempt(
+        { api_access_token: token, "Content-Type": "application/json" },
+        "api_access_token",
+      ));
+      if (resp.status === 401) {
+        ({ resp, headerUsed } = await attempt(
+          { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+          "authorization_bearer",
+        ));
+      }
+      // Break on success or on client error (no point retrying 4xx)
+      if (resp.ok || (resp.status >= 400 && resp.status < 500)) break;
+      attempts += 1;
+      await new Promise((r) => setTimeout(r, 300 * attempts));
+    }
 
-    clearTimeout(timeoutId);
     const duration = Date.now() - start;
-
     let responseData = null;
-    if (response.ok) {
+    if (resp.ok) {
       try {
-        responseData = await response.json();
+        responseData = await resp.json();
       } catch {
-        // Ignore JSON parse errors
+        // ignore JSON parse errors
       }
     }
 
     return {
       name: "authenticated_api",
       url,
-      status: response.ok ? "pass" : "fail",
-      httpStatus: response.status,
-      statusText: response.statusText,
+      status: resp.ok ? "pass" : "fail",
+      httpStatus: resp.status,
+      statusText: resp.statusText,
       duration: `${duration}ms`,
       timestamp: new Date().toISOString(),
-      accountId: responseData?.id || null,
-      accountName: responseData?.name || null,
+      authHeaderUsed: headerUsed,
+      resultCount: Array.isArray(responseData?.data)
+        ? responseData.data.length
+        : null,
     };
   } catch (error) {
     const duration = Date.now() - start;
@@ -162,6 +199,12 @@ async function main() {
   // Check environment variables
   const baseUrl = process.env.CHATWOOT_BASE_URL;
   const token = process.env.CHATWOOT_API_TOKEN || process.env.CHATWOOT_TOKEN;
+  const accountId = Number(
+    process.env.CHATWOOT_ACCOUNT_ID ||
+      process.env.CHATWOOT_ACCOUNT_ID_STAGING ||
+      process.env.CHATWOOT_ACCOUNT_ID_PRODUCTION ||
+      1,
+  );
 
   if (!baseUrl) {
     log("error", "CHATWOOT_BASE_URL environment variable not set");
@@ -175,12 +218,16 @@ async function main() {
     log("error", "CHATWOOT_API_TOKEN or CHATWOOT_TOKEN environment variable not set");
     process.exit(1);
   }
+  if (!accountId || Number.isNaN(accountId)) {
+    log("error", "CHATWOOT_ACCOUNT_ID (or *_STAGING/PRODUCTION) not set or invalid");
+    process.exit(1);
+  }
 
   log("info", `Checking Chatwoot instance: ${baseUrl}`);
 
   // Run health checks
   const railsHealth = await checkRailsHealth(baseUrl);
-  const apiHealth = await checkAuthenticatedAPI(baseUrl, token);
+  const apiHealth = await checkAuthenticatedAPI(baseUrl, token, accountId);
 
   // Display results
   console.log(`\n${colors.bold}Results:${colors.reset}\n`);
@@ -236,6 +283,9 @@ async function main() {
     process.exit(0);
   } else if (railsHealth.status === "fail" && apiHealth.status === "fail") {
     log("error", "All Chatwoot health checks failed");
+    console.log(
+      "\nNext steps: verify CHATWOOT_ACCOUNT_ID (docs say 3), regenerate API token via Chatwoot UI (Profile → Access Token), then set CHATWOOT_API_TOKEN and rerun.",
+    );
     process.exit(4);
   } else if (railsHealth.status === "fail") {
     log("error", "Rails health check failed");
@@ -250,4 +300,3 @@ main().catch((error) => {
   log("error", "Unexpected error", { error: error.message, stack: error.stack });
   process.exit(1);
 });
-

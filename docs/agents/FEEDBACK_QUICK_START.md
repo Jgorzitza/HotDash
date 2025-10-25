@@ -1,5 +1,9 @@
 # Agent Feedback Quick Start
 
+> ⚠️ **Temporary Warning (2025-10-24): `logDecision()` currently throws `P2021` because the `audit_log` table it targets is missing in the KB database.**
+>
+> Until the database owners restore the correct table mapping, every command in this guide that calls `logDecision()` will fail (or appear to succeed without persisting anything). Coordinate with your manager before relying on these scripts, and capture your updates through the approved fallback channel if they confirm an alternative path.
+
 **Simple commands to write feedback to the database.**
 
 ## Option 1: Use the Template (Easiest)
@@ -253,4 +257,3 @@ npx tsx --env-file=.env /tmp/my-feedback.ts
 ---
 
 **Questions?** Ask manager or check `app/services/decisions.server.ts` for full API.
-

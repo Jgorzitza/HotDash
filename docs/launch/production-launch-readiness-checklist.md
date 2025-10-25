@@ -2,7 +2,7 @@
 
 **Document**: `docs/launch/production-launch-readiness-checklist.md`  
 **Created**: 2025-10-23  
-**Owner**: Support Agent  
+**Owner**: Product Agent  
 **Purpose**: Comprehensive go/no-go checklist for HotDash production deployment  
 **Status**: ACTIVE
 
@@ -19,6 +19,28 @@ This checklist ensures HotDash is production-ready before deployment. All P0 ite
 - **Post-Launch Monitoring**: Section 4 (Dashboards, Health checks, Alerts, Log monitoring)
 - **Incident Response**: Section 5 (Classification, Procedures, Escalation, Communication)
 - **Success Criteria**: Section 6 (Launch metrics, Go/No-Go decision)
+
+---
+
+## Launch Owner Matrix
+
+| Checklist Area | Responsible Owner | Acceptance Criteria | Evidence / Status |
+|----------------|-------------------|---------------------|-------------------|
+| CI/CD Pipeline Readiness (Sec. 1.1) | Engineer | All CI checks green on `agent-launch-20251024` → `main`; Danger & Gitleaks pass | GitHub Actions `deploy-production.yml` latest run ⬜ |
+| Security Validation (Sec. 1.2) | Security | PII redaction, ABAC, RLS verified; secrets review logged | Security ticket `SEC-441` ⬜ |
+| Performance Benchmarks (Sec. 1.3) | Engineer | CWV + HotDash targets met in Lighthouse & synthetic checks | Performance report 2025-10-24 ⬜ |
+| Accessibility Compliance (Sec. 1.4) | Designer | WCAG 2.2 AA validation complete (axe, WAVE, NVDA) | Accessibility audit doc ⬜ |
+| Database & Infrastructure (Sec. 1.5) | DevOps | Prisma validate, backups, Fly.io health, env vars confirmed | Fly ops note `DEVOPS-229` ⬜ |
+| Integration Health (Sec. 1.6) | Integrations | Shopify, Chatwoot, Supabase, GA4, Search Console, Publer smoke tests | Integration dashboard snapshot ⬜ |
+| Testing Coverage (Sec. 1.7) | QA | Unit ≥80%, integration, e2e, contract suites pass | CI run `#1482` ⬜ |
+| Documentation Currency (Sec. 1.8) | Product | README, NORTH_STAR, OPERATING_MODEL, RULES verified current | Doc audit log 2025-10-24 ⬜ |
+| Go-Live Procedures (Sec. 2) | DevOps (driver), Manager (navigator) | Pre-deploy, deploy, post-verify, stakeholder comms complete | War room runbook checklist ⬜ |
+| Rollback Plan (Sec. 3) | DevOps & Product | Triggers, procedures, post-actions rehearsed; rollback workflow tested | Rollback drill record 2025-10-23 ⬜ |
+| Post-Launch Monitoring (Sec. 4) | Analytics & DevOps | Dashboards shared, alerting active, health-check cadence confirmed | Launch Health dashboard link ⬜ |
+| Incident Response (Sec. 5) | Manager | Escalation ladder acknowledged, comms templates ready | Incident playbook ack ⬜ |
+| Success Metrics (Sec. 6) | Product & Analytics | Launch KPIs baselined; go/no-go criteria sign-off captured | Decision log entry 2025-10-24T17:30Z ⬜ |
+
+**Task Alignment**: This document satisfies `PRODUCT-LAUNCH-CHECKLIST` by publishing the checklist (this file), mapping owners and acceptance criteria (matrix above), and consolidating rollback/monitoring plans (Sections 3 & 4).
 
 ---
 
@@ -466,9 +488,9 @@ This checklist ensures HotDash is production-ready before deployment. All P0 ite
 | Version | Date | Author | Changes |
 |---------|------|--------|---------|
 | 1.0 | 2025-10-23 | Support Agent | Initial creation - comprehensive production launch checklist |
+| 1.1 | 2025-10-25 | Product Agent | Added owner matrix, acceptance mapping, and clarified task alignment |
 
 ---
 
 **END OF CHECKLIST**
-
 

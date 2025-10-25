@@ -139,19 +139,30 @@ export class ProductionMonitoringService {
    * Collect production metrics
    */
   private async collectProductionMetrics(): Promise<ProductionMetrics> {
-    // Get recent analytics data from database
-    const recentFacts = await prisma.dashboardFact.findMany({
-      where: {
-        createdAt: {
-          gte: new Date(Date.now() - 60 * 60 * 1000) // Last hour
-        },
-        factType: {
-          in: ['ga4_metrics', 'conversion_funnel', 'performance_metrics']
-        }
-      },
-      orderBy: { createdAt: 'desc' },
-      take: 100
-    });
+    // Get recent analytics data from database when available
+    let recentFacts: Array<Record<string, unknown>> = [];
+    const dashboardFactClient = (prisma as any)?.dashboardFact;
+
+    if (typeof dashboardFactClient?.findMany === 'function') {
+      try {
+        recentFacts = await dashboardFactClient.findMany({
+          where: {
+            createdAt: {
+              gte: new Date(Date.now() - 60 * 60 * 1000) // Last hour
+            },
+            factType: {
+              in: ['ga4_metrics', 'conversion_funnel', 'performance_metrics']
+            }
+          },
+          orderBy: { createdAt: 'desc' },
+          take: 100
+        });
+      } catch (error) {
+        console.warn('[ProductionMonitoring] Failed to fetch dashboard facts, using simulated data.', error);
+      }
+    } else {
+      console.warn('[ProductionMonitoring] dashboardFact model unavailable; using simulated monitoring data.');
+    }
 
     // Aggregate metrics
     const analytics = this.aggregateAnalyticsMetrics(recentFacts);
@@ -435,4 +446,3 @@ export const defaultMonitoringConfig = {
     checkoutAbandonmentRate: 70
   }
 };
-

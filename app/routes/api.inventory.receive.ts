@@ -108,8 +108,11 @@ export async function action({ request }: ActionFunctionArgs) {
     // For now, log the sync intention
     for (const update of alcUpdates) {
       // await syncInventoryCostToShopify(update.variantId, update.newALC);
-        `[Inventory] Would sync ALC to Shopify: ${update.variantId} -> $${update.newALC}`,
-      );
+      if (process.env.NODE_ENV !== "production") {
+        console.info(
+          `[Inventory] Would sync ALC to Shopify: ${update.variantId} -> $${update.newALC}`,
+        );
+      }
     }
 
     // 3. Update PO status to 'received'

@@ -1,7 +1,9 @@
-import { Prisma } from "@prisma/client";
-import prisma from "../db.server";
+import { Prisma } from "@prisma/kb-client";
+import kbPrisma from "../kb-db.server";
 import { getSupabaseConfig } from "../config/supabase.server";
 import { supabaseMemory } from "../../packages/memory/supabase";
+// Use KB database for decision logging (keeps dev data separate from production)
+const prisma = kbPrisma;
 export async function logDecision(input) {
     const decision = await prisma.decisionLog.create({
         data: {
@@ -10,8 +12,6 @@ export async function logDecision(input) {
             action: input.action,
             rationale: input.rationale,
             evidenceUrl: input.evidenceUrl,
-            shopDomain: input.shopDomain,
-            externalRef: input.externalRef,
             payload: input.payload ?? Prisma.JsonNull,
             // Enhanced feedback tracking fields
             taskId: input.taskId,

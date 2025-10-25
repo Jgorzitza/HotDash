@@ -346,3 +346,5 @@ export class SpecialistAgentOrchestrator {
     }
   }
 }
+
+export { SpecialistAgentOrchestrator as SpecialistAgents };

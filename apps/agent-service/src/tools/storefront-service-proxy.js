@@ -4,23 +4,19 @@
  * production builds where the compiled JavaScript output exists.
  */
 
-type StorefrontModule = {
-  StorefrontSubAgent: new () => any;
-};
-
 const moduleSpecifiers = [
   '../../../../app/services/ai-customer/storefront-sub-agent.service.js',
   '../../../../app/services/ai-customer/storefront-sub-agent.service.ts',
-] as const;
+];
 
-let cachedInstance: any | null = null;
+let cachedInstance = null;
 
-const loadStorefrontModule = async (): Promise<StorefrontModule> => {
+const loadStorefrontModule = async () => {
   for (const specifier of moduleSpecifiers) {
     try {
-      return (await import(specifier)) as StorefrontModule;
+      return await import(specifier);
     } catch (error) {
-      // Try the next specifier
+      // Continue to next specifier
     }
   }
 

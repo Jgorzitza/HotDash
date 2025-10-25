@@ -13,21 +13,7 @@
 
 import { Card, Badge, Text, InlineStack, BlockStack, ProgressBar } from '@shopify/polaris';
 import { useState, useEffect } from 'react';
-
-export interface InventoryHealthMetrics {
-  overallHealth: 'healthy' | 'warning' | 'critical';
-  totalProducts: number;
-  inStock: number;
-  lowStock: number;
-  outOfStock: number;
-  overstock: number;
-  activeAlerts: number;
-  criticalAlerts: number;
-  ropCompliance: number; // Percentage of products above ROP
-  avgDaysToStockout: number;
-  emergencySourcingNeeded: number;
-  lastUpdated: string;
-}
+import type { InventoryHealthMetrics } from '~/services/inventory/health-monitor';
 
 interface InventoryHealthDashboardProps {
   metrics?: InventoryHealthMetrics;
@@ -255,4 +241,3 @@ export function InventoryHealthDashboard({
 }
 
 export default InventoryHealthDashboard;
-

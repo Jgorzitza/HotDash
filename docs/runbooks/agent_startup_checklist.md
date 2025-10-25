@@ -132,6 +132,17 @@ git push origin agent-launch-20251024
 - 1 tool call saves 3-5 failed deployments (~15 minutes)
 - **Real examples**: See RULES.md "Real-World Examples" section (2025-10-20 P0 fixes)
 
+### Timeout Discipline (NEW)
+
+- Wrap network calls with a timeout in new scripts:
+  - Use `fetchWithTimeout(url, opts, 10000)` from `scripts/lib/timeout.ts`.
+  - Wrap long promises: `withTimeout(promise, 120000, 'label')`.
+- When invoking long shell commands locally, use the runner:
+  ```bash
+  node scripts/ops/run-with-timeout.mjs 120000 -- npx tsx --env-file=.env scripts/manager/query-blocked-tasks.ts
+  ```
+
+
 ## 1) Align to the Star (60 sec)
 
 - [ ] **Read Core Docs** (in order):

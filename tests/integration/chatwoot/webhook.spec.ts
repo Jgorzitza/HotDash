@@ -4,7 +4,7 @@
  * Tests webhook signature verification, event handling, error cases
  */
 
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { createHmac } from "node:crypto";
 
 describe("Chatwoot Webhook Integration", () => {
@@ -153,8 +153,13 @@ describe("Chatwoot Webhook Integration", () => {
 
     it("should handle network errors", async () => {
       const url = "https://invalid-url-that-does-not-exist.com";
+      const fetchSpy = vi
+        .spyOn(global, "fetch")
+        .mockRejectedValueOnce(new Error("Network error"));
 
-      await expect(fetch(url)).rejects.toThrow();
+      await expect(fetch(url)).rejects.toThrow("Network error");
+
+      fetchSpy.mockRestore();
     });
 
     it("should handle empty payload", () => {

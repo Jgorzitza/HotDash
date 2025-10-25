@@ -40,7 +40,13 @@ export async function loader(_args: LoaderFunctionArgs) {
       success: true,
       data: {
         unread_count: summary.unreadCount,
-        top_conversation: summary.topConversation,
+        top_conversation: summary.topConversation
+          ? {
+              customer_name: summary.topConversation.customerName,
+              snippet: summary.topConversation.snippet,
+              created_at: summary.topConversation.createdAt,
+            }
+          : null,
         source: "chatwoot",
       },
       timestamp,

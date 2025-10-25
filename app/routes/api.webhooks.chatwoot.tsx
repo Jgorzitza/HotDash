@@ -64,6 +64,7 @@ export const action: ActionFunction = async ({ request }) => {
 
     // Parse webhook payload
     const payload = JSON.parse(rawBody);
+    console.log("[Chatwoot Webhook] Received:", {
       event: payload.event,
       conversationId: payload.conversation?.id,
       messageType: payload.message_type,
@@ -102,6 +103,7 @@ export const action: ActionFunction = async ({ request }) => {
     const result = await response.json();
     const duration = Date.now() - startTime;
 
+    console.log("[Chatwoot Webhook] Processed successfully", {
       duration: `${duration}ms`,
       status: result.status,
     });

@@ -26,6 +26,27 @@ import { logDecision } from "~/services/decisions.server";
 // ============================================================================
 
 const GA4_PROPERTY_ID = "339826228";
+const isProd = process.env.NODE_ENV === "production";
+
+const logInfo = (message: string, meta?: Record<string, unknown>) => {
+  if (!isProd) {
+    if (meta) {
+      console.info(message, meta);
+    } else {
+      console.info(message);
+    }
+  }
+};
+
+const logWarn = (message: string, meta?: Record<string, unknown>) => {
+  if (!isProd) {
+    if (meta) {
+      console.warn(message, meta);
+    } else {
+      console.warn(message);
+    }
+  }
+};
 
 // Create GA4 Data API client with service account authentication
 const analyticsDataClient = new BetaAnalyticsDataClient({
@@ -103,6 +124,7 @@ export async function getActionAttribution(
 
     // Parse response
     if (!response.rows || response.rows.length === 0) {
+      logWarn(
         `[Attribution] No data found for action key: ${actionKey} (${periodDays}d)`,
       );
       return {
@@ -129,6 +151,7 @@ export async function getActionAttribution(
     const conversionRate = sessions > 0 ? (purchases / sessions) * 100 : 0;
     const averageOrderValue = purchases > 0 ? revenue / purchases : 0;
 
+    logInfo(
       `[Attribution] ${actionKey} (${periodDays}d): ${sessions} sessions, ${purchases} purchases, $${revenue.toFixed(2)} revenue`,
     );
 
@@ -168,8 +191,7 @@ export async function updateActionROI(
   actionId: string,
   actionKey: string,
 ): Promise<AttributionSummary> {
-    `[Attribution] Updating ROI for action ${actionId} (key: ${actionKey})`,
-  );
+  logInfo(`[Attribution] Updating ROI for action ${actionId} (key: ${actionKey})`);
 
   // Query all 3 windows in parallel
   const [roi7d, roi14d, roi28d] = await Promise.all([
@@ -207,6 +229,7 @@ export async function updateActionROI(
     },
   });
 
+  logInfo(
     `[Attribution] ✅ Updated action ${actionId}: 7d=$${roi7d.revenue}, 14d=$${roi14d.revenue}, 28d=$${roi28d.revenue}`,
   );
 
@@ -268,10 +291,14 @@ export async function rerankActionQueue() {
     take: 10,
   });
 
+  logInfo(
     `[Attribution] ✅ Re-ranking complete: Updated ${updatedCount} actions`,
   );
-    `[Attribution] Top action: ${rankedActions[0]?.actionKey || "none"} ($${rankedActions[0]?.realizedRevenue28d || 0})`,
-  );
+  if (rankedActions[0]) {
+    logInfo(
+      `[Attribution] Top action: ${rankedActions[0]?.actionKey || "none"} ($${rankedActions[0]?.realizedRevenue28d || 0})`,
+    );
+  }
 
   return rankedActions;
 }
@@ -294,8 +321,12 @@ export async function runNightlyAttributionUpdate() {
     const duration = Date.now() - startTime;
     const durationMinutes = (duration / 60000).toFixed(2);
 
+    logInfo(
+      `[Attribution] Nightly update completed in ${durationMinutes} minutes (${rankedActions.length} actions refreshed)`,
+    );
 
     rankedActions.slice(0, 3).forEach((action, i) => {
+      logInfo(
         `  ${i + 1}. ${action.actionKey}: $${action.realizedRevenue28d || 0} (28d)`,
       );
     });

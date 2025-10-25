@@ -29,12 +29,6 @@ vi.mock('../../../src/tools/storefront-service-proxy.js', () => {
   };
 });
 
-vi.mock('../../../src/tools/storefront-service-proxy.ts', () => {
-  return {
-    getStorefrontService: storefrontServiceMock,
-  };
-});
-
 let storefrontSearchProducts: any;
 let storefrontCheckAvailability: any;
 let storefrontQueryPolicy: any;

@@ -21,7 +21,6 @@
       "../../packages/*": ["../../packages/*"]
     }
   },
-  "include": ["src/**/*", "../../app/**/*", "../../packages/**/*"],
+  "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]
 }
-

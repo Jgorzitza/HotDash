@@ -104,8 +104,11 @@ export async function action({ request }: ActionFunctionArgs) {
       );
     }
 
-      `[CX Content API] ✅ Applied ${results.length} content items to product ${body.productId}`,
-    );
+    if (process.env.NODE_ENV !== "production") {
+      console.info(
+        `[CX Content API] ✅ Applied ${results.length} content items to product ${body.productId}`,
+      );
+    }
 
     return Response.json({
       success: true,

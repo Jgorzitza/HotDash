@@ -120,6 +120,15 @@ For each **active agent**:
       to the **Issue** (and PR if open).
 - [ ] **Archive/remove** completed items from directions
 - [ ] Verify agents logged final status via `logDecision()` (check query output)
+ - [ ] Run direction reconciliation (catches completions logged after assignments):
+   ```bash
+   # Broad scan (past 14 days) and deep row take to catch stragglers
+   DAYS=14 TAKE=5000 npx tsx --env-file=.env scripts/manager/reconcile-direction-completions.ts
+   # Optionally target a specific task if still stale in direction
+   TASK_ID=<TASK-ID> npx tsx --env-file=.env scripts/manager/reconcile-direction-completions.ts
+   # Regenerate workboard one‑pager
+   npx tsx --env-file=.env scripts/manager/workboard.ts
+   ```
 
 _Notes:_ Agents report via `logDecision()` (database) with structured fields (taskId, status, progressPct).
 
@@ -174,6 +183,7 @@ For each **active agent**:
   git commit -am "chore: planning TTL sweep" && git push
   ```
 - [ ] Glance for any stray `.md` or cross‑agent edits in today’s PRs (reject/clean if found).
+ - [ ] Near launch: **no new doc‑only tasks** unless explicitly required. Prefer code/tests with small, safe diffs.
 
 ---
 
@@ -182,6 +192,7 @@ For each **active agent**:
 - [ ] No secrets in local logs/console paste. Close terminals with creds; stop tunnels.
 - [ ] Ensure `.env*` are **not staged**; `.gitignore` covers them.
 - [ ] Inventory any newly rotated secrets in the private Security note (if applicable).
+ - [ ] Production safety: enforce additive‑only changes (no schema resets, no destructive infra ops).
 
 ---
 
@@ -219,6 +230,7 @@ Before finalizing shutdown:
 - [ ] Execute `docs/runbooks/drift_checklist.md` **in full** (after all agents have shut down).
 - [ ] Confirm: HEAD secrets scan is clean; docs policy shows 0 violations; planning TTL sweep committed;
       required checks on `main` still enforced; directions ↔ feedback are consistent for tomorrow.
+ - [ ] Log `direction_reconciled` with artifact link to reconciliation summary for audit continuity.
 
 ## 9) Finalize
 

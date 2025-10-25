@@ -94,6 +94,23 @@ model TaskAssignment {
   @@schema("public")
 }
 
+// Dashboard analytics fact table mapping (existing in Supabase)
+model DashboardFact {
+  id          Int       @id @default(autoincrement())
+  shopDomain  String    @map("shop_domain")
+  factType    String    @map("fact_type")
+  scope       String?
+  value       Json?
+  metadata    Json?
+  evidenceUrl String?   @map("evidence_url")
+  createdAt   DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime? @default(now()) @map("updated_at") @db.Timestamptz(6)
+
+  @@index([shopDomain, factType, createdAt(sort: Desc)], map: "dashboard_fact_shop_fact_type_created_idx")
+  @@map("dashboard_fact")
+  @@schema("public")
+}
+
 model BackupVerification {
   id                Int       @id @default(autoincrement())
   backup_date       DateTime? @default(now()) @db.Timestamptz(6)

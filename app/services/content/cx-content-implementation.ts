@@ -160,8 +160,11 @@ export async function applyCXContent(
       (edge: any) => edge.node.key === metafieldConfig.key,
     );
 
-      `[CX Content] ✅ Applied ${request.contentType} to product ${request.productId}`,
-    );
+    if (process.env.NODE_ENV !== "production") {
+      console.info(
+        `[CX Content] ✅ Applied ${request.contentType} to product ${request.productId}`,
+      );
+    }
 
     return {
       success: true,
@@ -355,8 +358,11 @@ export async function removeCXContent(
       };
     }
 
-      `[CX Content] ✅ Removed ${contentType} from product ${productId}`,
-    );
+    if (process.env.NODE_ENV !== "production") {
+      console.info(
+        `[CX Content] ✅ Removed ${contentType} from product ${productId}`,
+      );
+    }
 
     return { success: true };
   } catch (error: any) {

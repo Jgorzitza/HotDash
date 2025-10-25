@@ -1,4 +1,4 @@
-import { Prisma } from "@prisma/client";
+import { Prisma } from "@prisma/kb-client";
 export interface TaskCompletionPayload {
     commits?: string[];
     files?: Array<{

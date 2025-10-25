@@ -150,6 +150,7 @@ export default function SettingsPage() {
   const browserNotifications = useBrowserNotifications();
   const fetcher = useFetcher();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const broadcastChannelRef = React.useRef<BroadcastChannel | null>(null);
 
   // ENG-073: Tile visibility state with real-time updates
   const [visibleTiles, setVisibleTiles] = useState<string[]>(data.preferences.visibleTiles);
@@ -158,6 +159,34 @@ export default function SettingsPage() {
 
   // ENG-083: Dark mode state with real-time switching
   const [theme, setTheme] = useState<"light" | "dark" | "auto">(data.preferences.theme);
+
+  // Initialize BroadcastChannel for cross-tab/dashboard updates where supported
+  React.useEffect(() => {
+    if (typeof window === "undefined" || !("BroadcastChannel" in window)) {
+      return;
+    }
+
+    const channel = new BroadcastChannel("hotdash-preferences");
+    broadcastChannelRef.current = channel;
+
+    return () => {
+      channel.close();
+      broadcastChannelRef.current = null;
+    };
+  }, []);
+
+  const broadcastVisibleTilesUpdate = React.useCallback((tiles: string[]) => {
+    if (!broadcastChannelRef.current) return;
+
+    try {
+      broadcastChannelRef.current.postMessage({
+        type: "visibleTilesUpdate",
+        visibleTiles: tiles,
+      });
+    } catch (error) {
+      console.error("Failed to broadcast visible tile update", error);
+    }
+  }, []);
 
   // ENG-083: Apply theme on mount and when changed
   React.useEffect(() => {
@@ -234,7 +263,7 @@ export default function SettingsPage() {
     const formData = new FormData();
     formData.append("action", "save-preferences");
     formData.append("visible_tiles", JSON.stringify(newVisibleTiles));
-    formData.append("theme", data.preferences.theme);
+    formData.append("theme", theme);
     formData.append("default_view", data.preferences.defaultView);
     formData.append("auto_refresh", "true");
     formData.append("refresh_interval", "60");
@@ -243,6 +272,8 @@ export default function SettingsPage() {
     formData.append("toast_notifications", "true");
 
     fetcher.submit(formData, { method: "post" });
+
+    broadcastVisibleTilesUpdate(newVisibleTiles);
 
     // Show success toast
     setToastMessage("Tile visibility updated");
@@ -256,7 +287,7 @@ export default function SettingsPage() {
     const formData = new FormData();
     formData.append("action", "save-preferences");
     formData.append("visible_tiles", JSON.stringify(visibleTiles));
-    formData.append("theme", data.preferences.theme);
+    formData.append("theme", theme);
     formData.append("default_view", data.preferences.defaultView);
     formData.append("auto_refresh", "true");
     formData.append("refresh_interval", "60");
@@ -265,6 +296,8 @@ export default function SettingsPage() {
     formData.append("toast_notifications", "true");
 
     fetcher.submit(formData, { method: "post" });
+
+    broadcastVisibleTilesUpdate(visibleTiles);
 
     setTimeout(() => setIsSubmitting(false), 1000);
   };

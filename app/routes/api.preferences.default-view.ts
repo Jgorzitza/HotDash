@@ -47,9 +47,12 @@ export async function action({ request }: ActionFunctionArgs) {
   //     updated_at: new Date().toISOString(),
   //   });
 
-    `[Preferences] Default view saved for ${session.shop}:`,
-    defaultView,
-  );
+  if (process.env.NODE_ENV !== "production") {
+    console.info(
+      `[Preferences] Default view saved for ${session.shop}:`,
+      defaultView,
+    );
+  }
 
   return Response.json({ ok: true });
 }

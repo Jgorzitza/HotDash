@@ -4,6 +4,15 @@ This guide is the operator-facing knowledge base for shipping HotDash on launch 
 
 ---
 
+## 0. Using This Help Center
+
+- **Search everything:** Type keywords in the `/help` search bar (example: `approvals` or `notifications`). Results link directly to the section below.
+- **Context jumps:** Append `?topic=<section-id>` to `/help` to deep-link from tooltips or product surfaces. Example: `/help?topic=troubleshooting` scrolls to the resolution table.
+- **Tooltips:** Hover any dotted-underlined phrase to see definitions or policy notes without leaving the page.
+- **Full markdown guide:** The “Open full guide” action opens this README on GitHub for copy/paste or offline review.
+
+---
+
 ## 1. Getting Started
 
 ### 1.1 Launch-Day Checklist
@@ -134,6 +143,14 @@ Launch week requires short walk-through videos. Use these scripts when recording
 
 Scripts live in `docs/help/video-scripts/` if you need to customize future recordings.
 
+Video script library:
+
+- [Dashboard Overview](video-scripts/dashboard-overview.md)
+- [Approvals Deep Dive](video-scripts/approvals-deep-dive.md)
+- [Notifications & Integrations](video-scripts/notifications-integrations.md)
+- [Inventory Actions](video-scripts/inventory-actions.md)
+- [Analytics & ROI Tracking](video-scripts/analytics-roi.md)
+
 ---
 
 ## 4. API Reference (Operator View)
@@ -147,7 +164,12 @@ HotDash exposes select read-only endpoints for operators who automate reporting.
   ```json
   {
     "items": [
-      {"question": "How do I change tile order?", "answer": "Use Customize layout…", "category": "dashboard", "updatedAt": "2025-10-24T18:30:00Z"}
+      {
+        "question": "How do I change tile order?",
+        "answer": "Use Customize layout…",
+        "category": "dashboard",
+        "updatedAt": "2025-10-24T18:30:00Z"
+      }
     ]
   }
   ```
@@ -173,7 +195,21 @@ Ensure tokens are stored in Shopify environment secrets; never commit tokens to 
 
 ---
 
-## 5. FAQ (20 Quick Answers)
+## 5. Support SOP References
+
+Coordinate with Support whenever customer-facing workflows change. The following SOPs remain the source of truth during launch week (links open in the repo for deep context):
+
+- [Growth Engine CX Workflows](../support/growth-engine-cx-workflows.md) — escalation rules, approval SLAs, and hand-offs between CX and specialist agents.
+- [Chatwoot Integration Guide](../support/chatwoot-integration-guide.md) — channel setup, token rotation, and failover steps for the shared inbox.
+- [Chatwoot Health Dashboard Spec](../support/chatwoot-health-dashboard-spec.md) — probe definitions used by the `Support Health` tile.
+- [Chatwoot Multichannel Testing Guide](../support/chatwoot-multichannel-testing-guide.md) — QA checklist for email, SMS, and web widget channels prior to launch.
+- [PII Card Test Scenarios](../support/pii-card-test-scenarios.md) — verification steps for redaction rules and operator-only views.
+
+For urgent CX escalations, follow the `Escalation` section inside the Growth Engine CX Workflows SOP and log outcomes in the approvals queue audit trail.
+
+---
+
+## 6. FAQ (20 Quick Answers)
 
 1. **How do I change tile order?** Use `Dashboard → Customize layout` and drag tiles, then save.
 2. **Can I pause auto-refresh?** Yes, set `Auto-refresh` to `Manual`; click the refresh icon to update tiles.
@@ -198,22 +234,22 @@ Ensure tokens are stored in Shopify environment secrets; never commit tokens to 
 
 ---
 
-## 6. Troubleshooting Guide
+## 7. Troubleshooting Guide
 
-| Issue | Symptoms | Resolution |
-| ----- | -------- | ---------- |
-| **Tiles stuck loading** | Spinner persists >60s, data stale | Verify integrations in `Settings → Integrations`, then click tile refresh. If still failing, check Supabase status and log blocker. |
-| **Approvals failing to apply** | Toast: “Action execution failed.” | Open approval card → `Execution logs` tab. Confirm upstream service health (Shopify, Chatwoot, Publer). Retry after fixing integration. |
-| **Chatwoot escalations missing** | CX Escalations tile empty despite active tickets | Run `scripts/ops/check-chatwoot-health.mjs` or view `Support Health` report. Ensure API token valid and `/rails/health` returns 200. |
-| **Inventory alerts inaccurate** | ROP suggestions look incorrect | Recalculate using latest lead times in `Inventory → Settings → Lead time`. Confirm daily job `inventory.rop.ts` ran (logs in Observability). |
-| **Google Analytics data mismatch** | GA chart doesn’t match GA UI | Remember GA Data API updates every 15 minutes. Compare identical date ranges and property `hd_action_key` filters. |
-| **Notifications not delivered** | No desktop/email alerts | Re-enable browser notifications, verify quiet hours, and send `Send test` from settings. Check spam folder for email. |
-| **Idea Pool empty** | Tile displays empty state | Ensure nightly worker `idea-pool-refresh` succeeded; review logs. Manually trigger via `Action Queue → Refresh ideas` if necessary. |
-| **Help page 404** | `/help` route missing | Confirm deployment includes `app/routes/help.tsx`. Run `npm run lint` to ensure route exported default component. |
+| Issue                              | Symptoms                                         | Resolution                                                                                                                                   |
+| ---------------------------------- | ------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Tiles stuck loading**            | Spinner persists >60s, data stale                | Verify integrations in `Settings → Integrations`, then click tile refresh. If still failing, check Supabase status and log blocker.          |
+| **Approvals failing to apply**     | Toast: “Action execution failed.”                | Open approval card → `Execution logs` tab. Confirm upstream service health (Shopify, Chatwoot, Publer). Retry after fixing integration.      |
+| **Chatwoot escalations missing**   | CX Escalations tile empty despite active tickets | Run `scripts/ops/check-chatwoot-health.mjs` or view `Support Health` report. Ensure API token valid and `/rails/health` returns 200.         |
+| **Inventory alerts inaccurate**    | ROP suggestions look incorrect                   | Recalculate using latest lead times in `Inventory → Settings → Lead time`. Confirm daily job `inventory.rop.ts` ran (logs in Observability). |
+| **Google Analytics data mismatch** | GA chart doesn’t match GA UI                     | Remember GA Data API updates every 15 minutes. Compare identical date ranges and property `hd_action_key` filters.                           |
+| **Notifications not delivered**    | No desktop/email alerts                          | Re-enable browser notifications, verify quiet hours, and send `Send test` from settings. Check spam folder for email.                        |
+| **Idea Pool empty**                | Tile displays empty state                        | Ensure nightly worker `idea-pool-refresh` succeeded; review logs. Manually trigger via `Action Queue → Refresh ideas` if necessary.          |
+| **Help page 404**                  | `/help` route missing                            | Confirm deployment includes `app/routes/help.tsx`. Run `npm run lint` to ensure route exported default component.                            |
 
 ---
 
-## 7. Documentation Standards & Maintenance
+## 8. Documentation Standards & Maintenance
 
 - **Structure:** This guide follows the Diátaxis documentation framework (tutorials, how-to, reference, explanation) per [Diátaxis best practices](https://diataxis.fr/complex-hierarchies) to avoid duplicated content and keep navigation predictable.
 - **Polaris Compliance:** UI references align with the official [Polaris Page/Layout/Card guidance](https://polaris-react.shopify.com/components/layout-and-structure/page) to ensure consistency with Shopify Admin.
@@ -227,8 +263,9 @@ Ensure tokens are stored in Shopify environment secrets; never commit tokens to 
 
 ---
 
-## 8. Change Log
+## 9. Change Log
 
-| Date | Author | Summary |
-| ---- | ------ | ------- |
+| Date       | Author        | Summary                                                                                                           |
+| ---------- | ------------- | ----------------------------------------------------------------------------------------------------------------- |
 | 2025-10-24 | Content Agent | Initial launch-ready help center covering onboarding, tutorials, FAQ, troubleshooting, and maintenance standards. |
+| 2025-10-25 | Content Agent | Added video script library links, operator API reference, support SOP references, and refreshed `/help` route search experience. |

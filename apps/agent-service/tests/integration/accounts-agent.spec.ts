@@ -25,19 +25,31 @@ vi.mock('@openai/agents', () => {
   };
 });
 
-vi.mock('@supabase/supabase-js', () => {
-  return {
-    createClient: vi.fn(() => ({
-      from: vi.fn(() => ({
-        select: vi.fn().mockResolvedValue({ data: [], error: null }),
-      })),
-    })),
-  };
+const mockAccountsService = {
+  getCustomerOrders: vi.fn(),
+  getOrderDetails: vi.fn(),
+  getAccountInfo: vi.fn(),
+  updatePreferences: vi.fn(),
+  getMetrics: vi.fn(),
+};
+const AccountsSubAgentMock = vi.fn(function AccountsSubAgentMock() {
+  return mockAccountsService;
 });
+
+vi.mock('@supabase/supabase-js', () => ({
+  createClient: vi.fn(() => ({
+    from: vi.fn(() => ({
+      select: vi.fn().mockResolvedValue({ data: [], error: null }),
+    })),
+  })),
+}));
+
+vi.mock('../../../../app/services/ai-customer/accounts-sub-agent.service.js', () => ({
+  AccountsSubAgent: AccountsSubAgentMock,
+}));
 
 let triageAgent: any;
 let customerAccountsAgent: any;
-let AccountsSubAgent: any;
 
 beforeAll(async () => {
   process.env.SUPABASE_URL = process.env.SUPABASE_URL ?? 'https://example.supabase.co';
@@ -48,14 +60,14 @@ beforeAll(async () => {
   const agents = await import(new URL('../../src/agents/index.ts', import.meta.url).href);
   triageAgent = agents.triageAgent;
   customerAccountsAgent = agents.customerAccountsAgent;
-
-  ({ AccountsSubAgent } = await import(
-    new URL('../../../../app/services/ai-customer/accounts-sub-agent.service.js', import.meta.url).href
-  ));
 });
 
 afterEach(() => {
-  vi.restoreAllMocks();
+  vi.clearAllMocks();
+  mockAccountsService.getCustomerOrders.mockReset();
+  mockAccountsService.getOrderDetails.mockReset();
+  mockAccountsService.updatePreferences.mockReset();
+  AccountsSubAgentMock.mockClear();
 });
 
 describe('Customer Accounts agent integration', () => {
@@ -75,9 +87,7 @@ describe('Customer Accounts agent integration', () => {
     expect(tool).toBeDefined();
 
     const orders = [{ id: 'order-1' }];
-    const spy = vi
-      .spyOn(AccountsSubAgent.prototype, 'getCustomerOrders')
-      .mockResolvedValue(orders as any);
+    mockAccountsService.getCustomerOrders.mockResolvedValue(orders as any);
 
     const response = await tool.execute({
       customerId: 'cust-1',
@@ -85,7 +95,7 @@ describe('Customer Accounts agent integration', () => {
       limit: 5,
     });
 
-    expect(spy).toHaveBeenCalledWith('cust-1', 'oauth-token', 5);
+    expect(mockAccountsService.getCustomerOrders).toHaveBeenCalledWith('cust-1', 'oauth-token', 5);
     expect(response.success).toBe(true);
     expect(response.orders).toEqual(orders);
   });
@@ -97,9 +107,7 @@ describe('Customer Accounts agent integration', () => {
     expect(tool).toBeDefined();
 
     const order = { id: 'order-1' };
-    const spy = vi
-      .spyOn(AccountsSubAgent.prototype, 'getOrderDetails')
-      .mockResolvedValue(order as any);
+    mockAccountsService.getOrderDetails.mockResolvedValue(order as any);
 
     const response = await tool.execute({
       customerId: 'cust-1',
@@ -107,7 +115,11 @@ describe('Customer Accounts agent integration', () => {
       token: 'oauth-token',
     });
 
-    expect(spy).toHaveBeenCalledWith('cust-1', 'order-1', 'oauth-token');
+    expect(mockAccountsService.getOrderDetails).toHaveBeenCalledWith(
+      'cust-1',
+      'order-1',
+      'oauth-token',
+    );
     expect(response.success).toBe(true);
     expect(response.order).toEqual(order);
   });
@@ -118,9 +130,7 @@ describe('Customer Accounts agent integration', () => {
     );
     expect(tool).toBeDefined();
 
-    const spy = vi
-      .spyOn(AccountsSubAgent.prototype, 'updatePreferences')
-      .mockResolvedValue(true);
+    mockAccountsService.updatePreferences.mockResolvedValue(true);
 
     const response = await tool.execute({
       customerId: 'cust-1',
@@ -128,8 +138,11 @@ describe('Customer Accounts agent integration', () => {
       preferences: { marketing: true },
     });
 
-    expect(spy).toHaveBeenCalledWith('cust-1', 'oauth-token', { marketing: true });
+    expect(mockAccountsService.updatePreferences).toHaveBeenCalledWith(
+      'cust-1',
+      'oauth-token',
+      { marketing: true },
+    );
     expect(response.success).toBe(true);
   });
 });
-

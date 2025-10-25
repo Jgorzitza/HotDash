@@ -7,7 +7,7 @@
 
 ## Overview
 
-Executed 3 quick wins from the design audit to polish the UI before launch. Total time: 1 hour.
+Executed 4 quick wins from the design audit to polish the UI before launch. Total time: 1 hour 30 minutes.
 
 ## Quick Win 1: Fix Toast Z-Index (H1) ✅
 
@@ -87,10 +87,25 @@ animation: isPulsing || showPulse ? "occ-pulse 2s ease-in-out" : undefined, // S
 
 ## Summary
 
-**Total Fixes:** 3
-**Total Effort:** 1 hour
-**Files Changed:** 3
+**Total Fixes:** 4
+**Total Effort:** 1 hour 30 minutes
+**Files Changed:** 5
 **Impact:** High (visual consistency and hierarchy)
+
+### Quick Win 4: Polaris icon pass for toasts + notification center ✅
+
+**Issue:** Mixed Unicode emoji and text glyphs created inconsistent iconography and screen reader noise.
+
+**Fix:** Replaced status icons with Polaris SVG components and marked decorative icons `aria-hidden`.
+
+**Files:**
+- `app/components/notifications/ToastContainer.tsx`
+- `app/components/notifications/NotificationCenter.tsx`
+- `docs/design/accessibility-audit-checklist.md`
+
+**Impact:** Consistent icon styling, improved accessibility (WCAG 1.1.1, 4.1.2).
+
+**Effort:** 30 minutes
 
 ### Before Launch Checklist
 
@@ -179,4 +194,3 @@ Cancel: "Cancel", "Close", "Back"
 
 **Completed:** 2025-10-24
 **Next Steps:** Monitor post-launch for any visual issues, schedule P1/P2 fixes for next sprint
-

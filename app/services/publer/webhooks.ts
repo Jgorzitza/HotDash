@@ -98,8 +98,11 @@ export async function processWebhookEvent(
   try {
     const { event, job_id, status, posts } = payload;
 
-      `[Publer Webhook] Event: ${event}, Job: ${job_id}, Status: ${status}`,
-    );
+    if (process.env.NODE_ENV !== "production") {
+      console.info(
+        `[Publer Webhook] Event: ${event}, Job: ${job_id}, Status: ${status}`,
+      );
+    }
 
     // Extract post URLs if available
     const postUrls =

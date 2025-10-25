@@ -7,7 +7,7 @@
  * @module app/services/ai-customer/ticket-routing.service
  */
 
-import { createClient } from '@supabase/supabase-js';
+import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 import { logDecision } from '../decisions.server.js';
 
 export interface Agent {
@@ -53,21 +53,38 @@ export interface RoutingResult {
 }
 
 export class TicketRoutingService {
-  private supabase: ReturnType<typeof createClient>;
+  private supabase: SupabaseClient | null;
   private agents: Agent[] = [];
   private routingRules: RoutingRule[] = [];
 
-  constructor() {
-    this.supabase = createClient(
-      process.env.SUPABASE_URL!,
-      process.env.SUPABASE_ANON_KEY!
-    );
+  constructor(options: {
+    supabaseUrl?: string | null;
+    supabaseKey?: string | null;
+  } = {}) {
+    const supabaseUrl = options.supabaseUrl ?? process.env.SUPABASE_URL;
+    const supabaseKey = options.supabaseKey ?? process.env.SUPABASE_ANON_KEY;
+
+    if (supabaseUrl && supabaseKey) {
+      this.supabase = createClient(supabaseUrl, supabaseKey);
+    } else {
+      this.supabase = null;
+    }
+  }
+
+  private getSupabase(): SupabaseClient | null {
+    return this.supabase;
   }
 
   /**
    * Initialize routing service with agents and rules
    */
   async initialize(): Promise<void> {
+    if (!this.getSupabase()) {
+      this.agents = this.getDefaultAgents();
+      this.routingRules = this.getDefaultRoutingRules();
+      return;
+    }
+
     try {
       await this.loadAgents();
       await this.loadRoutingRules();
@@ -267,14 +284,17 @@ export class TicketRoutingService {
     agent.currentLoad++;
 
     // Update inquiry assignment in database
-    await this.supabase
-      .from('customer_inquiries')
-      .update({
-        assigned_to: agentId,
-        status: 'assigned',
-        updated_at: new Date().toISOString(),
-      })
-      .eq('id', inquiryId);
+    const supabase = this.getSupabase();
+    if (supabase) {
+      await supabase
+        .from('customer_inquiries')
+        .update({
+          assigned_to: agentId,
+          status: 'assigned',
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', inquiryId);
+    }
 
     return {
       inquiryId,
@@ -312,15 +332,18 @@ export class TicketRoutingService {
     selectedAgent.currentLoad++;
 
     // Update inquiry assignment
-    await this.supabase
-      .from('customer_inquiries')
-      .update({
-        assigned_to: selectedAgent.id,
-        assigned_team: team,
-        status: 'assigned',
-        updated_at: new Date().toISOString(),
-      })
-      .eq('id', inquiryId);
+    const supabase = this.getSupabase();
+    if (supabase) {
+      await supabase
+        .from('customer_inquiries')
+        .update({
+          assigned_to: selectedAgent.id,
+          assigned_team: team,
+          status: 'assigned',
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', inquiryId);
+    }
 
     return {
       inquiryId,
@@ -337,14 +360,17 @@ export class TicketRoutingService {
    */
   private async escalateInquiry(inquiryId: string, analysis: any): Promise<RoutingResult> {
     // Update inquiry status to escalated
-    await this.supabase
-      .from('customer_inquiries')
-      .update({
-        status: 'escalated',
-        priority: 'high',
-        updated_at: new Date().toISOString(),
-      })
-      .eq('id', inquiryId);
+    const supabase = this.getSupabase();
+    if (supabase) {
+      await supabase
+        .from('customer_inquiries')
+        .update({
+          status: 'escalated',
+          priority: 'high',
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', inquiryId);
+    }
 
     return {
       inquiryId,
@@ -359,13 +385,16 @@ export class TicketRoutingService {
    */
   private async autoResolve(inquiryId: string, analysis: any): Promise<RoutingResult> {
     // Update inquiry status to auto-resolved
-    await this.supabase
-      .from('customer_inquiries')
-      .update({
-        status: 'auto_resolved',
-        updated_at: new Date().toISOString(),
-      })
-      .eq('id', inquiryId);
+    const supabase = this.getSupabase();
+    if (supabase) {
+      await supabase
+        .from('customer_inquiries')
+        .update({
+          status: 'auto_resolved',
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', inquiryId);
+    }
 
     return {
       inquiryId,
@@ -387,8 +416,14 @@ export class TicketRoutingService {
    * Load agents from database
    */
   private async loadAgents(): Promise<void> {
+    const supabase = this.getSupabase();
+    if (!supabase) {
+      this.agents = this.getDefaultAgents();
+      return;
+    }
+
     try {
-      const { data, error } = await this.supabase
+      const { data, error } = await supabase
         .from('support_agents')
         .select('*');
 
@@ -421,8 +456,14 @@ export class TicketRoutingService {
    * Load routing rules from database
    */
   private async loadRoutingRules(): Promise<void> {
+    const supabase = this.getSupabase();
+    if (!supabase) {
+      this.routingRules = this.getDefaultRoutingRules();
+      return;
+    }
+
     try {
-      const { data, error } = await this.supabase
+      const { data, error } = await supabase
         .from('routing_rules')
         .select('*')
         .eq('enabled', true)
@@ -557,6 +598,14 @@ export class TicketRoutingService {
     ];
   }
 
+  private computeAgentUtilization(): Record<string, number> {
+    return this.agents.reduce<Record<string, number>>((acc, agent) => {
+      const safeMaxLoad = agent.maxLoad > 0 ? agent.maxLoad : 1;
+      acc[agent.name] = Number(((agent.currentLoad / safeMaxLoad) * 100).toFixed(2));
+      return acc;
+    }, {});
+  }
+
   /**
    * Get routing statistics
    */
@@ -567,8 +616,20 @@ export class TicketRoutingService {
     averageRoutingTime: number;
     agentUtilization: Record<string, number>;
   }> {
+    const supabase = this.getSupabase();
+
+    if (!supabase) {
+      return {
+        totalInquiries: 0,
+        autoRouted: 0,
+        escalated: 0,
+        averageRoutingTime: 2.5,
+        agentUtilization: this.computeAgentUtilization(),
+      };
+    }
+
     try {
-      const { data: inquiries, error } = await this.supabase
+      const { data: inquiries, error } = await supabase
         .from('customer_inquiries')
         .select('*');
 
@@ -581,17 +642,12 @@ export class TicketRoutingService {
       const escalated = inquiries?.filter(i => i.status === 'escalated').length || 0;
 
       // Calculate agent utilization
-      const agentUtilization: Record<string, number> = {};
-      this.agents.forEach(agent => {
-        agentUtilization[agent.name] = (agent.currentLoad / agent.maxLoad) * 100;
-      });
-
       return {
         totalInquiries,
         autoRouted,
         escalated,
         averageRoutingTime: 2.5, // minutes
-        agentUtilization,
+        agentUtilization: this.computeAgentUtilization(),
       };
     } catch (error) {
       console.error('Error fetching routing stats:', error);
@@ -601,6 +657,14 @@ export class TicketRoutingService {
 }
 
 /**
- * Default ticket routing service instance
+ * Lazily instantiate ticket routing service so SSR can boot without Supabase.
  */
-export const ticketRoutingService = new TicketRoutingService();
+let ticketRoutingServiceSingleton: TicketRoutingService | null = null;
+
+export function getTicketRoutingService(): TicketRoutingService {
+  if (!ticketRoutingServiceSingleton) {
+    ticketRoutingServiceSingleton = new TicketRoutingService();
+  }
+
+  return ticketRoutingServiceSingleton;
+}

@@ -26,6 +26,13 @@ import {
   type LandingPageMetrics,
 } from "../../lib/seo/search-console";
 
+const isProd = process.env.NODE_ENV === "production";
+const debugLog = (...args: unknown[]) => {
+  if (!isProd) {
+    console.info(...args);
+  }
+};
+
 // ============================================================================
 // Store Functions
 // ============================================================================
@@ -45,7 +52,10 @@ export async function storeSearchConsoleMetrics(
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
-    `[Search Console Storage] Storing metrics for ${today.toISOString().split("T")[0]} (${periodDays}d)`,
+  debugLog(
+    `[Search Console Storage] Storing metrics for ${today
+      .toISOString()
+      .split("T")[0]} (${periodDays}d)`,
   );
 
   await prisma.seoSearchConsoleMetrics.upsert({
@@ -81,6 +91,7 @@ export async function storeSearchConsoleMetrics(
     },
   });
 
+  debugLog(
     `[Search Console Storage] ✅ Metrics stored: ${metrics.clicks} clicks, ${metrics.impressions} impressions`,
   );
 }
@@ -100,7 +111,10 @@ export async function storeTopQueries(
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
-    `[Search Console Storage] Storing ${queries.length} top queries for ${today.toISOString().split("T")[0]}`,
+  debugLog(
+    `[Search Console Storage] Storing ${queries.length} top queries for ${today
+      .toISOString()
+      .split("T")[0]}`,
   );
 
   // Delete existing queries for today (replace strategy)
@@ -143,7 +157,10 @@ export async function storeLandingPages(
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
-    `[Search Console Storage] Storing ${pages.length} landing pages for ${today.toISOString().split("T")[0]}`,
+  debugLog(
+    `[Search Console Storage] Storing ${pages.length} landing pages for ${today
+      .toISOString()
+      .split("T")[0]}`,
   );
 
   // Delete existing pages for today (replace strategy)
@@ -187,10 +204,8 @@ export async function storeLandingPages(
  * @returns Summary of stored data
  */
 export async function storeSearchConsoleSummary() {
-    "[Search Console Storage] ========================================",
-  );
-    "[Search Console Storage] ========================================",
-  );
+  debugLog("[Search Console Storage] ========================================");
+  debugLog("[Search Console Storage] ========================================");
 
   try {
     // 1. Fetch from Search Console API (cached 5 minutes)
@@ -200,6 +215,7 @@ export async function storeSearchConsoleSummary() {
       getLandingPages(25),
     ]);
 
+    debugLog(
       `[Search Console Storage] Fetched: ${metrics.clicks} clicks, ${queries.length} queries, ${pages.length} pages`,
     );
 
@@ -210,8 +226,7 @@ export async function storeSearchConsoleSummary() {
       storeLandingPages(pages, 30),
     ]);
 
-      "[Search Console Storage] ✅ Complete summary stored successfully",
-    );
+    debugLog("[Search Console Storage] ✅ Complete summary stored successfully");
 
     return {
       success: true,
@@ -237,6 +252,7 @@ export async function storeSearchConsoleSummary() {
  * @returns Daily metrics, newest first
  */
 export async function getHistoricalMetrics(days: number = 30) {
+  debugLog(
     `[Search Console Storage] Fetching ${days} days of historical metrics`,
   );
 
@@ -246,6 +262,7 @@ export async function getHistoricalMetrics(days: number = 30) {
     take: days,
   });
 
+  debugLog(
     `[Search Console Storage] Found ${records.length} historical metric records`,
   );
 
@@ -260,6 +277,7 @@ export async function getHistoricalMetrics(days: number = 30) {
  * @returns Daily query metrics, newest first
  */
 export async function getQueryTrend(query: string, days: number = 30) {
+  debugLog(
     `[Search Console Storage] Fetching ${days}-day trend for query: "${query}"`,
   );
 
@@ -269,6 +287,7 @@ export async function getQueryTrend(query: string, days: number = 30) {
     take: days,
   });
 
+  debugLog(
     `[Search Console Storage] Found ${records.length} records for query "${query}"`,
   );
 
@@ -283,6 +302,7 @@ export async function getQueryTrend(query: string, days: number = 30) {
  * @returns Daily page metrics, newest first
  */
 export async function getLandingPageTrend(url: string, days: number = 30) {
+  debugLog(
     `[Search Console Storage] Fetching ${days}-day trend for page: "${url}"`,
   );
 
@@ -292,6 +312,7 @@ export async function getLandingPageTrend(url: string, days: number = 30) {
     take: days,
   });
 
+  debugLog(
     `[Search Console Storage] Found ${records.length} records for page "${url}"`,
   );
 
@@ -312,7 +333,10 @@ export async function getTopQueriesByDate(
   const dateOnly = new Date(date);
   dateOnly.setHours(0, 0, 0, 0);
 
-    `[Search Console Storage] Fetching top ${limit} queries for ${dateOnly.toISOString().split("T")[0]}`,
+  debugLog(
+    `[Search Console Storage] Fetching top ${limit} queries for ${dateOnly
+      .toISOString()
+      .split("T")[0]}`,
   );
 
   const records = await prisma.seoSearchQuery.findMany({
@@ -321,7 +345,10 @@ export async function getTopQueriesByDate(
     take: limit,
   });
 
-    `[Search Console Storage] Found ${records.length} queries for date ${dateOnly.toISOString().split("T")[0]}`,
+  debugLog(
+    `[Search Console Storage] Found ${records.length} queries for date ${dateOnly
+      .toISOString()
+      .split("T")[0]}`,
   );
 
   return records;
@@ -341,7 +368,10 @@ export async function getTopLandingPagesByDate(
   const dateOnly = new Date(date);
   dateOnly.setHours(0, 0, 0, 0);
 
-    `[Search Console Storage] Fetching top ${limit} pages for ${dateOnly.toISOString().split("T")[0]}`,
+  debugLog(
+    `[Search Console Storage] Fetching top ${limit} pages for ${dateOnly
+      .toISOString()
+      .split("T")[0]}`,
   );
 
   const records = await prisma.seoLandingPage.findMany({
@@ -350,7 +380,10 @@ export async function getTopLandingPagesByDate(
     take: limit,
   });
 
-    `[Search Console Storage] Found ${records.length} pages for date ${dateOnly.toISOString().split("T")[0]}`,
+  debugLog(
+    `[Search Console Storage] Found ${records.length} pages for date ${dateOnly
+      .toISOString()
+      .split("T")[0]}`,
   );
 
   return records;

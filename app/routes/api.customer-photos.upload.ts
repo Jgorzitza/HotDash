@@ -22,15 +22,38 @@
  */
 
 import type { ActionFunctionArgs } from "react-router";
-import { createClient } from "@supabase/supabase-js";
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import crypto from "crypto";
-import sharp from "sharp";
+import { createRequire } from "module";
 import { logDecision } from "~/services/decisions.server";
 
 // Initialize Supabase client
-const supabaseUrl = process.env.SUPABASE_URL!;
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
-const supabase = createClient(supabaseUrl, supabaseServiceKey);
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+const getSupabase = (): SupabaseClient | null => {
+  if (!supabaseUrl || !supabaseServiceKey) {
+    return null;
+  }
+  return createClient(supabaseUrl, supabaseServiceKey);
+};
+
+const require = createRequire(import.meta.url);
+let sharpModule: any | null | undefined;
+function loadSharp() {
+  if (sharpModule !== undefined) {
+    return sharpModule;
+  }
+
+  try {
+    const mod: any = require("sharp");
+    sharpModule = mod?.default ?? mod ?? null;
+  } catch {
+    sharpModule = null;
+  }
+
+  return sharpModule;
+}
 
 // Configuration
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
@@ -60,6 +83,14 @@ export async function action({ request }: ActionFunctionArgs) {
   }
 
   try {
+    const supabase = getSupabase();
+    if (!supabase) {
+      return Response.json(
+        { error: "Supabase credentials not configured" },
+        { status: 503 },
+      );
+    }
+
     // Parse multipart form data
     const formData = await request.formData();
     
@@ -105,6 +136,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
     // Process image
     const result = await processAndUploadImage({
+      supabase,
       buffer,
       fileName: file.name,
       mimeType: file.type,
@@ -162,6 +194,7 @@ export async function action({ request }: ActionFunctionArgs) {
  * Process and upload image to Supabase Storage
  */
 async function processAndUploadImage(params: {
+  supabase: SupabaseClient;
   buffer: Buffer;
   fileName: string;
   mimeType: string;
@@ -173,6 +206,7 @@ async function processAndUploadImage(params: {
   project: string;
 }): Promise<UploadResult> {
   const {
+    supabase,
     buffer,
     fileName,
     mimeType,
@@ -183,6 +217,13 @@ async function processAndUploadImage(params: {
     description,
     project,
   } = params;
+
+  const sharp = loadSharp();
+  if (!sharp) {
+    throw new Error(
+      "Image processing requires the optional 'sharp' dependency. Install 'sharp' to enable customer photo uploads.",
+    );
+  }
 
   // 1. Strip EXIF data for privacy
   const strippedBuffer = await sharp(buffer)
@@ -300,4 +341,3 @@ async function processAndUploadImage(params: {
     hash,
   };
 }
-

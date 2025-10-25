@@ -7,6 +7,7 @@
  *
  * @module app/services/ai-customer/accounts-sub-agent.service
  */
+import { type SupabaseClient } from '@supabase/supabase-js';
 export interface CustomerAccountQuery {
     id: string;
     customerId: string;
@@ -91,7 +92,12 @@ export interface ABACPolicy {
 export declare class AccountsSubAgent {
     private supabase;
     private mcpEnabled;
-    constructor();
+    constructor(options?: {
+        supabaseClient?: SupabaseClient | null;
+        supabaseUrl?: string | null;
+        supabaseKey?: string | null;
+    });
+    private getSupabase;
     /**
      * Get customer orders using Customer Accounts MCP
      */
@@ -151,9 +157,10 @@ export declare class AccountsSubAgent {
         abacViolations: number;
         piiAccessCount: number;
     }>;
+    /**
+     * Compatibility wrapper for tools expecting updatePreferences helper.
+     */
+    updatePreferences(customerId: string, token: string, preferences: Partial<CustomerAccountInfo['preferences']>): Promise<boolean>;
 }
-/**
- * Default Accounts Sub-Agent instance
- */
-export declare const accountsSubAgent: AccountsSubAgent;
+export declare function getAccountsSubAgent(): AccountsSubAgent;
 //# sourceMappingURL=accounts-sub-agent.service.d.ts.map

@@ -181,7 +181,7 @@ Comprehensive accessibility audit checklist for HotDash Operator Control Center 
 
 **Icons**:
 
-- [ ] Decorative icons have `aria-hidden="true"`
+- [x] Decorative icons have `aria-hidden="true"` _(2025-10-24: Toast + notification icons migrated to Polaris components)_
 - [ ] Informative icons have `aria-label`
 - [ ] Icons with adjacent text are decorative
 

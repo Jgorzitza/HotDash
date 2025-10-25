@@ -8,7 +8,14 @@
  * Phase 4 - ENG-011
  */
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ComponentType, type SVGProps } from "react";
+import {
+  CheckCircleIcon,
+  XCircleIcon,
+  AlertTriangleIcon,
+  InfoIcon,
+  XIcon,
+} from "@shopify/polaris-icons";
 import type { Toast } from "~/hooks/useToast";
 
 interface ToastContainerProps {
@@ -42,6 +49,15 @@ interface ToastItemProps {
   onDismiss: (id: string) => void;
 }
 
+type StatusIcon = ComponentType<SVGProps<SVGSVGElement>>;
+
+const STATUS_ICON_MAP: Record<Toast["type"], StatusIcon> = {
+  success: CheckCircleIcon,
+  error: XCircleIcon,
+  warning: AlertTriangleIcon,
+  info: InfoIcon,
+};
+
 function ToastItem({ toast, onDismiss }: ToastItemProps) {
   const [isExiting, setIsExiting] = useState(false);
 
@@ -72,20 +88,7 @@ function ToastItem({ toast, onDismiss }: ToastItemProps) {
     }
   };
 
-  const getIcon = () => {
-    switch (toast.type) {
-      case "success":
-        return "✓";
-      case "error":
-        return "✕";
-      case "warning":
-        return "⚠";
-      case "info":
-        return "ℹ";
-      default:
-        return "ℹ";
-    }
-  };
+  const IconComponent = STATUS_ICON_MAP[toast.type] ?? InfoIcon;
 
   return (
     <div
@@ -108,13 +111,16 @@ function ToastItem({ toast, onDismiss }: ToastItemProps) {
       }}
     >
       <span
+        aria-hidden="true"
         style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
           fontSize: "1.2rem",
-          fontWeight: "bold",
           flexShrink: 0,
         }}
       >
-        {getIcon()}
+        <IconComponent focusable="false" />
       </span>
       <span
         style={{
@@ -143,7 +149,7 @@ function ToastItem({ toast, onDismiss }: ToastItemProps) {
           }}
           aria-label="Dismiss notification"
         >
-          ×
+          <XIcon aria-hidden="true" focusable="false" />
         </button>
       )}
     </div>

@@ -9,7 +9,9 @@
 
 import fs from "node:fs/promises";
 import path from "node:path";
-import { queryKnowledgeBase } from "./ceo-knowledge-base";
+
+const LLAMAINDEX_MCP_URL =
+  process.env.LLAMAINDEX_MCP_URL || "https://hotdash-llamaindex-mcp.fly.dev/mcp";
 
 const PROJECT_ROOT = path.resolve(process.cwd());
 const INDEX_DIR = path.join(
@@ -31,6 +33,29 @@ export interface KBHealthScore {
     indexAgeDays: number;
     categoryCoverage: string[];
   };
+}
+
+type QueryConfidence = "low" | "medium" | "high";
+
+interface QuerySource {
+  document: string;
+  relevance: number;
+  snippet?: string;
+}
+
+interface QueryMetrics {
+  queryTime: number;
+  retrievalTime: number;
+  synthesisTime: number;
+  chunksRetrieved: number;
+  chunksAfterFilter: number;
+}
+
+interface QueryResult {
+  answer: string;
+  confidence: QueryConfidence;
+  sources: QuerySource[];
+  metrics: QueryMetrics;
 }
 
 /**
@@ -190,6 +215,55 @@ export async function calculateHealthScore(): Promise<KBHealthScore> {
       indexAgeDays: Number(indexAgeDays.toFixed(1)),
       categoryCoverage: Array.from(categories),
     },
+  };
+}
+
+async function queryKnowledgeBase(query: string, topK = 5): Promise<QueryResult> {
+  const startTime = Date.now();
+
+  const response = await fetch(`${LLAMAINDEX_MCP_URL}/tools/call`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      name: "query_support",
+      arguments: {
+        q: query,
+        topK,
+      },
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(
+      `LlamaIndex MCP error: ${response.status} ${response.statusText}`,
+    );
+  }
+
+  const data: any = await response.json();
+  const primaryContent = data?.content?.[0]?.text;
+  const answer =
+    typeof primaryContent === "string" && primaryContent.trim().length > 0
+      ? primaryContent.trim()
+      : "No answer found in knowledge base.";
+
+  const totalTime = Date.now() - startTime;
+
+  const metrics: QueryMetrics = {
+    queryTime: totalTime,
+    retrievalTime: totalTime,
+    synthesisTime: 0,
+    chunksRetrieved: topK,
+    chunksAfterFilter: answer === "No answer found in knowledge base." ? 0 : 1,
+  };
+
+  const confidence: QueryConfidence =
+    answer === "No answer found in knowledge base." ? "low" : "medium";
+
+  return {
+    answer,
+    confidence,
+    sources: [],
+    metrics,
   };
 }
 

@@ -12,9 +12,21 @@ import { logDecision } from '../decisions.server.js';
 export class AccountsSubAgent {
     supabase;
     mcpEnabled;
-    constructor() {
-        this.supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+    constructor(options = {}) {
+        const { supabaseClient = null, supabaseUrl = process.env.SUPABASE_URL, supabaseKey = process.env.SUPABASE_ANON_KEY, } = options;
+        if (supabaseClient) {
+            this.supabase = supabaseClient;
+        }
+        else if (supabaseUrl && supabaseKey) {
+            this.supabase = createClient(supabaseUrl, supabaseKey);
+        }
+        else {
+            this.supabase = null;
+        }
         this.mcpEnabled = process.env.CUSTOMER_ACCOUNTS_MCP_ENABLED === 'true';
+    }
+    getSupabase() {
+        return this.supabase;
     }
     /**
      * Get customer orders using Customer Accounts MCP
@@ -484,7 +496,18 @@ export class AccountsSubAgent {
      */
     async getPerformanceMetrics() {
         try {
-            const { data: queries, error } = await this.supabase
+            const supabase = this.getSupabase();
+            if (!supabase) {
+                return {
+                    totalQueries: 0,
+                    successfulQueries: 0,
+                    averageResponseTime: 0,
+                    mcpEnabled: this.mcpEnabled,
+                    abacViolations: 0,
+                    piiAccessCount: 0,
+                };
+            }
+            const { data: queries, error } = await supabase
                 .from('customer_account_queries')
                 .select('*');
             if (error) {
@@ -521,7 +544,13 @@ export class AccountsSubAgent {
     }
 }
 /**
- * Default Accounts Sub-Agent instance
+ * Lazily instantiate Accounts Sub-Agent for environments without Supabase credentials.
  */
-export const accountsSubAgent = new AccountsSubAgent();
+let accountsSubAgentSingleton = null;
+export function getAccountsSubAgent() {
+    if (!accountsSubAgentSingleton) {
+        accountsSubAgentSingleton = new AccountsSubAgent();
+    }
+    return accountsSubAgentSingleton;
+}
 //# sourceMappingURL=accounts-sub-agent.service.js.map

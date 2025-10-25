@@ -11,7 +11,20 @@
  * Phase 4 - ENG-013
  */
 
-import { useState } from "react";
+import {
+  useState,
+  type ComponentType,
+  type SVGProps,
+  type ReactNode,
+} from "react";
+import {
+  NotificationIcon,
+  CheckCircleIcon,
+  AlertTriangleIcon,
+  InfoIcon,
+  ClipboardIcon,
+  XIcon,
+} from "@shopify/polaris-icons";
 
 export interface Notification {
   id: string;
@@ -40,19 +53,18 @@ export function NotificationCenter({
 }: NotificationCenterProps) {
   if (!open) return null;
 
-  const getIcon = (type: Notification["type"]): string => {
-    switch (type) {
-      case "approval":
-        return "🔔";
-      case "action":
-        return "✅";
-      case "alert":
-        return "⚠️";
-      case "info":
-        return "ℹ️";
-      default:
-        return "📋";
-    }
+  type NotificationIconComponent = ComponentType<SVGProps<SVGSVGElement>>;
+
+  const ICON_MAP: Record<Notification["type"], NotificationIconComponent> = {
+    approval: NotificationIcon,
+    action: CheckCircleIcon,
+    alert: AlertTriangleIcon,
+    info: InfoIcon,
+  };
+
+  const getIcon = (type: Notification["type"]): ReactNode => {
+    const IconComponent = ICON_MAP[type] ?? ClipboardIcon;
+    return <IconComponent aria-hidden="true" focusable="false" />;
   };
 
   const formatRelativeTime = (isoString: string): string => {
@@ -166,14 +178,15 @@ export function NotificationCenter({
             style={{
               background: "transparent",
               border: "none",
-              fontSize: "1.5rem",
               cursor: "pointer",
               padding: "0",
               color: "var(--occ-text-secondary)",
+              display: "flex",
+              alignItems: "center",
             }}
             aria-label="Close notification center"
           >
-            ×
+            <XIcon aria-hidden="true" focusable="false" />
           </button>
         </div>
 
@@ -263,7 +276,7 @@ interface NotificationGroupProps {
   title: string;
   notifications: Notification[];
   onMarkAsRead: (id: string) => void;
-  getIcon: (type: Notification["type"]) => string;
+  getIcon: (type: Notification["type"]) => ReactNode;
   formatRelativeTime: (isoString: string) => string;
 }
 
@@ -312,7 +325,7 @@ function NotificationGroup({
 interface NotificationItemProps {
   notification: Notification;
   onMarkAsRead: (id: string) => void;
-  icon: string;
+  icon: ReactNode;
   timeAgo: string;
 }
 
@@ -352,7 +365,18 @@ function NotificationItem({
           alignItems: "flex-start",
         }}
       >
-        <span style={{ fontSize: "1.2rem", flexShrink: 0 }}>{icon}</span>
+        <span
+          aria-hidden="true"
+          style={{
+            fontSize: "1.2rem",
+            flexShrink: 0,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          {icon}
+        </span>
         <div style={{ flex: 1 }}>
           <p
             style={{

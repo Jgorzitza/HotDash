@@ -32,6 +32,14 @@ export declare const shippingSupportAgent: Agent<unknown, "text">;
  */
 export declare const technicalSupportAgent: Agent<unknown, "text">;
 /**
+ * Storefront Support Agent
+ *
+ * Handles catalog discovery, product availability, collection browsing,
+ * and store policy questions using Storefront MCP.
+ * Never sends public replies without approval.
+ */
+export declare const storefrontAgent: Agent<unknown, "text">;
+/**
  * Customer Accounts Agent
  *
  * Handles authenticated customer account requests using Customer Accounts MCP.

@@ -13,9 +13,11 @@ import { Prisma } from "@prisma/client";
 import { generateTextEmbedding } from "~/services/image-search/image-embedding";
 import { generateImageDescription, generateSearchableDescription } from "~/services/image-search/image-description";
 
-const supabaseUrl = process.env.SUPABASE_URL!;
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
-const supabase = createClient(supabaseUrl, supabaseServiceKey);
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const supabase = supabaseUrl && supabaseServiceKey
+  ? createClient(supabaseUrl, supabaseServiceKey)
+  : null;
 
 export interface ImageSearchResult {
   id: string;
@@ -52,6 +54,13 @@ export async function loader({ request }: LoaderFunctionArgs) {
     // Generate embedding from text query
     const embeddingResult = await generateTextEmbedding(query);
     const embeddingVector = `[${embeddingResult.embedding.join(",")}]`;
+
+    if (!supabase) {
+      return Response.json(
+        { success: false, error: "Supabase not configured" },
+        { status: 503 }
+      );
+    }
 
     // Search pgvector for similar images
     // SECURITY: Using Prisma template literals to prevent SQL injection
@@ -178,6 +187,16 @@ export async function action({ request }: ActionFunctionArgs) {
     const embeddingResult = await generateTextEmbedding(searchableDescription);
     const embeddingVector = `[${embeddingResult.embedding.join(",")}]`;
 
+    if (!supabase) {
+      return Response.json(
+        {
+          success: false,
+          error: "Supabase not configured",
+        },
+        { status: 503 }
+      );
+    }
+
     // 4. Search pgvector for similar images
     const results = await supabase.rpc("search_images_by_text", {
       query_embedding: embeddingVector,
@@ -213,4 +232,3 @@ export async function action({ request }: ActionFunctionArgs) {
     );
   }
 }
-

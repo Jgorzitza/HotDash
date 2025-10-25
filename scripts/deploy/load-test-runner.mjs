@@ -28,11 +28,16 @@ const STAGES = [
   { duration: 120, target: 0 },
 ];
 
+const configuredStages = process.env.LOAD_TEST_STAGES
+  ? JSON.parse(process.env.LOAD_TEST_STAGES)
+  : STAGES;
+
 const METRICS = {
   totalRequests: 0,
   failedRequests: 0,
   durations: [],
   stages: [],
+  errors: {},
 };
 
 async function hitEndpoint(path) {
@@ -46,9 +51,13 @@ async function hitEndpoint(path) {
     METRICS.durations.push(duration);
     if (!response.ok) {
       METRICS.failedRequests += 1;
+      const key = `http_${response.status}`;
+      METRICS.errors[key] = (METRICS.errors[key] || 0) + 1;
     }
   } catch (error) {
     METRICS.failedRequests += 1;
+    const key = error && error.name ? `${error.name}:${error.message ?? ''}` : 'unknown_error';
+    METRICS.errors[key] = (METRICS.errors[key] || 0) + 1;
   } finally {
     clearTimeout(timeout);
     METRICS.totalRequests += 1;
@@ -74,8 +83,10 @@ function pct(values, percentile) {
   return sorted[Math.max(0, index)];
 }
 
-async function runStage({ duration, target }) {
+async function runStage({ duration, target, timeout }) {
   const stageStart = performance.now();
+  const stageTimeoutMs = timeout != null ? timeout * 1000 : duration * 1000 * 2;
+  const stageDeadline = stageStart + stageTimeoutMs;
   const stageEnd = stageStart + duration * 1000;
   const baselineDurations = METRICS.durations.length;
   const baselineRequests = METRICS.totalRequests;
@@ -86,7 +97,15 @@ async function runStage({ duration, target }) {
     workers.push(worker(stageEnd));
   }
 
-  await Promise.all(workers);
+  await Promise.race([
+    Promise.all(workers),
+    (async () => {
+      while (performance.now() < stageDeadline) {
+        await sleep(250);
+      }
+      throw new Error(`stage_timeout`);
+    })(),
+  ]);
 
   const stageDurations = METRICS.durations.slice(baselineDurations);
   METRICS.stages.push({
@@ -104,9 +123,15 @@ async function main() {
   const outputPathString = typeof OUTPUT_PATH === 'string' ? OUTPUT_PATH : OUTPUT_PATH.pathname;
   console.log(`   Output: ${outputPathString}`);
 
-  for (const stage of STAGES) {
+  for (const stage of configuredStages) {
     console.log(`   Stage: ${stage.duration}s @ ${stage.target} users`);
-    await runStage(stage);
+    try {
+      await runStage(stage);
+    } catch (error) {
+      console.error(`❌ Stage failed: ${error instanceof Error ? error.message : error}`);
+      METRICS.errors.stage_failure = (METRICS.errors.stage_failure || 0) + 1;
+      break;
+    }
   }
 
   const summary = {
@@ -125,6 +150,7 @@ async function main() {
       max: METRICS.durations.length ? Math.max(...METRICS.durations) : 0,
     },
     stages: METRICS.stages,
+    errors: METRICS.errors,
   };
 
   console.log('📊 Summary');

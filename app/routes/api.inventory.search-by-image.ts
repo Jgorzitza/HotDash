@@ -10,14 +10,20 @@
  */
 
 import type { ActionFunctionArgs } from "react-router";
-import { createClient } from "@supabase/supabase-js";
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import { generateTextEmbedding } from "~/services/image-search/image-embedding";
 import { generateImageDescription, generateSearchableDescription } from "~/services/image-search/image-description";
 import { logDecision } from "~/services/decisions.server";
 
-const supabaseUrl = process.env.SUPABASE_URL!;
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
-const supabase = createClient(supabaseUrl, supabaseServiceKey);
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+const getSupabase = (): SupabaseClient | null => {
+  if (!supabaseUrl || !supabaseServiceKey) {
+    return null;
+  }
+  return createClient(supabaseUrl, supabaseServiceKey);
+};
 
 export interface InventoryImageSearchResult {
   // Image data
@@ -79,6 +85,14 @@ export async function action({ request }: ActionFunctionArgs) {
       return Response.json(
         { error: "Missing imageUrl or imageId in request body" }, 
         { status: 400 }
+      );
+    }
+
+    const supabase = getSupabase();
+    if (!supabase) {
+      return Response.json(
+        { error: "Supabase credentials not configured" },
+        { status: 503 },
       );
     }
 
@@ -309,4 +323,3 @@ export async function loader() {
     { status: 405 }
   );
 }
-

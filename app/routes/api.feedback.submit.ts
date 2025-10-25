@@ -139,8 +139,11 @@ export async function action({ request }: ActionFunctionArgs) {
     }
 
     // Log submission for monitoring
-      `Feedback submitted: ${data.id} - ${submission.category} - Rating: ${submission.rating}/5`,
-    );
+    if (process.env.NODE_ENV !== "production") {
+      console.info(
+        `Feedback submitted: ${data.id} - ${submission.category} - Rating: ${submission.rating}/5`,
+      );
+    }
 
     return Response.json({
       success: true,

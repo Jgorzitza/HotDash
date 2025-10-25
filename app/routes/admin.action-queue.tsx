@@ -10,7 +10,7 @@
  * MCP JSONL: artifacts/designer/2025-10-24/mcp/designer-ge-002.jsonl
  */
 
-import { json, type LoaderFunctionArgs } from "react-router";
+import { type LoaderFunctionArgs } from "react-router";
 import { useLoaderData, useRevalidator } from "react-router";
 import { useState, useEffect } from "react";
 import { ActionQueueService } from "~/services/action-queue/action-queue.service";
@@ -24,14 +24,14 @@ export async function loader({ request }: LoaderFunctionArgs) {
   try {
     const actions = await ActionQueueService.getTopActions(10);
     
-    return json({
+    return Response.json({
       actions,
       total: actions.length,
       error: null,
     });
   } catch (error) {
     console.error("Error loading action queue:", error);
-    return json({
+    return Response.json({
       actions: [],
       total: 0,
       error: error instanceof Error ? error.message : "Unknown error",
@@ -339,4 +339,3 @@ function truncate(str: string, maxLength: number): string {
   if (str.length <= maxLength) return str;
   return str.slice(0, maxLength) + "…";
 }
-

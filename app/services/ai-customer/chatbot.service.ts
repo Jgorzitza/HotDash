@@ -8,7 +8,7 @@
  */
 
 import OpenAI from 'openai';
-import { createClient } from '@supabase/supabase-js';
+import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 import { logDecision } from '../decisions.server.js';
 
 export interface CustomerInquiry {
@@ -59,7 +59,7 @@ export interface ChatbotConfig {
 
 export class AICustomerChatbot {
   private openai: OpenAI;
-  private supabase: ReturnType<typeof createClient>;
+  private supabase: SupabaseClient | null;
   private config: ChatbotConfig;
 
   constructor(config: Partial<ChatbotConfig> = {}) {
@@ -83,10 +83,21 @@ export class AICustomerChatbot {
       apiKey: this.config.openaiApiKey,
     });
 
-    this.supabase = createClient(
-      process.env.SUPABASE_URL!,
-      process.env.SUPABASE_ANON_KEY!
-    );
+    if (process.env.SUPABASE_URL && process.env.SUPABASE_ANON_KEY) {
+      this.supabase = createClient(
+        process.env.SUPABASE_URL,
+        process.env.SUPABASE_ANON_KEY
+      );
+    } else {
+      this.supabase = null;
+    }
+  }
+
+  private requireSupabase(): SupabaseClient {
+    if (!this.supabase) {
+      throw new Error("Supabase credentials not configured");
+    }
+    return this.supabase;
   }
 
   /**
@@ -94,8 +105,9 @@ export class AICustomerChatbot {
    */
   async processInquiry(inquiry: Omit<CustomerInquiry, 'id' | 'createdAt' | 'updatedAt' | 'status'>): Promise<AIResponse> {
     try {
+      const supabase = this.requireSupabase();
       // Create inquiry in database
-      const { data: savedInquiry, error } = await this.supabase
+      const { data: savedInquiry, error } = await supabase
         .from('customer_inquiries')
         .insert({
           customer_id: inquiry.customerId,
@@ -137,7 +149,7 @@ export class AICustomerChatbot {
       const requiresApproval = this.requiresApproval(draftResponse, analysis);
       
       // Create AI response record
-      const { data: aiResponse, error: responseError } = await this.supabase
+      const { data: aiResponse, error: responseError } = await supabase
         .from('ai_responses')
         .insert({
           inquiry_id: savedInquiry.id,
@@ -327,7 +339,8 @@ Never make promises about specific timelines or policies that you're not certain
    */
   async approveResponse(responseId: string, approvedBy: string, finalResponse?: string): Promise<void> {
     try {
-      const { data: response, error } = await this.supabase
+      const supabase = this.requireSupabase();
+      const { data: response, error } = await supabase
         .from('ai_responses')
         .update({
           approved_at: new Date().toISOString(),
@@ -345,7 +358,7 @@ Never make promises about specific timelines or policies that you're not certain
       }
 
       // Update inquiry status
-      await this.supabase
+      await supabase
         .from('customer_inquiries')
         .update({
           status: 'resolved',
@@ -380,7 +393,8 @@ Never make promises about specific timelines or policies that you're not certain
    */
   async getPendingResponses(): Promise<AIResponse[]> {
     try {
-      const { data, error } = await this.supabase
+      const supabase = this.requireSupabase();
+      const { data, error } = await supabase
         .from('ai_responses')
         .select(`
           *,
@@ -499,7 +513,8 @@ Never make promises about specific timelines or policies that you're not certain
     customerSatisfaction: number;
   }> {
     try {
-      const { data: inquiries, error: inquiriesError } = await this.supabase
+      const supabase = this.requireSupabase();
+      const { data: inquiries, error: inquiriesError } = await supabase
         .from('customer_inquiries')
         .select('*');
 
@@ -507,7 +522,7 @@ Never make promises about specific timelines or policies that you're not certain
         throw new Error(`Failed to fetch inquiries: ${inquiriesError.message}`);
       }
 
-      const { data: responses, error: responsesError } = await this.supabase
+      const { data: responses, error: responsesError } = await supabase
         .from('ai_responses')
         .select('*');
 

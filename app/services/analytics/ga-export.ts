@@ -11,6 +11,8 @@ import { type LaunchMetrics } from "~/services/metrics/launch-metrics";
 import { getGaConfig } from "~/config/ga.server";
 import { logDecision } from "~/services/decisions.server";
 
+const isProd = process.env.NODE_ENV === "production";
+
 export interface GAExportResult {
   success: boolean;
   eventsExported: number;
@@ -194,9 +196,9 @@ async function exportSatisfactionMetrics(metrics: LaunchMetrics, propertyId: str
 async function sendGAEvent(propertyId: string, event: { name: string; params: Record<string, any> }): Promise<void> {
   // TODO: Implement actual GA4 Measurement Protocol API call
   // For now, just log the event
-    propertyId,
-    event,
-  });
+  if (!isProd) {
+    console.info("[GA Export] Mock send event", { propertyId, event });
+  }
   
   // GA4 Measurement Protocol endpoint:
   // POST https://www.google-analytics.com/mp/collect?measurement_id=G-XXXXXXXXXX&api_secret=SECRET
@@ -233,4 +235,3 @@ async function sendGAEvent(propertyId: string, event: { name: string; params: Re
   }
   */
 }
-

@@ -103,6 +103,7 @@ export function useSSE(url: string, enabled = true) {
         }
 
         reconnectTimeoutRef.current = setTimeout(() => {
+          console.warn(
             `[SSE] Reconnecting... (attempt ${reconnectAttemptsRef.current})`,
           );
           eventSource.close();
