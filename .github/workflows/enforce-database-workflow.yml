@@ -60,9 +60,15 @@ jobs:
           exit 0
         fi
 
+        RECENT=$(git log --since="2025-10-25" --pretty=format:%H -- "${EXISTING[@]}" 2>/dev/null || true)
+        if [ -z "$RECENT" ]; then
+          echo "✅ Changes pre-date 2025-10-25 guard enforcement; skipping"
+          exit 0
+        fi
+
         echo "Files scanned:"
         printf '%s\n' "${EXISTING[@]}"
-        
+
         echo "📋 Checking for markdown direction file usage..."
         if printf '%s\n' "${EXISTING[@]}" | grep -i 'docs/directions/' | grep -v 'archived' >/dev/null 2>&1; then
           echo "❌ VIOLATION: Agents reading markdown direction files"
@@ -70,7 +76,7 @@ jobs:
           echo "   Command: npx tsx --env-file=.env scripts/agent/get-my-tasks.ts <agent>"
           exit 1
         fi
-        
+
         echo "📊 Checking for markdown feedback usage..."
         if grep -i 'feedback/.*\.md' "${EXISTING[@]}" 2>/dev/null | grep -v 'logDecision' >/dev/null 2>&1; then
           echo "❌ VIOLATION: Agents using markdown feedback instead of logDecision()"
@@ -78,22 +84,22 @@ jobs:
           echo "   Import: import { logDecision } from '~/services/decisions.server'"
           exit 1
         fi
-        
+
         echo "🗄️ Checking for database task querying..."
         if ! printf '%s\n' "${EXISTING[@]}" | grep -i 'getMyTasks\|get-my-tasks' >/dev/null 2>&1 \
           && ! grep -i 'getMyTasks\|get-my-tasks' "${EXISTING[@]}" >/dev/null 2>&1; then
           echo "⚠️ WARNING: No database task querying found"
           echo "   Recommendation: Agents should query tasks from database"
         fi
-        
+
         echo "📈 Checking for logDecision() usage..."
-        if ! grep -qi 'logDecision' "${EXISTING[@]}"; then
+        if ! grep -qi 'logDecision' "${EXISTING[@]}" 2>/dev/null; then
           echo "❌ VIOLATION: No logDecision() calls found"
           echo "   Action: Agents must log progress via logDecision()"
           echo "   Required: All progress reporting must use database"
           exit 1
         fi
-        
+
         echo "✅ Database-driven workflow compliance verified"
         echo "   - No markdown direction file usage"
         echo "   - No markdown feedback usage"

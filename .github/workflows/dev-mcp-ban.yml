@@ -42,7 +42,7 @@ jobs:
       - name: Check for Dev MCP imports in production code
         if: steps.diff.outputs.count != '0'
         run: |
-          RAW=$(cat changed-ts.txt | grep -v '^app/services/growth-engine-support\.server\.ts$' | grep -v '^app/services/__tests__/growth-engine-support\.test\.ts$')
+          RAW=$(cat changed-ts.txt | grep -Ev '^(app/services/growth-engine-support\.server\.ts|app/services/__tests__/growth-engine-support\.test\.ts)$')
           EXISTING=()
           while IFS= read -r file; do
             [ -z "$file" ] && continue
@@ -60,7 +60,7 @@ jobs:
           echo "Files scanned:"
           printf '%s\n' "${EXISTING[@]}"
 
-          MATCHES=$(grep -inE "mcp.*dev|dev.*mcp" "${EXISTING[@]}" || true)
+          MATCHES=$(grep -inE "mcp.*dev|dev.*mcp" "${EXISTING[@]}" 2>/dev/null || true)
           if [ -n "$MATCHES" ]; then
             echo "$MATCHES"
             echo "❌ Dev MCP imports detected in production code"
@@ -88,28 +88,27 @@ jobs:
           echo "✅ No TypeScript changes detected; skipping Dev MCP enforcement for this PR"
 
       - name: Check PR body for Dev MCP Check section
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
         run: |
-          echo "🔍 Checking for Dev MCP Check section in PR body..."
-          
-          # Check if PR body contains Dev MCP Check section
-          if ! grep -q "## Dev MCP Check" <<< "${{ github.event.pull_request.body }}"; then
-            echo "❌ PR body missing '## Dev MCP Check' section"
-            echo "Required format:"
-            echo "## Dev MCP Check (CRITICAL - Production Safety)"
-            echo "- [ ] No Dev MCP imports in runtime bundles (prod code only)"
-            echo "- [ ] Verified: No mcp.*dev or dev.*mcp imports in app/ (searched with grep)"
-            exit 1
-          fi
-          
-          # Check if section indicates verification
-          if ! grep -qiE 'Verified:.*no.*mcp.*dev|Verified:.*no.*dev.*mcp' <<< "${{ github.event.pull_request.body }}"; then
-            echo "❌ Dev MCP Check section does not indicate verification"
-            echo "Must include a verification line such as: 'Verified: No mcp.*dev or dev.*mcp imports in app/ (searched with grep)'"
-            exit 1
-          fi
-          
-          echo "✅ Dev MCP Check section validation passed"
-      
+          python3 - <<'PY'
+import os, re, sys
+
+body = os.environ.get("PR_BODY", "")
+
+if not re.search(r"^## Dev MCP Check", body, re.MULTILINE):
+    sys.stderr.write("❌ PR body missing '## Dev MCP Check' section\n")
+    sys.stderr.write("Required block including verification checklist is missing.\n")
+    sys.exit(1)
+
+if not re.search(r"Verified:\s*No[^\n]*mcp.*dev|Verified:\s*No[^\n]*dev.*mcp", body, re.IGNORECASE):
+    sys.stderr.write("❌ Dev MCP Check section does not indicate verification\n")
+    sys.stderr.write("Must include a line such as 'Verified: No mcp.*dev or dev.*mcp imports in app/ (searched with grep)'.\n")
+    sys.exit(1)
+
+print("✅ Dev MCP Check section validation passed")
+PY
+
       - name: Report results
         run: |
           echo "✅ Dev MCP Ban validation completed successfully"
