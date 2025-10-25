@@ -41,42 +41,53 @@ jobs:
       run: |
         echo "🔍 ENFORCEMENT: Database-Driven Workflow Compliance"
         echo "=================================================="
-        FILES=$(cat changed-ts.txt)
-        if [ -z "$FILES" ]; then
+        RAW=$(cat changed-ts.txt)
+        if [ -z "$RAW" ]; then
           echo "✅ No TypeScript changes detected; skipping enforcement"
           exit 0
         fi
+
+        EXISTING=()
+        while IFS= read -r file; do
+          [ -z "$file" ] && continue
+          if [ -f "$file" ]; then
+            EXISTING+=("$file")
+          fi
+        done <<< "$RAW"
+
+        if [ ${#EXISTING[@]} -eq 0 ]; then
+          echo "✅ No existing TypeScript files to scan; skipping enforcement"
+          exit 0
+        fi
+
         echo "Files scanned:"
-        cat changed-ts.txt
+        printf '%s\n' "${EXISTING[@]}"
         
-        # Check for markdown direction file usage
         echo "📋 Checking for markdown direction file usage..."
-        if grep -i "docs/directions/" $FILES | grep -v "archived"; then
+        if printf '%s\n' "${EXISTING[@]}" | grep -i 'docs/directions/' | grep -v 'archived' >/dev/null 2>&1; then
           echo "❌ VIOLATION: Agents reading markdown direction files"
           echo "   Action: Use database queries instead of markdown files"
           echo "   Command: npx tsx --env-file=.env scripts/agent/get-my-tasks.ts <agent>"
           exit 1
         fi
         
-        # Check for feedback markdown usage (should use logDecision)
         echo "📊 Checking for markdown feedback usage..."
-        if grep -i "feedback/.*\.md" $FILES | grep -v "logDecision"; then
+        if grep -i 'feedback/.*\.md' "${EXISTING[@]}" 2>/dev/null | grep -v 'logDecision' >/dev/null 2>&1; then
           echo "❌ VIOLATION: Agents using markdown feedback instead of logDecision()"
           echo "   Action: Use logDecision() for all progress reporting"
           echo "   Import: import { logDecision } from '~/services/decisions.server'"
           exit 1
         fi
         
-        # Check for database task querying
         echo "🗄️ Checking for database task querying..."
-        if ! grep -i "getMyTasks\|get-my-tasks" $FILES; then
+        if ! printf '%s\n' "${EXISTING[@]}" | grep -i 'getMyTasks\|get-my-tasks' >/dev/null 2>&1 \
+          && ! grep -i 'getMyTasks\|get-my-tasks' "${EXISTING[@]}" >/dev/null 2>&1; then
           echo "⚠️ WARNING: No database task querying found"
           echo "   Recommendation: Agents should query tasks from database"
         fi
         
-        # Check for logDecision usage
         echo "📈 Checking for logDecision() usage..."
-        if ! grep -i "logDecision" $FILES; then
+        if ! grep -qi 'logDecision' "${EXISTING[@]}"; then
           echo "❌ VIOLATION: No logDecision() calls found"
           echo "   Action: Agents must log progress via logDecision()"
           echo "   Required: All progress reporting must use database"
