@@ -16,12 +16,12 @@ const execAsync = promisify(exec);
 class DevMCPBanService {
   constructor(appDirectory = 'app') {
     this.appDirectory = appDirectory;
-    this.bannedImports = [
-      '@shopify/mcp-server-dev',
-      'context7-mcp',
-      'chrome-devtools-mcp',
-      'mcp.*dev',
-      'dev.*mcp',
+    this.bannedPatterns = [
+      { label: '@shopify/mcp-server-dev', regex: /@shopify\/mcp-server-dev/i },
+      { label: 'context7-mcp', regex: /context7-mcp/i },
+      { label: 'chrome-devtools-mcp', regex: /chrome-devtools-mcp/i },
+      { label: 'mcp.*dev', regex: /mcp.*dev/i },
+      { label: 'dev.*mcp', regex: /dev.*mcp/i },
     ];
     this.allowedDirectories = ['scripts', 'tests', '.cursor', 'docs'];
   }
@@ -64,10 +64,9 @@ class DevMCPBanService {
   }
 
   identifyViolation(content) {
-    const lower = content.toLowerCase();
-    for (const banned of this.bannedImports) {
-      if (lower.includes(banned.toLowerCase())) {
-        return `Banned import: ${banned}`;
+    for (const { label, regex } of this.bannedPatterns) {
+      if (regex.test(content)) {
+        return `Banned import: ${label}`;
       }
     }
     return null;
@@ -134,4 +133,3 @@ echo "✅ No Dev MCP imports found in production code"; exit 0
 }
 
 module.exports = { DevMCPBanService, devMCPBanService: new DevMCPBanService() };
-

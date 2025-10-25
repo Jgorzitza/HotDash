@@ -27,7 +27,7 @@ jobs:
         run: npm ci
 
       - name: Verify MCP Evidence
-        run: node scripts/ci/verify-mcp-evidence.js
+        run: node scripts/ci/verify-mcp-evidence.cjs
         env:
           PR_BODY: ${{ github.event.pull_request.body }}
 
@@ -51,7 +51,7 @@ jobs:
         run: npm ci
 
       - name: Verify Heartbeat
-        run: node scripts/ci/verify-heartbeat.js
+        run: node scripts/ci/verify-heartbeat.cjs
         env:
           PR_BODY: ${{ github.event.pull_request.body }}
 
