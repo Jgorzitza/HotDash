@@ -22,7 +22,7 @@ docs/_archive/**
 mcp/**  # MCP tools documentation (critical infrastructure - DO NOT REMOVE)
 ```
 
-**NOTE:** Agent direction is in DATABASE (task.description), NOT markdown files.
+**NOTE:** Agent direction is in KB DATABASE (TaskAssignment table), NOT markdown files. Feedback logged via template pattern (see `docs/agents/FEEDBACK_QUICK_START.md`).
 
 ## No Ad-Hoc Files (STRICT - Effective 2025-10-20)
 
@@ -32,8 +32,8 @@ mcp/**  # MCP tools documentation (critical infrastructure - DO NOT REMOVE)
 
 Before creating ANY new .md file:
 
-1. **Can this go in the database?**
-   - YES → Use `logDecision()` and STOP
+1. **Can this go in the KB database?**
+   - YES → Use `logDecision()` via template pattern (see `docs/agents/FEEDBACK_QUICK_START.md`) and STOP
    - NO → Continue to Q2
 
 2. **Is this in DOCS_INDEX.md Tier 1-3?**
@@ -73,10 +73,16 @@ Before creating ANY new .md file:
 
 ---
 
-## Process [DATABASE-DRIVEN]
+## Process [KB DATABASE-DRIVEN]
 
-- **Task Management**: Manager assigns via `assignTask()` database (instant, 10+ times/day). Agents query via `getMyTasks()` (real-time, no git pull).
-- **Feedback**: Agents report via `logDecision()` (database, IMMEDIATE on status changes).
+- **Task Management**: Manager assigns via `assignTask()` to KB database (instant, 10+ times/day). Agents query via `getMyTasks()` (real-time, no git pull).
+- **Feedback**: Agents report via `logDecision()` to KB database using template pattern:
+  - Copy template: `cp scripts/agent/log-feedback.ts /tmp/my-feedback.ts`
+  - Edit temp file with feedback
+  - Run: `npx tsx --env-file=.env /tmp/my-feedback.ts`
+  - **No conflicts** - each agent uses own temp file
+  - See: `docs/agents/FEEDBACK_QUICK_START.md`
+- **Database**: KB Supabase (separate from production) - complete isolation, no Prisma conflicts
 - **GitHub Issues**: Still used for detailed context and PR tracking. PR must state `Fixes #<issue>`, satisfy DoD, and pass checks. Danger enforces.
 - Manager owns NORTH_STAR, RULES, Operating Model, and PROJECT_PLAN.
 - **Direction files archived** (2025-10-22) - markdown too slow for hourly updates.
@@ -194,9 +200,9 @@ git log daily/2025-10-20 --oneline
 | Inventory                | `app/lib/inventory/`                                                     |
 | QA                       | `tests/`, review comments                                                |
 | Pilot                    | `tests/e2e/`, smoke tests                                                |
-| Manager                  | `docs/directions/`, database coordination, git coordination              |
+| Manager                  | `docs/directions/`, KB database coordination, git coordination           |
 
-**If Conflict**: Report via `logDecision()` with `status: 'blocked'` and `blockedBy: 'Agent Y'` → Manager sees instantly
+**If Conflict**: Report via `logDecision()` (template pattern) with `status: 'blocked'` and `blockedBy: 'Agent Y'` → Manager sees instantly in KB database
 
 ### Commit Style (Conventional Commits)
 
@@ -211,9 +217,39 @@ test(agent-name): add tests
 
 ---
 
+## Database Separation (MANDATORY - Effective 2025-10-24)
+
+**CRITICAL: Two separate databases - Production and KB**
+
+### Production Database
+- **Purpose:** Business data (Shopify, customers, orders, sessions, analytics)
+- **Schema:** `prisma/schema.prisma`
+- **Client:** `@prisma/client` (from `app/db.server.ts`)
+- **Used by:** Agents for production work (DATA, ENGINEER, etc.)
+- **Credentials:** `DATABASE_URL_*` in `.env`
+
+### KB Database (Knowledge Base)
+- **Purpose:** Development coordination (tasks, decisions, feedback)
+- **Schema:** `prisma/kb-tasks/schema.prisma`
+- **Client:** `@prisma/kb-client` (from `app/kb-db.server.ts`)
+- **Used by:** Feedback/direction system ONLY
+- **Credentials:** `SUPABASE_DEV_KB_DATABASE_URL` in `vault/dev-kb/supabase.env`
+- **Tables:** DecisionLog (1,550+ records), TaskAssignment (417+ records)
+
+### Complete Isolation Guaranteed
+- ✅ Two separate Prisma clients (no shared state)
+- ✅ Two separate databases (no cross-contamination)
+- ✅ Two separate credential sets (no conflicts)
+- ✅ Agents can work on production DB without affecting feedback system
+- ✅ Tested: 10 agents writing feedback concurrently - all successful
+
+**See:** `artifacts/manager/2025-10-24/db-isolation-guarantee.md`
+
+---
+
 ## Database Safety (MANDATORY - Effective 2025-10-20)
 
-**CRITICAL: All deployment paths are READ-ONLY for database schema**
+**CRITICAL: All deployment paths are READ-ONLY for production database schema**
 
 ### Production Configuration (Verified Safe)
 
@@ -254,8 +290,9 @@ test(agent-name): add tests
 
 - ✅ Session records (Shopify OAuth sessions)
 - ✅ DashboardFact records (analytics, usage data)
-- ✅ DecisionLog records (audit trail)
-- ✅ ANY existing database records
+- ✅ ANY existing production database records
+
+**Note:** DecisionLog and TaskAssignment are now in KB database (separate from production)
 
 ### Schema Changes Require CEO Approval
 
@@ -266,7 +303,7 @@ test(agent-name): add tests
 3. Manager reviews for safety
 4. **CEO approves** before merge
 5. Manager applies migration manually using SSH console
-6. Evidence logged via `logDecision()` and in manager feedback (optional)
+6. Evidence logged via `logDecision()` to KB database (template pattern)
 
 **NEVER**:
 
@@ -376,7 +413,8 @@ test(agent-name): add tests
 
 - Topic: multi-schema support @@schema attribute
 - Key Learning: ALL models need @@schema("public") when datasource has schemas array
-- Applied to: prisma/schema.prisma (Session, DashboardFact, DecisionLog)
+- Applied to: prisma/schema.prisma (Session, DashboardFact) - production DB only
+- Note: DecisionLog/TaskAssignment now in KB database (prisma/kb-tasks/schema.prisma)
 ```
 
 ---
@@ -396,7 +434,7 @@ test(agent-name): add tests
 **Always**:
 
 - Include "official docs" or "documentation" in search
-- Log search results via `logDecision()` or in feedback markdown
+- Log search results via `logDecision()` to KB database (template pattern)
 
 ### 4. Chrome DevTools MCP: Required for UI Testing
 
@@ -436,7 +474,7 @@ test(agent-name): add tests
 - ✅ Use codebase-retrieval to understand current state
 - ✅ Use view tool to read existing files
 - ✅ Verify change won't break existing fixes
-- ✅ Log tool usage via MCP Evidence JSONL (artifacts/) or in feedback markdown
+- ✅ Log tool usage via MCP Evidence JSONL (artifacts/) or `logDecision()` to KB database
 - ✅ Quote specific requirement from docs
 - ✅ Apply official patterns (not training data)
 - ✅ Validate with appropriate MCP tool
@@ -545,8 +583,8 @@ fi
 
 **Manager Actions**:
 
-- REJECTS PRs without MCP evidence (JSONL files or logDecision entries)
-- AUDITS decision_log database for tool-first compliance
+- REJECTS PRs without MCP evidence (JSONL files or logDecision entries in KB database)
+- AUDITS KB database DecisionLog table for tool-first compliance
 - ESCALATES violations (3+ failed deploys = tool skipping)
 
 **Real Impact** (2025-10-20): Tool-first saved 30 minutes across 3 P0 issues.

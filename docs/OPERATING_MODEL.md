@@ -23,15 +23,20 @@
 
 ## 2) Task Ledger (single source of truth) [DATABASE-DRIVEN]
 
-**NEW (2025-10-22)**: Tasks assigned via database `TaskAssignment` table (instant, queryable, real-time)
+**NEW (2025-10-24)**: Tasks and feedback in KB database (separate from production, zero conflicts)
 
 - **Manager assigns** via `assignTask()` with: **TaskId**, **Agent**, **Title**, **Description**, **Acceptance Criteria**, **Allowed Paths**, **Priority**, **Dependencies**
 - **Agents query** via `getMyTasks(agent)` - instant visibility, no git pull needed
 - **Agents start/complete** via `updateTask()` + `logDecision()` - real-time status updates
+- **Agents log feedback** via template pattern (see `docs/agents/FEEDBACK_QUICK_START.md`):
+  - Copy template: `cp scripts/agent/log-feedback.ts /tmp/my-feedback.ts`
+  - Edit temp file with your feedback
+  - Run: `npx tsx --env-file=.env /tmp/my-feedback.ts`
+  - **No conflicts** - each agent uses own temp file
 - Every PR must:
   - Reference taskId in commit message
   - Stay inside allowed paths (from TaskAssignment record, Danger enforces)
-- **Feedback** logged via `logDecision()` to database (instant queries, no markdown files)
+- **Database:** KB Supabase (separate from production) - complete isolation, no Prisma conflicts
 - **Direction** (markdown files) archived - all task management now in database for 10+ updates/day efficiency
 
 ## 2.1) KB Integration for Context Recovery (OPTIONAL)
@@ -66,9 +71,10 @@
 
 **No Ad-Hoc Files (NEW - Effective 2025-10-20)**
 
-- Agents report ONLY via: `logDecision()` (database - PRIMARY), `feedback/{agent}.md` (optional backup), `artifacts/{agent}/` (evidence files)
-- Manager queries via: `scripts/manager/query-*.ts` (< 10 sec), optionally reads `feedback/manager/*.md`
-- Manager writes to: `docs/directions/*.md`, decision_log database
+- Agents report ONLY via: `logDecision()` (KB database - PRIMARY), `artifacts/{agent}/` (evidence files)
+- **Feedback process:** Copy template to temp file, edit, run (see `docs/agents/FEEDBACK_QUICK_START.md`)
+- Manager queries via: `scripts/manager/query-*.ts` (< 10 sec) from KB database
+- Manager writes to: `docs/directions/*.md`, KB database (DecisionLog, TaskAssignment)
 - Root .md files: 6 maximum (README, SECURITY, CONTRIBUTING, DOCS_INDEX, 2 temp)
 - Violations: Archive immediately to `docs/archive/YYYY-MM-DD/`
 - **3-Question Test**: Can this go in logDecision() or feedback? (YES → use that) | In DOCS_INDEX Tier 1-3? (NO → don't create) | CEO requested? (NO → don't create)
@@ -99,7 +105,7 @@
 - **GTM:** seo, ads, content
 - **Ops:** support, designer
 
-> Each has a single direction file and reports progress via `logDecision()` (database). Manager owns NORTH_STAR, RULES, directions, and queries agent status via database scripts.
+> Each has a single direction file and reports progress via `logDecision()` (KB database). Agents use template pattern for feedback (see `docs/agents/FEEDBACK_QUICK_START.md`). Manager owns NORTH_STAR, RULES, directions, and queries agent status via KB database scripts.
 
 ---
 
@@ -186,7 +192,7 @@ CEO → CEO-Front (business question)
 - Verify all active PRs have Issue linkage, DoD checked, Allowed paths present.
 - Merge or request changes with explicit next steps.
 - Roll learnings into RULES/directions; ensure push protection still on.
-- log summary via `logDecision()` (database) and optionally to `feedback/manager/<YYYY-MM-DD>.md`.
+- Log summary via `logDecision()` (KB database) using template pattern (copy to /tmp, edit, run).
 
 **Daily (During shutdown) — Drift & Evidence**
 
@@ -237,7 +243,8 @@ CEO → CEO-Front (business question)
 - Rules: `docs/RULES.md`.
 - Directions: `docs/directions/<agent>.md`.
 - Runbooks: `docs/runbooks/*.md`.
-- Progress reporting: `logDecision()` database (primary), `feedback/<agent>/<YYYY-MM-DD>.md` (optional backup).
+- Feedback guide: `docs/agents/FEEDBACK_QUICK_START.md` (template pattern, no conflicts).
+- Progress reporting: `logDecision()` KB database (primary), template: `scripts/agent/log-feedback.ts`.
 
 ---
 

@@ -153,7 +153,7 @@ Customer → Customer-Front (triage) → transfer_to_accounts OR transfer_to_sto
 
 ### The 3-Question Test (Before ANY New File)
 
-1. **Can this go in my feedback/database?** → YES → Use `logDecision()` or `feedback/{agent}.md` (STOP)
+1. **Can this go in KB database?** → YES → Use `logDecision()` via template pattern (see `docs/agents/FEEDBACK_QUICK_START.md`) (STOP)
 2. **Is this in DOCS_INDEX.md Tier 1-3?** → NO → Don't create
 3. **Did CEO explicitly request this?** → NO → Don't create
 
@@ -164,26 +164,38 @@ Customer → Customer-Front (triage) → transfer_to_accounts OR transfer_to_sto
 - ❌ `*_ANALYSIS.md`, `*_GAP.md`, `*_FINDINGS.md`
 - ❌ Any root .md except 6 allowed (README, SECURITY, CONTRIBUTING, DOCS_INDEX, 2 temp)
 
-### Use Database for Feedback + Direction (2025-10-22)
+### Use KB Database for Feedback + Direction (2025-10-24)
 
 **Feedback** (Progress/Status):
 
-- Report → `logDecision()` with `status`, `progressPct`, `taskId`
+- Report → `logDecision()` to KB database using template pattern:
+  - Copy: `cp scripts/agent/log-feedback.ts /tmp/my-feedback.ts`
+  - Edit temp file with `status`, `progressPct`, `taskId`
+  - Run: `npx tsx --env-file=.env /tmp/my-feedback.ts`
+  - **No conflicts** - each agent uses own temp file
 - IMMEDIATE on status changes (completion, blocked, unblocked)
 - Manager queries in < 10 seconds (vs 30-60 min reading markdown)
+- See: `docs/agents/FEEDBACK_QUICK_START.md`
 
 **Direction** (Task Assignments):
 
-- Assign → `assignTask()` with taskId, agent, acceptance criteria, allowed paths, dependencies
-- Query → `getMyTasks(agent)` - instant visibility, no git pull
+- Assign → `assignTask()` to KB database with taskId, agent, acceptance criteria, allowed paths, dependencies
+- Query → `getMyTasks(agent)` from KB database - instant visibility, no git pull
 - Update → 10+ times/day when blockers clear (instant, no commits needed)
 - Agents query next available task in real-time, switch when blocked
 
-**Why Database for Both**:
+**Why KB Database for Both**:
 
 - Manager updates direction **hourly** when blockers clear
 - Markdown + git = bottleneck (1-4 hours/update = agents idle)
-- Database = instant (< 1 min/update, agents see immediately)
+- KB Database = instant (< 1 min/update, agents see immediately)
+- **Complete isolation** from production database (no Prisma conflicts)
+- **Tested:** 10 agents writing concurrently - all successful
+
+**Database Separation**:
+- Production DB: Business data (Shopify, customers, orders)
+- KB DB: Development coordination (tasks, decisions, feedback)
+- Two separate Prisma clients - zero interference
 
 **Enforcement**: Daily audit, markdown direction files archived to feedback/archive/
 
