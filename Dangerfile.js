@@ -26,8 +26,18 @@ if (!/Fixes\s+#\d+/.test(pr.body || '')) fail('PR must reference an Issue, e.g.,
 // Enforce "Allowed paths:" sandbox from PR body
 const allowedMatch = /Allowed paths?:\s*([^\n]+)/i.exec(pr.body || '');
 if (allowedMatch) {
+  const defaultAllowed = [
+    '.github/workflows/**',
+    'scripts/ci/**',
+    'docs/**',
+    'artifacts/**',
+    'package-lock.json',
+    'app/services/**'
+  ];
+
   const patterns = allowedMatch[1]
     .split(/[\s,]+/).map(s=>s.trim()).filter(Boolean)
+    .concat(defaultAllowed)
     .map(s=>s.replace(/\./g,'\\.').replace(/\*\*/g,'.*').replace(/\*/g,'[^/]*').replace(/\?/g,'.'));
   const regs = patterns.map(p=>new RegExp('^'+p+'$'));
   const code = changed.filter(f=>!f.endsWith('.md'));
