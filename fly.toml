@@ -12,6 +12,9 @@ primary_region = 'ord'
 
 [build]
 
+[deploy]
+  release_command = "npx prisma generate"
+
 [http_service]
   internal_port = 3000
   force_https = true
@@ -19,6 +22,21 @@ primary_region = 'ord'
   auto_start_machines = true
   min_machines_running = 1
   processes = ['app']
+
+  # Health checks for monitoring
+  [[http_service.checks]]
+    grace_period = "10s"
+    interval = "30s"
+    method = "GET"
+    timeout = "5s"
+    path = "/health"
+
+  [[http_service.checks]]
+    grace_period = "10s"
+    interval = "60s"
+    method = "GET"
+    timeout = "10s"
+    path = "/api/monitoring/health"
 
 [[vm]]
   memory = '1gb'

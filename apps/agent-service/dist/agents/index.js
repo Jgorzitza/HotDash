@@ -3,26 +3,54 @@ import { z } from 'zod';
 import { answerFromDocs } from '../tools/rag.js';
 import { shopifyFindOrders, shopifyCancelOrder } from '../tools/shopify.js';
 import { cwCreatePrivateNote, cwSendPublicReply } from '../tools/chatwoot.js';
+import { trackShipment, estimateDelivery, validateAddress, getShippingMethods } from '../tools/shipping.js';
+import { searchTroubleshooting, checkWarranty, createRepairTicket, getSetupGuide } from '../tools/technical.js';
 /**
  * Intent classification tool for the triage agent.
- * Helps categorize customer requests for proper routing.
+ * Enhanced with more granular intents and confidence scoring.
  */
 const setIntent = tool({
     name: 'set_intent',
-    description: 'Classify the user message into a high-level intent bucket.',
+    description: 'Classify the user message into a high-level intent bucket with confidence.',
     parameters: z.object({
         intent: z.enum([
+            // Order-related
             'order_status',
-            'refund',
-            'cancel',
-            'exchange',
-            'product_question',
-            'shipping',
+            'order_cancel',
+            'order_refund',
+            'order_exchange',
+            'order_modify',
+            // Shipping-related
+            'shipping_tracking',
+            'shipping_delay',
+            'shipping_methods',
+            'shipping_cost',
+            'shipping_address',
+            // Product-related
+            'product_info',
+            'product_specs',
+            'product_compatibility',
+            'product_availability',
+            // Technical support
+            'technical_setup',
+            'technical_troubleshoot',
+            'technical_warranty',
+            'technical_repair',
+            // Account & general
+            'account_management',
+            'billing_inquiry',
+            'feedback',
+            'complaint',
             'other',
         ]).describe('The classified intent of the customer message'),
+        confidence: z.number().min(0).max(1).nullable().default(null).describe('Confidence score 0-1'),
     }),
-    async execute({ intent }) {
-        return { intent };
+    async execute({ intent, confidence }) {
+        return {
+            intent,
+            confidence: confidence || 0.9,
+            timestamp: new Date().toISOString()
+        };
     },
 });
 /**
@@ -67,22 +95,88 @@ export const productQAAgent = new Agent({
     tools: [answerFromDocs, cwCreatePrivateNote, cwSendPublicReply],
 });
 /**
+ * Shipping Support Agent
+ *
+ * Handles all shipping-related inquiries: tracking, delivery estimates, shipping methods.
+ * Provides tracking information and helps with shipping issues.
+ * Never sends public replies without approval.
+ */
+export const shippingSupportAgent = new Agent({
+    name: 'Shipping Support',
+    instructions: [
+        'You are a shipping specialist helping customers with delivery and tracking.',
+        'Handle tracking inquiries, delivery estimates, and shipping method questions.',
+        'Always check order status first using shopify_find_orders.',
+        'Use track_shipment to get detailed tracking information.',
+        'Use estimate_delivery for delivery time estimates.',
+        'Reference shipping policies from answer_from_docs when needed.',
+        'For address changes after shipment, escalate to Order Support.',
+        'Do NOT send anything to the customer directly; use private notes and wait for approval.',
+        'Be proactive about delivery delays and provide carrier contact info.',
+    ].join('\n'),
+    tools: [
+        answerFromDocs,
+        shopifyFindOrders,
+        trackShipment,
+        estimateDelivery,
+        validateAddress,
+        getShippingMethods,
+        cwCreatePrivateNote,
+        cwSendPublicReply,
+    ],
+});
+/**
+ * Technical Support Agent
+ *
+ * Handles product setup, troubleshooting, and warranty claims.
+ * Provides technical guidance and creates repair tickets when needed.
+ * Never sends public replies without approval.
+ */
+export const technicalSupportAgent = new Agent({
+    name: 'Technical Support',
+    instructions: [
+        'You are a technical support specialist helping customers with product issues.',
+        'Guide customers through product setup and troubleshooting.',
+        'Use search_troubleshooting to find relevant guides.',
+        'Use get_setup_guide for product setup instructions.',
+        'Check warranty status with check_warranty before suggesting repairs.',
+        'Create repair tickets with create_repair_ticket when needed (requires approval).',
+        'Reference technical documentation from answer_from_docs.',
+        'Start with basic troubleshooting before escalating.',
+        'Do NOT send anything to the customer directly; use private notes and wait for approval.',
+        'Document all troubleshooting steps in private notes.',
+    ].join('\n'),
+    tools: [
+        answerFromDocs,
+        searchTroubleshooting,
+        checkWarranty,
+        createRepairTicket,
+        getSetupGuide,
+        cwCreatePrivateNote,
+        cwSendPublicReply,
+    ],
+});
+/**
  * Triage Agent
  *
  * First point of contact - classifies intent and routes to specialist agents.
- * Decides whether conversation is about orders or product questions.
+ * Enhanced with more specialized routing options.
  * Hands off to appropriate specialist for handling.
  */
 export const triageAgent = new Agent({
     name: 'Triage',
     instructions: [
-        'Decide whether the conversation is about orders or product questions.',
-        'If order-related (status, cancel, refund, exchange), hand off to Order Support.',
-        'If product knowledge (features, specs, compatibility), hand off to Product Q&A.',
-        'Use set_intent to record your classification; include it in private notes.',
-        'If unclear, create a private note requesting clarification.',
+        'Classify the customer inquiry and route to the appropriate specialist.',
+        'Use set_intent to record your classification with confidence score.',
+        'Routing rules:',
+        '- Order-related (status, cancel, refund, exchange) → Order Support',
+        '- Shipping-related (tracking, delivery, methods) → Shipping Support',
+        '- Product questions (features, specs, compatibility) → Product Q&A',
+        '- Technical issues (setup, troubleshooting, warranty) → Technical Support',
+        'If confidence < 0.7 or unclear, create a private note requesting clarification.',
+        'Include intent and confidence in your handoff message.',
     ].join('\n'),
     tools: [setIntent, cwCreatePrivateNote],
-    handoffs: [orderSupportAgent, productQAAgent],
+    handoffs: [orderSupportAgent, shippingSupportAgent, productQAAgent, technicalSupportAgent],
 });
 //# sourceMappingURL=index.js.map

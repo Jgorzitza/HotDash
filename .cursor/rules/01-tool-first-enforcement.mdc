@@ -1,0 +1,62 @@
+---
+alwaysApply: true
+---
+# Tool-First Enforcement (MANDATORY)
+
+**Effective**: 2025-10-20  
+**Applies to**: ALL agents including Manager
+
+## CRITICAL RULE: Pull Documentation BEFORE Writing Code
+
+**NEVER write code without pulling official documentation first.**
+
+### Required Tools (Use BEFORE coding)
+
+**Context7 MCP** - For ALL library usage:
+- Prisma: `mcp_context7_get-library-docs("/prisma/docs", "your-topic")`
+- React Router 7: `mcp_context7_get-library-docs("/react-router/react-router", "your-topic")`
+- TypeScript: `mcp_context7_get-library-docs("/microsoft/TypeScript", "your-topic")`
+- Supabase: `mcp_context7_get-library-docs("/supabase/supabase", "your-topic")`
+- Google Analytics: `mcp_context7_get-library-docs("/websites/developers_google_analytics_devguides_reporting_data_v1", "your-topic")`
+- OpenAI SDK: `mcp_context7_get-library-docs("/openai/openai-node", "your-topic")`
+- LlamaIndex: `mcp_context7_get-library-docs("/run-llama/LlamaIndexTS", "your-topic")`
+
+**Web Search** - If Context7 doesn't have library:
+- `web_search("LibraryName official documentation your-topic")`
+
+**Shopify Dev MCP** - For ALL Shopify code:
+- Validate GraphQL: `mcp_shopify_validate_graphql_codeblocks`
+- Validate components: `mcp_shopify_validate_component_codeblocks`
+
+### Evidence Format (Log in Feedback)
+
+```md
+## HH:MM - Context7: [Library Name]
+- Topic: [what I'm implementing]
+- Key Learning: [specific requirement from official docs]
+- Applied to: [files being changed]
+```
+
+### Why This Matters
+
+- Training data is 6-12 months old
+- Libraries change constantly (Prisma multi-schema, React Router 7 patterns)
+- **Real impact (2025-10-20)**: Tool-first saved 30 minutes across 3 P0 issues
+  - Prisma: 3 failed deploys → 1 with Context7 (6 min saved)
+  - Google Analytics: 6 failed deploys → 1 with Context7 (15 min saved)
+  - Supabase: 4 failed deploys → 1 with web_search (9 min saved)
+
+### Enforcement
+
+- **1-2 failed deploys**: Guidance in PR review
+- **3+ failed deploys**: Clear tool-skipping pattern, redo with tools REQUIRED
+- **Manager REJECTS**: PRs without MCP evidence in feedback
+- **CEO audits**: Manager's tool usage same as agents
+
+### References
+
+- Full policy: [docs/RULES.md](mdc:docs/RULES.md) (MCP Tools section, lines 91-260)
+- Agent checklist: [docs/runbooks/agent_startup_checklist.md](mdc:docs/runbooks/agent_startup_checklist.md) (Section 0)
+- Manager checklist: [docs/runbooks/manager_startup_checklist.md](mdc:docs/runbooks/manager_startup_checklist.md) (Section 0)
+
+**NEVER guess from training data. ALWAYS pull official docs first.**

@@ -82,22 +82,6 @@ Quick reference for using MCP tools in your AI assistant workflows.
 
 ---
 
-### 📊 Google Analytics
-**Use when you need to:**
-- ✅ Fetch analytics metrics
-- ✅ Generate traffic reports
-- ✅ Analyze user behavior
-- ✅ Track conversion funnels
-- ✅ Monitor campaign performance
-
-**Example prompts:**
-- "Show me page views for the last 30 days"
-- "What's the conversion rate for the signup funnel?"
-- "Generate a report of top traffic sources"
-- "How many users visited from mobile devices?"
-
----
-
 ---
 
 ### 🧩 Chrome DevTools
@@ -121,7 +105,6 @@ Quick reference for using MCP tools in your AI assistant workflows.
 2. **GitHub**: Create issue for new feature
 3. **Supabase**: Update database schema if needed
 4. **Fly**: Deploy to staging
-5. **Google Analytics**: Monitor impact
 
 ### 🐛 Bug Fix Workflow
 1. **GitHub**: Review issue details
@@ -137,20 +120,9 @@ Quick reference for using MCP tools in your AI assistant workflows.
 4. **Shopify**: Test theme changes
 5. **GitHub**: Submit PR
 
-### 📈 Analytics Review Workflow
-1. **Google Analytics**: Fetch metrics
-2. **Supabase**: Query user data
-3. **GitHub**: Create optimization issues
-4. **Fly**: Check performance logs
-
 ---
 
 ## Tool Combinations
-
-### Database + Analytics
-```
-"Show me Supabase user signups and correlate with Google Analytics traffic"
-```
 
 ### GitHub + Deployment
 ```
@@ -187,9 +159,6 @@ curl -s http://127.0.0.1:8080/mcp/health || echo "Fly MCP not running"
 
 # Shopify (NPX)
 npx -y @shopify/dev-mcp@latest --version
-
-# Google Analytics (Pipx)
-pipx list | grep analytics-mcp
 ```
 
 ---
@@ -214,7 +183,6 @@ pipx list | grep analytics-mcp
 - Don't manually check logs when Fly MCP can fetch them
 
 ### 5. Combine Tools
-- Use Google Analytics + Supabase for user behavior analysis
 - Use Context7 + GitHub for comprehensive code reviews
 - Use Shopify + Fly for e-commerce deployment workflows
 
@@ -230,8 +198,7 @@ pipx list | grep analytics-mcp
 
 ### "Permission denied"
 1. Verify token/credentials have correct permissions
-2. Check service account roles (for Google Analytics)
-3. Ensure project references are correct
+2. Ensure project references are correct
 
 ### "Command not found"
 1. Verify prerequisites are installed (Docker, Node, Python)
@@ -249,10 +216,6 @@ export GITHUB_PERSONAL_ACCESS_TOKEN="gho_..."
 # Supabase
 export SUPABASE_ACCESS_TOKEN="sbp_..."
 export SUPABASE_PROJECT_REF="mmbjiyhsvniqxibzgyvx"
-
-# Google Analytics
-export GOOGLE_APPLICATION_CREDENTIALS="/path/to/service-account.json"
-export GOOGLE_PROJECT_ID="hotrodan-seo-reports"
 
 # Shopify
 export LIQUID_VALIDATION_MODE="partial"

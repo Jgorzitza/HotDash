@@ -45,6 +45,7 @@ pnpm-lock.yaml
 /extensions/*/dist
 apps/**/dist/
 docs/_archive/**
+packages/dev-kb-prisma/
 
 # Secrets and evidence archives
 vault/
@@ -60,6 +61,11 @@ artifacts/
 # Binary installers
 *.deb
 feedback/img/
+
+# Feedback is database-only - no markdown files allowed
+feedback/**/*.md
+!feedback/README.md
+!feedback/archive/**
 
 # OS junk
 .DS_Store

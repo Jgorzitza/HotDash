@@ -111,10 +111,11 @@ ls -1 feedback/*/$(date +%F).md 2>/dev/null || true
 - If the terminal/history holds context:
   - Copy relevant, **non-secret** command lines & outcomes into today’s feedback log with a new “Recovery Note” section.
 
-### 4.2 Directions
+### 4.2 Directions (Database)
 
-- Open `docs/directions/<agent>.md` and ensure it points at the current **Issue** and **PR**.
-- If direction is out of date, add a short “Recovery Objective” for the next 2–4 hours.
+- Query agent tasks from database: `npx tsx --env-file=.env scripts/agent/get-my-tasks.ts <agent>`
+- Update task description in database if direction is out of date
+- Add a short “Recovery Objective” for the next 2–4 hours in task description
 
 ### 4.3 Issues
 

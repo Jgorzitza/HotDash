@@ -1,0 +1,81 @@
+name: Dev MCP Ban - Production Safety
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  dev-mcp-ban:
+    name: Enforce Dev MCP Ban
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Check for Dev MCP imports in production code
+        run: |
+          echo "🔍 Checking for Dev MCP imports in production code..."
+          
+          # Check for Dev MCP imports in app directory
+          if grep -r "mcp.*dev\|dev.*mcp" app/ --include="*.ts" --include="*.tsx" -i; then
+            echo "❌ Dev MCP imports detected in production code"
+            echo "Dev MCP is for development/staging ONLY"
+            echo "Production builds MUST FAIL if Dev MCP detected"
+            echo ""
+            echo "Allowed locations for Dev MCP:"
+            echo "- scripts/ (non-runtime dev scripts)"
+            echo "- tests/ (test utilities)"
+            echo "- .cursor/ (Cursor IDE config)"
+            echo "- docs/ (documentation)"
+            echo ""
+            echo "FORBIDDEN in production code:"
+            echo "- app/ directory (runtime bundles)"
+            echo ""
+            echo "Please remove Dev MCP imports from app/ directory"
+            exit 1
+          fi
+          
+          echo "✅ No Dev MCP imports found in production code"
+      
+      - name: Check PR body for Dev MCP Check section
+        run: |
+          echo "🔍 Checking for Dev MCP Check section in PR body..."
+          
+          # Check if PR body contains Dev MCP Check section
+          if ! grep -q "## Dev MCP Check" <<< "${{ github.event.pull_request.body }}"; then
+            echo "❌ PR body missing '## Dev MCP Check' section"
+            echo "Required format:"
+            echo "## Dev MCP Check (CRITICAL - Production Safety)"
+            echo "- [ ] No Dev MCP imports in runtime bundles (prod code only)"
+            echo "- [ ] Verified: No \`mcp.*dev\` or \`dev.*mcp\` imports in app/ (searched with grep)"
+            exit 1
+          fi
+          
+          # Check if section indicates verification
+          if ! grep -q "Verified: No" <<< "${{ github.event.pull_request.body }}"; then
+            echo "❌ Dev MCP Check section does not indicate verification"
+            echo "Must include: 'Verified: No \`mcp.*dev\` or \`dev.*mcp\` imports in app/ (searched with grep)'"
+            exit 1
+          fi
+          
+          echo "✅ Dev MCP Check section validation passed"
+      
+      - name: Report results
+        run: |
+          echo "✅ Dev MCP Ban validation completed successfully"
+          echo "No Dev MCP imports found in production code"
+          echo "Production safety maintained"

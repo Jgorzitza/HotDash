@@ -1,0 +1,235 @@
+{
+  "provider": "Google Analytics 4 API",
+  "consumer": "Hot Dash Dashboard",
+  "prNumber": 107,
+  "dateCreated": "2025-10-20",
+  "status": "production",
+  "version": "1.0.0",
+  "description": "Analytics API response schemas with runtime validation",
+  "interactions": [
+    {
+      "description": "Get revenue metrics from GA4",
+      "providerState": "GA4 API accessible with valid credentials",
+      "request": {
+        "method": "GET",
+        "path": "/api/analytics/revenue",
+        "headers": {
+          "Cookie": "shopify_session=..."
+        }
+      },
+      "response": {
+        "statusCodes": [200, 500, 503],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "schema": {
+          "type": "object",
+          "properties": {
+            "success": { "type": "boolean" },
+            "data": {
+              "type": "object",
+              "properties": {
+                "revenue": { "type": "number", "description": "Total revenue in period" },
+                "transactions": { "type": "number", "description": "Number of transactions" },
+                "avgOrderValue": { "type": "number", "description": "Average order value" }
+              },
+              "required": ["revenue", "transactions", "avgOrderValue"],
+              "nullable": true,
+              "note": "Present when success=true"
+            },
+            "error": {
+              "type": "string",
+              "nullable": true,
+              "note": "Present when success=false"
+            },
+            "timestamp": { "type": "string", "format": "date-time" },
+            "sampled": {
+              "type": "boolean",
+              "description": "Indicates if GA4 data was sampled (should be false)"
+            }
+          },
+          "required": ["success", "timestamp", "sampled"]
+        },
+        "examples": {
+          "success": {
+            "success": true,
+            "data": {
+              "revenue": 15430.50,
+              "transactions": 234,
+              "avgOrderValue": 65.94
+            },
+            "timestamp": "2025-10-20T12:00:00Z",
+            "sampled": false
+          },
+          "error_general": {
+            "success": false,
+            "error": "Failed to fetch revenue metrics",
+            "timestamp": "2025-10-20T12:00:00Z",
+            "sampled": false
+          },
+          "error_sampling": {
+            "success": false,
+            "error": "GA4 data is sampled - unsampled data required",
+            "timestamp": "2025-10-20T12:00:00Z",
+            "sampled": true
+          }
+        }
+      },
+      "validation": {
+        "tool": "Zod",
+        "schema": "RevenueResponseSchema",
+        "location": "app/lib/analytics/schemas.ts:12-24"
+      }
+    },
+    {
+      "description": "Get traffic metrics from GA4",
+      "providerState": "GA4 API accessible with valid credentials",
+      "request": {
+        "method": "GET",
+        "path": "/api/analytics/traffic",
+        "headers": {
+          "Cookie": "shopify_session=..."
+        }
+      },
+      "response": {
+        "statusCodes": [200, 500, 503],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "schema": {
+          "type": "object",
+          "properties": {
+            "success": { "type": "boolean" },
+            "data": {
+              "type": "object",
+              "properties": {
+                "sessions": { "type": "number", "description": "Total sessions in period" },
+                "users": { "type": "number", "description": "Total users in period" },
+                "pageviews": { "type": "number", "description": "Total pageviews in period" }
+              },
+              "required": ["sessions", "users", "pageviews"],
+              "nullable": true
+            },
+            "error": { "type": "string", "nullable": true },
+            "timestamp": { "type": "string", "format": "date-time" },
+            "sampled": { "type": "boolean" }
+          },
+          "required": ["success", "timestamp", "sampled"]
+        },
+        "examples": {
+          "success": {
+            "success": true,
+            "data": {
+              "sessions": 5420,
+              "users": 3890,
+              "pageviews": 12340
+            },
+            "timestamp": "2025-10-20T12:00:00Z",
+            "sampled": false
+          }
+        }
+      },
+      "validation": {
+        "tool": "Zod",
+        "schema": "TrafficResponseSchema",
+        "location": "app/lib/analytics/schemas.ts:31-43"
+      }
+    },
+    {
+      "description": "Get conversion rate metrics from GA4",
+      "providerState": "GA4 API accessible with valid credentials",
+      "request": {
+        "method": "GET",
+        "path": "/api/analytics/conversion-rate",
+        "headers": {
+          "Cookie": "shopify_session=..."
+        }
+      },
+      "response": {
+        "statusCodes": [200, 500, 503],
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "schema": {
+          "type": "object",
+          "properties": {
+            "success": { "type": "boolean" },
+            "data": {
+              "type": "object",
+              "properties": {
+                "rate": { "type": "number", "description": "Conversion rate as decimal (e.g., 0.05 = 5%)" },
+                "transactions": { "type": "number", "description": "Number of transactions" },
+                "sessions": { "type": "number", "description": "Number of sessions" }
+              },
+              "required": ["rate", "transactions", "sessions"],
+              "nullable": true
+            },
+            "error": { "type": "string", "nullable": true },
+            "timestamp": { "type": "string", "format": "date-time" },
+            "sampled": { "type": "boolean" }
+          },
+          "required": ["success", "timestamp", "sampled"]
+        },
+        "examples": {
+          "success": {
+            "success": true,
+            "data": {
+              "rate": 0.043,
+              "transactions": 234,
+              "sessions": 5420
+            },
+            "timestamp": "2025-10-20T12:00:00Z",
+            "sampled": false
+          }
+        }
+      },
+      "validation": {
+        "tool": "Zod",
+        "schema": "ConversionRateResponseSchema",
+        "location": "app/lib/analytics/schemas.ts:50-62"
+      }
+    }
+  ],
+  "metadata": {
+    "timeout": "30-60s (GA4 typical response time)",
+    "retry": "YES (underlying api-client.server.ts handles retries)",
+    "retryConfig": {
+      "maxRetries": 2,
+      "baseDelay": 1000,
+      "backoff": "exponential",
+      "retryOn": [500, 502, 503, 504]
+    },
+    "rateLimit": {
+      "queries": "10 per second per project",
+      "daily": "25,000 requests per day",
+      "enforcement": "Client-side throttling recommended for dashboard auto-refresh"
+    },
+    "authentication": "Google Analytics 4 service account credentials",
+    "errorHandling": "Returns error in response with appropriate HTTP status code",
+    "samplingDetection": {
+      "tool": "sampling-guard.ts",
+      "functions": ["isSamplingError", "validateUnsampled"],
+      "statusCode": 503
+    }
+  },
+  "backwardsCompatibility": {
+    "aliases": [
+      {
+        "old": "ConversionResponseSchema",
+        "new": "ConversionRateResponseSchema",
+        "location": "app/lib/analytics/schemas.ts:69-70",
+        "note": "Alias maintained for backwards compatibility"
+      }
+    ]
+  },
+  "responseEnvelope": {
+    "pattern": "success/error discriminated union",
+    "description": "All responses use consistent envelope with success boolean, optional data/error, timestamp, and sampled flag",
+    "benefits": [
+      "Type-safe error handling",
+      "Runtime validation with Zod",
+      "Sampling transparency",
+      "Timestamp for cache staleness checks"
+    ]
+  }
+}

@@ -1,0 +1,74 @@
+name: RR7 Guard
+
+on:
+  pull_request:
+    paths:
+      - 'app/**'
+      - 'packages/**'
+      - 'scripts/**'
+      - 'apps/**'
+      - '!apps/**/dist/**'
+      - '!docs/**'
+      - '!backups/**'
+      - '.github/workflows/rr7-guard.yml'
+      - 'package.json'
+  push:
+    branches: [ main ]
+    paths:
+      - 'app/**'
+      - 'packages/**'
+      - 'scripts/**'
+      - 'apps/**'
+      - '!apps/**/dist/**'
+      - '!docs/**'
+      - '!backups/**'
+      - '.github/workflows/rr7-guard.yml'
+
+jobs:
+  rr7-guard:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Enforce no Remix runtime imports in app/
+        shell: bash
+        run: |
+          echo "Checking for @remix-run/* imports in source (disallowed in RR7 runtime)"
+          set -euo pipefail
+          MATCHES="$(grep -R -n -E "from[[:space:]]+['\"]@remix-run/|require\(['\"]@remix-run/" \
+            app packages scripts apps \
+            --exclude-dir=docs --exclude-dir=backups --exclude-dir=artifacts \
+            --exclude-dir=coverage --exclude-dir=build --exclude-dir=node_modules \
+            --exclude-dir=dist 2>/dev/null || true)"
+          if [ -n "$MATCHES" ]; then
+            echo "::error title=RR7 Guard::Found disallowed @remix-run/* imports in app/ runtime"
+            echo "$MATCHES"
+            exit 1
+          fi
+          echo "✅ No @remix-run/* imports found in app/"
+
+      - name: Enforce Response.json over Remix json helper (defensive)
+        shell: bash
+        run: |
+          set -euo pipefail
+          MATCHES="$(grep -R -n -E "import\s+\{[^}]*\bjson\b[^}]*\}\s+from\s+['\"]@remix-run/" \
+            app packages scripts apps \
+            --exclude-dir=docs --exclude-dir=backups --exclude-dir=artifacts \
+            --exclude-dir=coverage --exclude-dir=build --exclude-dir=node_modules \
+            --exclude-dir=dist 2>/dev/null || true)"
+          if [ -n "$MATCHES" ]; then
+            echo "::error title=RR7 Guard::Found Remix json() import. Use global Response.json() instead."
+            echo "$MATCHES"
+            exit 1
+          fi
+          echo "✅ No Remix json() imports found in app/"
+
+      - name: Ensure @remix-run/node is not declared in package.json
+        shell: bash
+        run: |
+          if grep -q '"@remix-run/node"' package.json; then
+            echo "::error title=RR7 Guard::@remix-run/node present in package.json. Remove to keep repo RR7-only."
+            exit 1
+          fi
+          echo "✅ No @remix-run/node dependency declared"

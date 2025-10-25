@@ -93,7 +93,6 @@ export class ApiClient {
         if (attempt > 0) {
           // Exponential backoff
           const delay = this.options.retryDelay * Math.pow(2, attempt - 1);
-          console.log(
             `[${this.options.serviceName}] Retry ${attempt}/${this.options.maxRetries} after ${delay}ms`,
           );
           await new Promise((resolve) => setTimeout(resolve, delay));
@@ -163,7 +162,6 @@ export class ApiClient {
       const response = await fetch(url, fetchOptions);
       const duration = Date.now() - startTime;
 
-      console.log(
         `[${this.options.serviceName}] ${method} ${url} - ${response.status} (${duration}ms)`,
       );
 

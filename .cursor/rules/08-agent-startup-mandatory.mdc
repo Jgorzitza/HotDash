@@ -1,0 +1,54 @@
+---
+alwaysApply: true
+---
+# Agent Startup Checklist MANDATORY
+
+**EVERY agent session MUST start by executing the full startup checklist.**
+
+## Startup Checklist Path
+[docs/runbooks/agent_startup_checklist.md](mdc:docs/runbooks/agent_startup_checklist.md)
+
+## Required Sections (Complete ALL Before Work)
+
+**Section 0: Git Setup** (60 sec)
+- Checkout `manager-reopen-20251020`
+- Verify branch
+- Review file ownership
+
+**Section 1: MCP Tools Verification** (90 sec)
+- Pull Context7 docs for libraries you'll touch
+- Log tool usage in feedback
+- Examples: Prisma, React Router 7, TypeScript, OpenAI SDK
+
+**Section 2: Canon Review** (5 min)
+- Read [RULES.md](mdc:docs/RULES.md)
+- Read [NORTH_STAR.md](mdc:docs/NORTH_STAR.md)
+- Read [OPERATING_MODEL.md](mdc:docs/OPERATING_MODEL.md)
+
+**Section 3: Direction & Project Plan** (5 min)
+- Read `docs/directions/{your-agent}.md`
+- Read [PROJECT_PLAN.md](mdc:docs/manager/PROJECT_PLAN.md)
+
+**Section 4: Tools & Environment** (5 min)
+- Verify tooling
+- Check credentials in `vault/occ/`
+
+**Section 5: Work Protocol** (5 min)
+- Database safety rules
+- Evidence logging format
+- Credential & blocker protocol
+
+## Why This Matters
+
+**Time Investment**: 20-30 min startup
+**ROI**: Prevents 2-3 hours of P0 fixes per agent
+
+**Real Examples** (2025-10-20):
+- Skipping MCP tools → 13 failed deploys, 39 min wasted
+- Using MCP tools → 3 deploys, 9 min total
+
+## DO NOT
+- ❌ Skip startup checklist
+- ❌ Jump straight into coding
+- ❌ Use training data without verifying with Context7
+- ❌ Commit without checking file ownership

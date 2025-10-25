@@ -1,0 +1,98 @@
+{
+  "cycle_date": "2025-10-23",
+  "total_agents": 17,
+  "idle_agents": 0,
+  "lanes": {
+    "customer-front": {
+      "agent": "ai-customer",
+      "tasks": [
+        {
+          "id": "AI-CUSTOMER-002",
+          "title": "Enhanced Customer Service Integration",
+          "duration_min": 120,
+          "priority": "P1",
+          "score": 750,
+          "dependencies": []
+        }
+      ]
+    },
+    "inventory": {
+      "agent": "inventory",
+      "tasks": [
+        {
+          "id": "INVENTORY-019",
+          "title": "Advanced Inventory Analytics Dashboard",
+          "duration_min": 90,
+          "priority": "P1",
+          "score": 800,
+          "dependencies": []
+        }
+      ]
+    },
+    "analytics": {
+      "agent": "analytics",
+      "tasks": [
+        {
+          "id": "ANALYTICS-003",
+          "title": "Real-time Analytics Dashboard",
+          "duration_min": 120,
+          "priority": "P0",
+          "score": 900,
+          "dependencies": []
+        }
+      ]
+    },
+    "qa-helper": {
+      "agent": "qa-helper",
+      "tasks": [
+        {
+          "id": "QA-UI-001",
+          "title": "UI Component Testing (after analytics.ts fix)",
+          "duration_min": 60,
+          "priority": "P0",
+          "score": 850,
+          "dependencies": ["ENG-ANALYTICS-FIX"]
+        }
+      ]
+    },
+    "designer": {
+      "agent": "designer",
+      "tasks": [
+        {
+          "id": "DESIGNER-001",
+          "title": "Growth Engine UI Components (clarification needed)",
+          "duration_min": 120,
+          "priority": "P1",
+          "score": 700,
+          "dependencies": []
+        }
+      ]
+    },
+    "pilot": {
+      "agent": "pilot",
+      "tasks": [
+        {
+          "id": "PILOT-PROCESS-001",
+          "title": "Growth Engine Process Documentation (clarification needed)",
+          "duration_min": 90,
+          "priority": "P1",
+          "score": 650,
+          "dependencies": []
+        }
+      ]
+    },
+    "engineer": {
+      "agent": "engineer",
+      "tasks": [
+        {
+          "id": "ENG-ANALYTICS-FIX",
+          "title": "Fix analytics.ts duplicate exports",
+          "duration_min": 30,
+          "priority": "P0",
+          "score": 950,
+          "dependencies": []
+        }
+      ]
+    }
+  }
+}

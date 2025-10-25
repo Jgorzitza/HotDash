@@ -9,6 +9,9 @@ export interface Conversation {
   inbox_id: number;
   status: "open" | "resolved" | "pending";
   created_at: number;
+  last_activity_at?: number | string | null;
+  unread_count?: number;
+  messages?: Message[];
   meta?: any;
   tags?: string[];
   contacts?: Array<{ name?: string | null }>;

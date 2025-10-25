@@ -310,7 +310,6 @@ export async function fetchSearchConsoleData(
   // Mock implementation - returns empty data
   // In production, this would call the Google Search Console API
 
-  console.log("[rankings] Mock Search Console API call:", input);
 
   return {
     rows: [],

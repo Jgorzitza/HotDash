@@ -79,22 +79,6 @@ This guide explains how to set up and use the Model Context Protocol (MCP) tools
 - Test Shopify integrations
 - Validate Liquid syntax
 
-### 6. Google Analytics
-**Purpose**: Analytics data and reporting
-
-**Configuration**:
-- Type: Pipx command
-- Package: `analytics-mcp`
-- Project: `hotrodan-seo-reports`
-- Authentication: Service account JSON
-
-**Use Cases**:
-- Fetch analytics data
-- Generate reports
-- Analyze user behavior
-- Track conversions
-- Monitor traffic metrics
-
 ## Prerequisites
 
 ### Docker (for GitHub MCP)
@@ -111,17 +95,6 @@ docker run -i --rm -e GITHUB_PERSONAL_ACCESS_TOKEN ghcr.io/github/github-mcp-ser
 # Verify Node.js and NPX are installed
 node --version
 npx --version
-```
-
-### Python and Pipx (for Google Analytics)
-```bash
-# Verify Python and Pipx are installed
-python3 --version
-pipx --version
-
-# If pipx is not installed:
-python3 -m pip install --user pipx
-python3 -m pipx ensurepath
 ```
 
 ### Local Servers (for Context7 and Fly)
@@ -155,13 +128,6 @@ npx -y @supabase/mcp-server-supabase \
 LIQUID_VALIDATION_MODE=partial npx -y @shopify/dev-mcp@latest
 ```
 
-#### Google Analytics
-```bash
-GOOGLE_APPLICATION_CREDENTIALS=/home/justin/HotDash/hot-dash/vault/occ/google/analytics-service-account.json \
-GOOGLE_PROJECT_ID=hotrodan-seo-reports \
-pipx run analytics-mcp
-```
-
 ## Integration with AI Assistants
 
 ### Cursor
@@ -183,7 +149,6 @@ cp mcp/mcp-config.json ~/.config/Claude/claude_desktop_config.json
 ⚠️ **Important**: The configuration files contain sensitive credentials:
 - GitHub Personal Access Token
 - Supabase Access Token
-- Google Analytics Service Account
 
 **Best Practices**:
 1. Never commit credentials to version control
@@ -208,12 +173,6 @@ cp mcp/mcp-config.json ~/.config/Claude/claude_desktop_config.json
 - Verify the local server is running
 - Check the port is not blocked by firewall
 - Ensure correct URL and port configuration
-
-### Google Analytics Issues
-- Verify service account JSON file exists
-- Check file permissions are readable
-- Ensure project ID is correct
-- Verify service account has Analytics permissions
 
 ## Advanced Usage
 

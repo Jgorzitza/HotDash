@@ -1,0 +1,35 @@
+/**
+ * API Route: Assess Content Quality
+ *
+ * POST /api/content/assess-quality
+ *
+ * Assesses the quality of provided content
+ */
+import { data } from 'react-router';
+import { aiContentGenerator } from '~/services/content/ai-content-generator';
+export async function action({ request }) {
+    if (request.method !== 'POST') {
+        return data({ error: 'Method not allowed' }, { status: 405 });
+    }
+    try {
+        const body = await request.json();
+        // Validate required fields
+        if (!body.content || !body.contentType) {
+            return data({ error: 'Content and content type are required' }, { status: 400 });
+        }
+        // Assess quality
+        const qualityScore = await aiContentGenerator.assessContentQuality(body.content, body.contentType, body.keywords || []);
+        return {
+            success: true,
+            qualityScore,
+        };
+    }
+    catch (error) {
+        console.error('Error assessing content quality:', error);
+        return data({
+            error: 'Failed to assess content quality',
+            details: error instanceof Error ? error.message : 'Unknown error'
+        }, { status: 500 });
+    }
+}
+//# sourceMappingURL=api.content.assess-quality.js.map

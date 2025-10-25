@@ -1,0 +1,206 @@
+---
+alwaysApply: true
+---
+# Agent Workflow: Database-Driven Tasks & Feedback
+
+**CRITICAL (2025-10-22): Both task assignments AND feedback are now database-driven.**
+
+## Task Assignments (Manager Assigns, Agents QUERY)
+- **Method**: Database `TaskAssignment` table via `assignTask()` / `getMyTasks()`
+- **Manager**: Assigns tasks via database (instant, 10+ times/day, no git commits)
+- **Agents**: Query via `getMyTasks(agent)` or `scripts/agent/get-my-tasks.ts`
+- **Benefits**: Instant visibility, automatic unblocking when dependencies clear, zero idle time
+- **Markdown direction files**: ARCHIVED (too slow for hourly updates)
+
+## KB Integration (MANDATORY - Effective 2025-10-25)
+
+**CRITICAL**: Before starting ANY task, search KB for existing solutions to prevent redoing work.
+
+### KB Search Process (MANDATORY)
+
+1. **Search KB before starting task**:
+   ```bash
+   npx tsx scripts/agent/kb-search.ts <TASK-ID> "<TASK-TITLE>" <your-agent>
+   ```
+
+2. **Review KB results**:
+   - Check for existing solutions or similar implementations
+   - Look for common issues and their solutions
+   - Identify security considerations
+   - Note integration points with other systems
+
+3. **Log KB search results**:
+   ```typescript
+   await logDecision({
+     scope: 'build',
+     actor: '<your-agent>',
+     action: 'kb_search_completed',
+     rationale: 'KB search completed before starting task',
+     taskId: '<TASK-ID>',
+     payload: {
+       searchResults: 'Found existing solutions',
+       recommendations: ['Review security considerations', 'Check integration points'],
+       sources: ['docs/example.md', 'docs/patterns.md']
+     }
+   });
+   ```
+
+### Why KB Search Matters
+
+- **Prevents Redoing Work**: Find existing solutions before implementing
+- **Context Recovery**: Access lost knowledge from documentation
+- **Issue Prevention**: Identify common problems and their solutions
+- **Security Awareness**: Review security considerations before implementation
+- **Integration Planning**: Understand system connections before building
+
+### Enforcement
+
+- **KB search is MANDATORY** before task execution
+- **No exceptions** - all agents must search KB before starting work
+- **Manager audits** KB search compliance
+- **Violations result in task reassignment**
+
+## Feedback (Agents Report Progress, Manager QUERIES)
+- **ONLY Method**: Database via `logDecision()` (MANDATORY - no markdown backup)
+- **Manager Access**: Query scripts (instant filtered results, real-time visibility)
+- **Frequency**: 
+  - IMMEDIATE on task completion/blocked/unblocked (don't wait!)
+  - Every 2 hours if still in progress on same task
+  - Enables real-time coordination (manager sees blockers cleared instantly)
+
+## Required Feedback Format (Database)
+
+**Use `logDecision()` from `~/services/decisions.server`**:
+
+```typescript
+import { logDecision } from '~/services/decisions.server';
+
+await logDecision({
+  scope: 'build',
+  actor: 'engineer',                    // Your agent name
+  taskId: 'ENG-029',                    // Task from direction file
+  status: 'in_progress',                // pending | in_progress | completed | blocked | cancelled
+  progressPct: 75,                      // 0-100 percentage
+  action: 'task_progress',              // What happened
+  rationale: 'Implementing PII Card component, tests passing',
+  evidenceUrl: 'artifacts/engineer/2025-10-22/eng-029.md',
+  durationActual: 3.0,                  // Hours spent (optional)
+  nextAction: 'Writing integration tests'  // What's next (optional)
+});
+```
+
+**When Blocked** (include blocker context in payload):
+```typescript
+await logDecision({
+  scope: 'build',
+  actor: 'integrations',
+  taskId: 'INTEGRATIONS-013',
+  status: 'blocked',                    // IMPORTANT: Use 'blocked' status
+  progressPct: 40,
+  blockerDetails: 'Waiting for DATA-017 vendor_master table migration',
+  blockedBy: 'DATA-017',                // What's blocking (task ID or resource)
+  action: 'task_blocked',
+  rationale: 'Cannot proceed without vendor_master table',
+  evidenceUrl: 'feedback/integrations/2025-10-22.md',
+  payload: {
+    blockerType: 'dependency',
+    attemptedSolutions: ['Checked if could mock table - too complex'],
+    impact: 'Blocks INTEGRATIONS-014 and INTEGRATIONS-015',
+    urgency: 'high'
+  }
+});
+```
+
+**When Asking Manager a Question**:
+```typescript
+await logDecision({
+  scope: 'build',
+  actor: 'engineer',
+  taskId: 'ENG-029',
+  status: 'blocked',
+  blockerDetails: 'Need manager decision on technical approach',
+  blockedBy: 'manager-decision',
+  action: 'awaiting_decision',
+  rationale: 'Should we use Polaris Card or custom component?',
+  payload: {
+    questionType: 'architectural',
+    options: ['Polaris Card', 'Custom Component'],
+    tradeoffs: 'Polaris: faster, Custom: more flexible',
+    recommendation: 'Polaris Card'
+  }
+});
+```
+
+## MUST DO
+1. ✅ **Search KB before starting ANY task**: `npx tsx scripts/agent/kb-search.ts <TASK-ID> "<TASK-TITLE>" <your-agent>`
+2. ✅ Query tasks from database: `getMyTasks(agent)` or `scripts/agent/get-my-tasks.ts`
+3. ✅ Start tasks via: `scripts/agent/start-task.ts <TASK-ID>` (logs automatically)
+4. ✅ Log progress via `logDecision()` - IMMEDIATE on status changes, every 2h if in-progress
+5. ✅ Include `taskId`, `status`, `progressPct` in EVERY log
+6. ✅ Use `status: 'blocked'` + `blockerDetails` when blocked, then query next available task
+7. ✅ Complete tasks via: `scripts/agent/complete-task.ts <TASK-ID> "context notes"`
+8. ✅ Include rich metadata in `payload` (commits, files, tests, MCP evidence)
+9. ✅ Self-grade at shutdown (payload.selfGrade + payload.retrospective)
+
+## MUST NOT
+1. ❌ **Start tasks without KB search** (MANDATORY - search KB before ANY task execution)
+2. ❌ Read markdown direction files (archived - use database queries)
+3. ❌ Self-assign tasks (all tasks from Manager via `assignTask()`)
+4. ❌ Skip `logDecision()` calls (database logging MANDATORY)
+5. ❌ Use vague status values (use the 5 standard statuses only)
+6. ❌ Forget `taskId` field (required for manager queries)
+7. ❌ Wait to report status changes (IMMEDIATE logging on complete/blocked/unblocked)
+
+## Manager Queries (How Manager Sees Your Progress)
+
+Manager uses these scripts to view your work (< 1 second):
+
+```bash
+# See all blocked tasks
+scripts/manager/query-blocked-tasks.ts
+
+# See your current status
+scripts/manager/query-agent-status.ts  
+
+# See completed work today
+scripts/manager/query-completed-today.ts
+```
+
+**This is why structured logging is CRITICAL** - Manager can instantly see:
+- Who's blocked and on what
+- Current progress across all agents
+- What got done today
+
+## Evidence Examples
+
+**✅ GOOD `evidenceUrl` values**:
+- `artifacts/engineer/2025-10-22/eng-029-pii-card.md`
+- `feedback/data/2025-10-22.md`
+- `supabase/migrations/20251022000001_enhance_decision_log.sql`
+
+**✅ GOOD `rationale` values**:
+- "Implemented PII Card component with redaction logic, 15/15 tests passing"
+- "Created vendor_master migration with RLS policies, ready for review"
+- "Fixed React Router 7 violations across 3 files (json → Response.json)"
+
+**❌ BAD**:
+- Empty or missing `taskId`
+- Status "working" (use 'in_progress')
+- No evidence URL
+
+**See**: `scripts/manager/README.md` for query examples
+
+---
+
+## NEW: Growth Engine Evidence (Effective 2025-10-21)
+
+**ADDITIVE to feedback markdown - BOTH required now**:
+
+1. **MCP Evidence JSONL** (code changes): `artifacts/<agent>/<date>/mcp/<tool>.jsonl`
+2. **Heartbeat NDJSON** (tasks >2h): `artifacts/<agent>/<date>/heartbeat.ndjson`
+3. **Dev MCP Ban**: NO Dev MCP imports in `app/` directory
+4. **PR Template**: Must include MCP Evidence + Heartbeat + Dev MCP Check sections
+
+**CI Merge Blockers**: PRs fail if evidence missing, heartbeat stale, or Dev MCP in prod
+
+**See**: [.cursor/rules/10-growth-engine-pack.mdc](mdc:.cursor/rules/10-growth-engine-pack.mdc) for full details

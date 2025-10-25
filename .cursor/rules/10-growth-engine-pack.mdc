@@ -1,0 +1,188 @@
+---
+description: Growth Engine Pack — MCP Evidence, Heartbeat, Dev MCP Ban (Effective 2025-10-21)
+alwaysApply: true
+---
+
+# Growth Engine Pack Constraints
+
+**Source**: `docs/design/growth-engine-final/` (Final Manager Pack)  
+**Updated**: 2025-10-21  
+**Status**: MANDATORY for all agents
+
+---
+
+## 1. MCP Evidence JSONL (CI Merge Blocker)
+
+**REQUIRED** for ALL code changes:
+
+### Location
+- `artifacts/<agent>/<YYYY-MM-DD>/mcp/<topic_or_tool>.jsonl`
+
+### Format
+Each line is a JSON object:
+```json
+{
+  "tool": "storefront|customer-accounts|context7|shopify-dev|chrome-devtools",
+  "doc_ref": "<url>",
+  "request_id": "<unique_id>",
+  "timestamp": "2025-10-21T14:30:00Z",
+  "purpose": "Verify ProductVariant fields for inventory query"
+}
+```
+
+### PR Template Requirement
+Must include section:
+```markdown
+## MCP Evidence (required for code changes)
+- artifacts/<agent>/<date>/mcp/<topic_or_tool>.jsonl
+- (or state "No MCP usage - non-code change")
+```
+
+### Enforcement
+- ✅ PR cannot merge without MCP Evidence OR "non-code change" statement
+- ✅ CI checks JSONL files exist and are valid JSON
+- ❌ Merge blocked if evidence missing for code changes
+
+---
+
+## 2. Heartbeat (Required for Tasks >2 Hours)
+
+**REQUIRED** if task duration >2 hours:
+
+### Location
+- `artifacts/<agent>/<YYYY-MM-DD>/heartbeat.ndjson`
+
+### Format
+Append JSON lines every 15min max (during 'doing' status):
+```ndjson
+{"timestamp":"2025-10-21T14:00:00Z","task":"ENG-042","status":"doing","progress":"40%","file":"app/components/Modal.tsx"}
+{"timestamp":"2025-10-21T14:15:00Z","task":"ENG-042","status":"doing","progress":"65%","file":"app/routes/modal.test.ts"}
+{"timestamp":"2025-10-21T14:30:00Z","task":"ENG-042","status":"done","progress":"100%","file":"tests passing"}
+```
+
+### PR Template Requirement
+Must include section:
+```markdown
+## Heartbeat (if task >2 hours)
+- [ ] Heartbeat files present: artifacts/<agent>/<date>/heartbeat.ndjson
+- [ ] OR task completed in single session (<2 hours, no heartbeat required)
+```
+
+### Enforcement
+- ✅ PR cannot merge if heartbeat stale (>15min) for long-running tasks
+- ✅ CI fails if last heartbeat >15min old during 'doing' status
+- ❌ Idle agents flagged (no heartbeat update >15min)
+
+---
+
+## 3. Dev MCP Ban (Production Safety - CRITICAL)
+
+**FORBIDDEN** in production runtime code:
+
+### Banned Imports
+- ❌ `import { ... } from '@shopify/mcp-server-dev'`
+- ❌ `import { ... } from 'context7-mcp'`
+- ❌ `import { ... } from 'chrome-devtools-mcp'`
+- ❌ ANY Dev MCP server imports in `app/` directory
+
+### Allowed Locations for Dev MCP
+- ✅ `scripts/` (non-runtime dev scripts)
+- ✅ `tests/` (test utilities)
+- ✅ `.cursor/` (Cursor IDE config)
+- ✅ `docs/` (documentation)
+
+### PR Template Requirement
+Must include section:
+```markdown
+## Dev MCP Check (CRITICAL - Production Safety)
+- [ ] No Dev MCP imports in runtime bundles (prod code only)
+- [ ] Verified: No `mcp.*dev` or `dev.*mcp` imports in app/ (searched with grep)
+```
+
+### Enforcement (CI Check)
+```bash
+# Fail build if Dev MCP found in production code
+if grep -r "mcp.*dev\|dev.*mcp" app/ --include="*.ts" --include="*.tsx" -i; then
+  echo "❌ Dev MCP imports detected in production code"
+  echo "Dev MCP is for development/staging ONLY"
+  exit 1
+fi
+```
+
+**Result**: Production builds MUST FAIL if Dev MCP detected
+
+---
+
+## 4. Agent Evidence Workflow
+
+### Before Starting Work
+1. Create `artifacts/<agent>/<YYYY-MM-DD>/` directory
+2. Initialize MCP evidence file: `mcp/<topic>.jsonl`
+3. If task >2h: Initialize heartbeat file: `heartbeat.ndjson`
+
+### During Work
+1. **Every MCP tool call**: Append to `mcp/<topic>.jsonl`
+2. **Every 15min (if task >2h)**: Append to `heartbeat.ndjson`
+3. Log MCP conversation IDs in `feedback/<agent>/<YYYY-MM-DD>.md`
+
+### Before PR
+1. Verify MCP evidence files exist for code changes
+2. Verify heartbeat not stale (if task >2h)
+3. Verify no Dev MCP in `app/` directory
+4. Fill out PR template sections (MCP Evidence + Heartbeat + Dev MCP Check)
+
+### CI Guards (REQUIRED on main)
+- **guard-mcp**: Verify MCP evidence JSONL files exist and valid
+- **idle-guard**: Verify heartbeat not stale (>15min) for long tasks
+- **dev-mcp-ban**: FAIL if Dev MCP imports in `app/`
+
+---
+
+## 5. Exceptions
+
+### No MCP Usage Required
+- Documentation-only changes (README, specs, runbooks)
+- Configuration changes (env vars, fly.toml, package.json)
+- Test data updates (fixtures, mocks)
+- **Must state in PR**: "No MCP usage - non-code change"
+
+### Tasks <2 Hours
+- No heartbeat required
+- **Must state in PR**: "Task completed in single session (<2 hours, no heartbeat required)"
+
+### Dev/Staging Environments
+- Dev MCP allowed in `scripts/`, `tests/`, `.cursor/`
+- Dev MCP FORBIDDEN in `app/` (runtime code)
+
+---
+
+## 6. Quick Reference
+
+**Every Code Change PR Must Have**:
+1. ✅ MCP Evidence section (JSONL paths OR "non-code change")
+2. ✅ Heartbeat section (present OR "<2h single session")
+3. ✅ Dev MCP Check (verified no Dev MCP in app/)
+
+**CI Checks (REQUIRED on main)**:
+1. ✅ `guard-mcp` - Evidence present and valid
+2. ✅ `idle-guard` - Heartbeat not stale (if applicable)
+3. ✅ `dev-mcp-ban` - No Dev MCP in production code
+
+**Failure = Merge Blocked**:
+- ❌ Missing MCP evidence (for code changes)
+- ❌ Stale heartbeat (>15min for long tasks)
+- ❌ Dev MCP found in `app/` directory
+
+---
+
+## 7. Resources
+
+- **Pack Docs**: `docs/design/growth-engine-final/`
+- **North Star**: `docs/NORTH_STAR.md` (Growth Engine section)
+- **Rules**: `docs/RULES.md` (Growth Engine Rules section)
+- **Operating Model**: `docs/OPERATING_MODEL.md` (Growth Engine Orchestration)
+- **PR Template**: `.github/pull_request_template.md`
+
+---
+
+**CRITICAL**: These rules are CI merge blockers. PRs WILL NOT MERGE without compliance.

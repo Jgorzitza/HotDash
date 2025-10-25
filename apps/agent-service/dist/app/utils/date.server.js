@@ -1,0 +1,72 @@
+/**
+ * Date utility functions for consistent date handling across the application
+ */
+/**
+ * Format date to ISO date string (YYYY-MM-DD)
+ */
+export function toISODate(date) {
+    return date.toISOString().slice(0, 10);
+}
+/**
+ * Get date N days ago
+ */
+export function daysAgo(days) {
+    const date = new Date();
+    date.setUTCDate(date.getUTCDate() - days);
+    return date;
+}
+/**
+ * Get date range for the last N days
+ */
+export function getDateRange(days) {
+    const end = new Date();
+    const start = daysAgo(days);
+    return {
+        start: toISODate(start),
+        end: toISODate(end),
+    };
+}
+/**
+ * Parse ISO date string to Date
+ */
+export function parseISODate(dateString) {
+    if (/^\d{4}-\d{2}-\d{2}$/.test(dateString)) {
+        const [year, month, day] = dateString.split("-").map(Number);
+        return new Date(year, (month ?? 1) - 1, day ?? 1);
+    }
+    return new Date(dateString);
+}
+/**
+ * Check if date is valid
+ */
+export function isValidDate(date) {
+    return date instanceof Date && !isNaN(date.getTime());
+}
+/**
+ * Format date for display (e.g., "Oct 11, 2025")
+ */
+export function formatDisplayDate(date) {
+    return new Intl.DateTimeFormat("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+    }).format(date);
+}
+/**
+ * Get relative time string (e.g., "2 hours ago")
+ */
+export function getRelativeTime(date) {
+    const now = Date.now();
+    const diffMs = now - date.getTime();
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMs / 3600000);
+    const diffDays = Math.floor(diffMs / 86400000);
+    if (diffMins < 1)
+        return "just now";
+    if (diffMins < 60)
+        return `${diffMins} minute${diffMins !== 1 ? "s" : ""} ago`;
+    if (diffHours < 24)
+        return `${diffHours} hour${diffHours !== 1 ? "s" : ""} ago`;
+    return `${diffDays} day${diffDays !== 1 ? "s" : ""} ago`;
+}
+//# sourceMappingURL=date.server.js.map

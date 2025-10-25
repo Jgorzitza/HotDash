@@ -18,6 +18,66 @@ import type {
 
 const CACHE_TTL_MS = Number(process.env.CHATWOOT_CACHE_TTL_MS ?? 60_000);
 const MAX_PAGES = Number(process.env.CHATWOOT_MAX_PAGES ?? 2);
+const RETRY_ATTEMPTS = Math.max(
+  1,
+  Number.parseInt(process.env.CHATWOOT_RETRY_ATTEMPTS ?? "3", 10),
+);
+const RETRY_DELAY_MS = Math.max(
+  50,
+  Number.parseInt(process.env.CHATWOOT_RETRY_DELAY_MS ?? "250", 10),
+);
+
+function ensureChatwootToken() {
+  if (!process.env.CHATWOOT_TOKEN) {
+    const alias =
+      process.env.CHATWOOT_API_TOKEN ?? process.env.CHATWOOT_ACCESS_TOKEN;
+    if (alias) {
+      process.env.CHATWOOT_TOKEN = alias;
+    }
+  }
+}
+
+function extractStatusCode(error: unknown): number | null {
+  const message = error instanceof Error ? error.message : "";
+  const match = message.match(/Chatwoot\s+(\d{3})/i);
+  if (!match) return null;
+  const status = Number.parseInt(match[1] ?? "", 10);
+  return Number.isFinite(status) ? status : null;
+}
+
+async function executeWithRetry<T>(
+  operation: string,
+  attemptFn: () => Promise<T>,
+) {
+  let attempt = 0;
+  // eslint-disable-next-line no-constant-condition
+  while (true) {
+    try {
+      return await attemptFn();
+    } catch (error) {
+      attempt += 1;
+      const status = extractStatusCode(error);
+      const retryable =
+        attempt < RETRY_ATTEMPTS &&
+        (status == null || status === 429 || status >= 500);
+
+      logger.warn("Chatwoot request failed", {
+        operation,
+        attempt,
+        maxAttempts: RETRY_ATTEMPTS,
+        status,
+        retryable,
+      });
+
+      if (!retryable) {
+        throw error;
+      }
+
+      const delay = RETRY_DELAY_MS * Math.pow(2, attempt - 1);
+      await new Promise((resolve) => setTimeout(resolve, delay));
+    }
+  }
+}
 
 function toIso(timestamp: number) {
   return new Date(timestamp * 1000).toISOString();
@@ -141,6 +201,7 @@ function renderTemplateBody(
 }
 
 async function collectConversations() {
+  ensureChatwootToken();
   const config = getChatwootConfig();
   const client = chatwootClient(config);
   const results: EscalationConversation[] = [];
@@ -153,7 +214,9 @@ async function collectConversations() {
   for (let page = 1; page <= MAX_PAGES; page += 1) {
     let conversations;
     try {
-      conversations = await client.listOpenConversations(page);
+      conversations = await executeWithRetry("listOpenConversations", () =>
+        client.listOpenConversations(page),
+      );
       logger.debug(`Retrieved conversations for page ${page}`, {
         page,
         conversationCount: Array.isArray(conversations)
@@ -204,7 +267,9 @@ async function collectConversations() {
 
       let messages;
       try {
-        messages = await client.listMessages(convo.id);
+        messages = await executeWithRetry("listMessages", () =>
+          client.listMessages(convo.id),
+        );
         logger.debug(`Retrieved messages for conversation ${convo.id}`, {
           conversationId: convo.id,
           messageCount: messages.length,

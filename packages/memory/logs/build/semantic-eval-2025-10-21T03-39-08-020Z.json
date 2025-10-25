@@ -1,0 +1,124 @@
+{
+  "summary": {
+    "totalTests": 10,
+    "passed": 0,
+    "failed": 10,
+    "avgCorrectnessScore": 3.3,
+    "avgResponseTime": 1580.1,
+    "faithfulnessRate": 0.8,
+    "relevancyRate": 0.9,
+    "results": [
+      {
+        "query": "What is your return policy for damaged items?",
+        "category": "returns",
+        "actualAnswer": "For damaged items, Hot Rod AN LLC offers returns without any restocking fees. Customers can return damaged items that were either defective, sent in error by the company, or damaged during shipping. The return process includes providing a prepaid return label for defective items, ensuring that customers do not incur any additional costs for returning damaged products.",
+        "referenceAnswer": "Items damaged during shipping can be returned for free within 30 days without a restocking fee. The return shipping is covered by us for damaged items.",
+        "correctnessScore": 3.5,
+        "correctnessPassing": false,
+        "faithfulnessPassing": true,
+        "relevancyPassing": true,
+        "responseTime": 1478
+      },
+      {
+        "query": "How long do I have to return an item?",
+        "category": "returns",
+        "actualAnswer": "For standard returns, you have 30 days from the delivery date to return unused items. For defective items (manufacturer defects only), you have an extended return window of 60 days.",
+        "referenceAnswer": "You have 30 days from the delivery date to return items. Items must be unused, in original packaging, with tags attached, and include the original receipt or order confirmation.",
+        "correctnessScore": 4,
+        "correctnessPassing": true,
+        "faithfulnessPassing": false,
+        "relevancyPassing": true,
+        "responseTime": 2048
+      },
+      {
+        "query": "What is the restocking fee for returns?",
+        "category": "returns",
+        "actualAnswer": "The restocking fee for returns varies based on the reason for the return:\n- No Restocking Fee for defective items, wrong items sent (our error), and items damaged in shipping.\n- A 15% Restocking Fee applies to standard returns (non-defective items), items missing original packaging, and returns without all accessories.",
+        "referenceAnswer": "The restocking fee is 15% of the purchase price for non-defective returns. There is no restocking fee for damaged or defective items.",
+        "correctnessScore": 2.5,
+        "correctnessPassing": false,
+        "faithfulnessPassing": false,
+        "relevancyPassing": true,
+        "responseTime": 1682
+      },
+      {
+        "query": "How long does standard shipping take?",
+        "category": "shipping",
+        "actualAnswer": "Standard shipping within the United States typically takes 3-7 business days.",
+        "referenceAnswer": "Standard shipping (USPS/UPS Ground) takes 5-7 business days after order processing. Processing time is 1-2 business days.",
+        "correctnessScore": 3.5,
+        "correctnessPassing": false,
+        "faithfulnessPassing": true,
+        "relevancyPassing": true,
+        "responseTime": 1027
+      },
+      {
+        "query": "Do you offer expedited shipping?",
+        "category": "shipping",
+        "actualAnswer": "Yes, we offer expedited shipping through UPS 2-Day and UPS Next Day Air for domestic orders.",
+        "referenceAnswer": "Yes, we offer expedited shipping via UPS 2-Day which delivers in 2-3 business days after processing. Processing time is 1 business day.",
+        "correctnessScore": 3.5,
+        "correctnessPassing": false,
+        "faithfulnessPassing": true,
+        "relevancyPassing": true,
+        "responseTime": 984
+      },
+      {
+        "query": "What are your shipping costs?",
+        "category": "shipping",
+        "actualAnswer": "The shipping costs for domestic orders under $75 are $8.95 for standard shipping (USPS/UPS Ground), $18.95 for expedited shipping (UPS 2-Day), and $35.95 for express shipping (UPS Next Day Air). For international shipping, the cost is $24.95 flat rate for Canada and calculated at checkout based on weight and destination for all other countries. Additional fees apply for Alaska, Hawaii, and U.S. territories.",
+        "referenceAnswer": "Standard shipping costs $8.95 for orders under $75. Orders $75 and over receive free standard shipping. Expedited shipping costs $18.95, and overnight shipping costs $35.95.",
+        "correctnessScore": 3.5,
+        "correctnessPassing": false,
+        "faithfulnessPassing": true,
+        "relevancyPassing": false,
+        "responseTime": 1663
+      },
+      {
+        "query": "How can I track my order?",
+        "category": "tracking",
+        "actualAnswer": "You can track your order using one of the following methods:\n1. Tracking Email: Check your email for a \"Your Hot Rod AN Order Has Shipped\" email and click the tracking link.\n2. Hot Rod AN Website: Visit hotrodan.com/track-order and enter your order number or tracking number.\n3. Direct Carrier Tracking: For UPS, visit ups.com/tracking and enter your tracking number. For USPS, visit usps.com/go/TrackConfirmAction and enter your tracking number.\n4. Email Support: Send an email to support@hotrodan.com with your order number, and they will reply with the current status within 24 hours.",
+        "referenceAnswer": "You will receive a tracking number via email once your order ships. You can use this tracking number on the carrier's website to monitor your shipment status.",
+        "correctnessScore": 3,
+        "correctnessPassing": false,
+        "faithfulnessPassing": true,
+        "relevancyPassing": true,
+        "responseTime": 2353
+      },
+      {
+        "query": "Can I exchange an item for a different size?",
+        "category": "exchanges",
+        "actualAnswer": "Yes, you can exchange an item for a different size. Just follow the exchange process outlined in the support document, including contacting support@hotrodan.com with your order number, the item you want to exchange, the size you want instead, and any other relevant information. Remember to wait for the exchange authorization number before shipping anything back.",
+        "referenceAnswer": "Yes, exchanges are free within 30 days of delivery. Items must be unused, in original condition with tags attached. Contact customer support to initiate an exchange.",
+        "correctnessScore": 3.5,
+        "correctnessPassing": false,
+        "faithfulnessPassing": true,
+        "relevancyPassing": true,
+        "responseTime": 1137
+      },
+      {
+        "query": "What payment methods do you accept?",
+        "category": "faq",
+        "actualAnswer": "We accept the following payment methods:\n- Credit cards (Visa, Mastercard, Discover, American Express)\n- PayPal\n- Apple Pay\n- Google Pay\n- Amazon Pay\n\nAll transactions are secure and encrypted.",
+        "referenceAnswer": "We accept all major credit cards (Visa, MasterCard, American Express, Discover), PayPal, and Apple Pay for online orders.",
+        "correctnessScore": 3.5,
+        "correctnessPassing": false,
+        "faithfulnessPassing": true,
+        "relevancyPassing": true,
+        "responseTime": 1468
+      },
+      {
+        "query": "Can I cancel my order after placing it?",
+        "category": "faq",
+        "actualAnswer": "Based on the information provided in the context, there is no specific mention of the cancellation policy for orders. It is recommended to reach out to Hot Rod AN LLC directly through their support email at support@hotrodan.com or check their website for information on order cancellations.",
+        "referenceAnswer": "Orders can be cancelled before they ship. Contact customer support immediately if you need to cancel. Once an order has shipped, you will need to follow the return process instead.",
+        "correctnessScore": 2.5,
+        "correctnessPassing": false,
+        "faithfulnessPassing": true,
+        "relevancyPassing": true,
+        "responseTime": 1961
+      }
+    ]
+  },
+  "timestamp": "2025-10-21T03:39:08.025Z"
+}

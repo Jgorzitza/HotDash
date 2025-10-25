@@ -15,6 +15,8 @@ export default defineConfig({
       "tests/unit/**/*.spec.tsx",
       "tests/integration/**/*.spec.ts",
       "tests/agents/**/*.spec.ts",
+      "tests/contract/**/*.test.ts",
+      "tests/performance/**/*.spec.ts",
     ],
     environment: "jsdom",
     // Tinypool EPIPE under Node 24.9; keeping vmThreads globally until Vitest supports scoped pools reliably.
@@ -26,5 +28,12 @@ export default defineConfig({
       reporter: ["text", "lcov"],
       reportsDirectory: "./coverage/vitest",
     },
+    server: {
+      deps: {
+        inline: [
+          "generator-function"
+        ]
+      }
+    }
   },
 });

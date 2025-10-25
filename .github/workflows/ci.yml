@@ -23,6 +23,8 @@ jobs:
         run: npm ci
       - name: Run CI suite
         run: npm run ci
+      - name: Dev MCP Ban Check
+        run: node scripts/ci/verify-dev-mcp-ban.cjs
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v4

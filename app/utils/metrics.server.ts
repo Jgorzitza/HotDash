@@ -493,5 +493,4 @@ export const appMetrics = new AppMetrics(metricsCollector);
 // Export metrics every minute for monitoring systems
 setInterval(() => {
   const summary = metricsCollector.getSummary();
-  console.log("[Metrics] Summary:", JSON.stringify(summary, null, 2));
 }, 60000);

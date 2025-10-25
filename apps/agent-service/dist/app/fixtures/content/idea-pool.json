@@ -1,0 +1,199 @@
+[
+    {
+        "id": "launch-001",
+        "type": "launch",
+        "title": "New Product Launch: Premium Hot Rod Leather Jacket",
+        "description": "Launch campaign for limited-edition leather jacket with custom patches",
+        "target_platforms": ["instagram", "facebook", "tiktok"],
+        "suggested_copy": "🔥 JUST DROPPED: Premium leather jacket with Hot Rod AN custom patches. Limited to 50 pieces. Get yours before they're gone! 🏍️",
+        "suggested_hashtags": [
+            "#HotRodAN",
+            "#LimitedEdition",
+            "#CustomLeather",
+            "#BikerStyle"
+        ],
+        "evidence": {
+            "product_id": "gid://shopify/Product/8472634920",
+            "inventory_count": 50,
+            "cost_basis": "$180",
+            "suggested_retail": "$399",
+            "margin": "54.9%",
+            "category": "apparel",
+            "tags": ["new-arrival", "limited-edition", "featured"]
+        },
+        "supabase_linkage": {
+            "table": "product_suggestions",
+            "product_id": "8472634920",
+            "suggestion_type": "launch",
+            "created_at": "2025-10-17T10:00:00Z"
+        },
+        "projected_metrics": {
+            "estimated_reach": 5000,
+            "estimated_engagement_rate": 4.2,
+            "estimated_clicks": 150,
+            "estimated_conversions": 12
+        },
+        "cadence": "immediate",
+        "status": "draft",
+        "priority": "high"
+    },
+    {
+        "id": "evergreen-002",
+        "type": "evergreen",
+        "title": "Behind the Scenes: Hot Rod Restoration Process",
+        "description": "Educational content showing restoration techniques and craftsmanship",
+        "target_platforms": ["instagram", "tiktok"],
+        "suggested_copy": "Ever wondered what goes into restoring a classic hot rod? Watch us transform this beauty from rust to road-ready. ⚙️✨ #HotRodRestoration",
+        "suggested_hashtags": [
+            "#HotRodRestoration",
+            "#ClassicCars",
+            "#BehindTheScenes",
+            "#Craftsmanship"
+        ],
+        "evidence": {
+            "content_type": "educational",
+            "historical_performance": {
+                "avg_engagement_rate": 5.8,
+                "avg_reach": 8500,
+                "avg_saves": 340,
+                "best_posting_time": "6:00 PM PST"
+            },
+            "audience_interest": "high",
+            "trending_topic": true
+        },
+        "supabase_linkage": {
+            "table": "content_performance",
+            "content_category": "educational",
+            "topic": "restoration",
+            "created_at": "2025-10-17T10:15:00Z"
+        },
+        "projected_metrics": {
+            "estimated_reach": 8000,
+            "estimated_engagement_rate": 5.5,
+            "estimated_clicks": 280,
+            "estimated_conversions": 0
+        },
+        "cadence": "weekly",
+        "status": "approved",
+        "priority": "medium"
+    },
+    {
+        "id": "wildcard-003",
+        "type": "wildcard",
+        "title": "Viral Challenge: Hot Rod TikTok Trend",
+        "description": "Capitalize on trending TikTok sound with hot rod transformation video",
+        "target_platforms": ["tiktok"],
+        "suggested_copy": "When someone says hot rods are outdated 😂🔥 #HotRodChallenge",
+        "suggested_hashtags": [
+            "#HotRodChallenge",
+            "#CarTok",
+            "#Transformation",
+            "#FYP"
+        ],
+        "evidence": {
+            "trending_sound_id": "7298471928374",
+            "trend_velocity": "rising",
+            "hashtag_performance": "#CarTok has 12.5B views",
+            "optimal_window": "next 48 hours",
+            "similar_content_performance": {
+                "avg_views": 125000,
+                "avg_engagement_rate": 8.2
+            }
+        },
+        "supabase_linkage": {
+            "table": "trend_opportunities",
+            "trend_id": "tiktok-transformation-trend",
+            "detected_at": "2025-10-17T08:30:00Z",
+            "expires_at": "2025-10-19T23:59:59Z"
+        },
+        "projected_metrics": {
+            "estimated_reach": 50000,
+            "estimated_engagement_rate": 7.5,
+            "estimated_clicks": 1200,
+            "estimated_conversions": 25
+        },
+        "cadence": "opportunistic",
+        "status": "pending_review",
+        "priority": "urgent",
+        "risk_level": "medium",
+        "rollback_plan": "Delete within 24h if engagement < 2%"
+    },
+    {
+        "id": "launch-004",
+        "type": "launch",
+        "title": "Seasonal Collection: Winter Performance Parts",
+        "description": "Winter product line launch featuring cold-weather performance upgrades",
+        "target_platforms": ["facebook", "instagram"],
+        "suggested_copy": "Winter is coming... but your ride doesn't have to hibernate! ❄️🔥 Check out our new winter performance collection. Keep your hot rod running smooth all season long.",
+        "suggested_hashtags": [
+            "#WinterReady",
+            "#PerformanceParts",
+            "#HotRodAN",
+            "#CarCare"
+        ],
+        "evidence": {
+            "product_collection_id": "gid://shopify/Collection/423847293",
+            "total_skus": 18,
+            "avg_cost_basis": "$65",
+            "avg_suggested_retail": "$149",
+            "margin": "56.4%",
+            "seasonal_demand_trend": "+42% YoY in Q4",
+            "stock_status": "in_stock"
+        },
+        "supabase_linkage": {
+            "table": "product_collections",
+            "collection_id": "423847293",
+            "collection_type": "seasonal",
+            "launch_date": "2025-11-01T00:00:00Z"
+        },
+        "projected_metrics": {
+            "estimated_reach": 12000,
+            "estimated_engagement_rate": 3.8,
+            "estimated_clicks": 380,
+            "estimated_conversions": 28
+        },
+        "cadence": "immediate",
+        "status": "draft",
+        "priority": "high"
+    },
+    {
+        "id": "evergreen-005",
+        "type": "evergreen",
+        "title": "Customer Spotlight: Community Stories",
+        "description": "Feature customer builds and testimonials to build community engagement",
+        "target_platforms": ["instagram", "facebook"],
+        "suggested_copy": "Meet Mike from Arizona! He transformed his '57 Chevy using our custom parts. Want to be featured? Tag us in your build! 📸🔧",
+        "suggested_hashtags": [
+            "#HotRodCommunity",
+            "#CustomerSpotlight",
+            "#BuildStory",
+            "#HotRodAN"
+        ],
+        "evidence": {
+            "content_type": "user_generated",
+            "historical_performance": {
+                "avg_engagement_rate": 6.2,
+                "avg_reach": 9200,
+                "avg_comments": 78,
+                "avg_shares": 34
+            },
+            "community_sentiment": "very_positive",
+            "ugc_availability": "12 pending submissions"
+        },
+        "supabase_linkage": {
+            "table": "user_generated_content",
+            "submission_queue": "customer_builds",
+            "approval_status": "pending",
+            "created_at": "2025-10-17T09:00:00Z"
+        },
+        "projected_metrics": {
+            "estimated_reach": 9000,
+            "estimated_engagement_rate": 6.0,
+            "estimated_clicks": 220,
+            "estimated_conversions": 0
+        },
+        "cadence": "bi-weekly",
+        "status": "approved",
+        "priority": "medium"
+    }
+]

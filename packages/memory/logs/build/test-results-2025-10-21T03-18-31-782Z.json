@@ -1,0 +1,300 @@
+{
+  "summary": {
+    "totalTests": 20,
+    "passed": 0,
+    "failed": 20,
+    "accuracy": 0,
+    "avgResponseTime": 1982.15,
+    "avgRelevance": 0,
+    "avgKeywordMatch": 0,
+    "categoryCoverage": {
+      "returns": {
+        "passed": 0,
+        "total": 4
+      },
+      "shipping": {
+        "passed": 0,
+        "total": 4
+      },
+      "tracking": {
+        "passed": 0,
+        "total": 3
+      },
+      "exchanges": {
+        "passed": 0,
+        "total": 3
+      },
+      "troubleshooting": {
+        "passed": 0,
+        "total": 2
+      },
+      "faq": {
+        "passed": 0,
+        "total": 4
+      }
+    }
+  },
+  "results": [
+    {
+      "query": "What is your return policy for damaged items?",
+      "category": "returns",
+      "passed": false,
+      "responseTime": 3376,
+      "relevance": false,
+      "confidence": "low",
+      "keywordsFound": 0,
+      "keywordsTotal": 4,
+      "sources": 0,
+      "answer": "",
+      "error": "Cannot read properties of undefined (reading 'content')"
+    },
+    {
+      "query": "How long do I have to return an item?",
+      "category": "returns",
+      "passed": false,
+      "responseTime": 1806,
+      "relevance": false,
+      "confidence": "low",
+      "keywordsFound": 0,
+      "keywordsTotal": 3,
+      "sources": 0,
+      "answer": "",
+      "error": "Cannot read properties of undefined (reading 'content')"
+    },
+    {
+      "query": "Do you charge a restocking fee for returns?",
+      "category": "returns",
+      "passed": false,
+      "responseTime": 2216,
+      "relevance": false,
+      "confidence": "low",
+      "keywordsFound": 0,
+      "keywordsTotal": 4,
+      "sources": 0,
+      "answer": "",
+      "error": "Cannot read properties of undefined (reading 'content')"
+    },
+    {
+      "query": "Can I get a refund without a receipt?",
+      "category": "returns",
+      "passed": false,
+      "responseTime": 1717,
+      "relevance": false,
+      "confidence": "low",
+      "keywordsFound": 0,
+      "keywordsTotal": 3,
+      "sources": 0,
+      "answer": "",
+      "error": "Cannot read properties of undefined (reading 'content')"
+    },
+    {
+      "query": "How long does standard shipping take?",
+      "category": "shipping",
+      "passed": false,
+      "responseTime": 3332,
+      "relevance": false,
+      "confidence": "low",
+      "keywordsFound": 0,
+      "keywordsTotal": 3,
+      "sources": 0,
+      "answer": "",
+      "error": "Cannot read properties of undefined (reading 'content')"
+    },
+    {
+      "query": "Do you offer expedited shipping?",
+      "category": "shipping",
+      "passed": false,
+      "responseTime": 1970,
+      "relevance": false,
+      "confidence": "low",
+      "keywordsFound": 0,
+      "keywordsTotal": 3,
+      "sources": 0,
+      "answer": "",
+      "error": "Cannot read properties of undefined (reading 'content')"
+    },
+    {
+      "query": "What are your shipping costs?",
+      "category": "shipping",
+      "passed": false,
+      "responseTime": 1704,
+      "relevance": false,
+      "confidence": "low",
+      "keywordsFound": 0,
+      "keywordsTotal": 3,
+      "sources": 0,
+      "answer": "",
+      "error": "Cannot read properties of undefined (reading 'content')"
+    },
+    {
+      "query": "Do you ship internationally?",
+      "category": "shipping",
+      "passed": false,
+      "responseTime": 1406,
+      "relevance": false,
+      "confidence": "low",
+      "keywordsFound": 0,
+      "keywordsTotal": 3,
+      "sources": 0,
+      "answer": "",
+      "error": "Cannot read properties of undefined (reading 'content')"
+    },
+    {
+      "query": "How can I track my order?",
+      "category": "tracking",
+      "passed": false,
+      "responseTime": 2732,
+      "relevance": false,
+      "confidence": "low",
+      "keywordsFound": 0,
+      "keywordsTotal": 3,
+      "sources": 0,
+      "answer": "",
+      "error": "Cannot read properties of undefined (reading 'content')"
+    },
+    {
+      "query": "My tracking number doesn't work, what should I do?",
+      "category": "tracking",
+      "passed": false,
+      "responseTime": 1318,
+      "relevance": false,
+      "confidence": "low",
+      "keywordsFound": 0,
+      "keywordsTotal": 4,
+      "sources": 0,
+      "answer": "",
+      "error": "Cannot read properties of undefined (reading 'content')"
+    },
+    {
+      "query": "How do I know when my order has shipped?",
+      "category": "tracking",
+      "passed": false,
+      "responseTime": 1082,
+      "relevance": false,
+      "confidence": "low",
+      "keywordsFound": 0,
+      "keywordsTotal": 3,
+      "sources": 0,
+      "answer": "",
+      "error": "Cannot read properties of undefined (reading 'content')"
+    },
+    {
+      "query": "Can I exchange an item for a different size?",
+      "category": "exchanges",
+      "passed": false,
+      "responseTime": 1107,
+      "relevance": false,
+      "confidence": "low",
+      "keywordsFound": 0,
+      "keywordsTotal": 4,
+      "sources": 0,
+      "answer": "",
+      "error": "Cannot read properties of undefined (reading 'content')"
+    },
+    {
+      "query": "How do I start an exchange?",
+      "category": "exchanges",
+      "passed": false,
+      "responseTime": 2753,
+      "relevance": false,
+      "confidence": "low",
+      "keywordsFound": 0,
+      "keywordsTotal": 4,
+      "sources": 0,
+      "answer": "",
+      "error": "Cannot read properties of undefined (reading 'content')"
+    },
+    {
+      "query": "Is there a fee for exchanges?",
+      "category": "exchanges",
+      "passed": false,
+      "responseTime": 3328,
+      "relevance": false,
+      "confidence": "low",
+      "keywordsFound": 0,
+      "keywordsTotal": 3,
+      "sources": 0,
+      "answer": "",
+      "error": "Cannot read properties of undefined (reading 'content')"
+    },
+    {
+      "query": "My product isn't working correctly, what should I do?",
+      "category": "troubleshooting",
+      "passed": false,
+      "responseTime": 2986,
+      "relevance": false,
+      "confidence": "low",
+      "keywordsFound": 0,
+      "keywordsTotal": 3,
+      "sources": 0,
+      "answer": "",
+      "error": "Cannot read properties of undefined (reading 'content')"
+    },
+    {
+      "query": "How do I clean and maintain my product?",
+      "category": "troubleshooting",
+      "passed": false,
+      "responseTime": 2180,
+      "relevance": false,
+      "confidence": "low",
+      "keywordsFound": 0,
+      "keywordsTotal": 3,
+      "sources": 0,
+      "answer": "",
+      "error": "Cannot read properties of undefined (reading 'content')"
+    },
+    {
+      "query": "What payment methods do you accept?",
+      "category": "faq",
+      "passed": false,
+      "responseTime": 1300,
+      "relevance": false,
+      "confidence": "low",
+      "keywordsFound": 0,
+      "keywordsTotal": 3,
+      "sources": 0,
+      "answer": "",
+      "error": "Cannot read properties of undefined (reading 'content')"
+    },
+    {
+      "query": "Do you have a customer service phone number?",
+      "category": "faq",
+      "passed": false,
+      "responseTime": 798,
+      "relevance": false,
+      "confidence": "low",
+      "keywordsFound": 0,
+      "keywordsTotal": 4,
+      "sources": 0,
+      "answer": "",
+      "error": "Cannot read properties of undefined (reading 'content')"
+    },
+    {
+      "query": "Can I cancel my order?",
+      "category": "faq",
+      "passed": false,
+      "responseTime": 1353,
+      "relevance": false,
+      "confidence": "low",
+      "keywordsFound": 0,
+      "keywordsTotal": 3,
+      "sources": 0,
+      "answer": "",
+      "error": "Cannot read properties of undefined (reading 'content')"
+    },
+    {
+      "query": "How secure is my personal information?",
+      "category": "faq",
+      "passed": false,
+      "responseTime": 1179,
+      "relevance": false,
+      "confidence": "low",
+      "keywordsFound": 0,
+      "keywordsTotal": 3,
+      "sources": 0,
+      "answer": "",
+      "error": "Cannot read properties of undefined (reading 'content')"
+    }
+  ],
+  "timestamp": "2025-10-21T03:18:31.782Z"
+}

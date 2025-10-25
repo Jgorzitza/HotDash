@@ -4,12 +4,81 @@
 
 - [ ] Navigate to repo root ~/HotDash/hot-dash/ or /home/justin/HotDash/hot-dash/
 
-## 0) Align to the Star (1–2 min)
+## 0) MCP Tools Verification (MANDATORY FIRST STEP - 90 sec)
 
-- [ ] Skim diffs in `docs/NORTH_STAR.md` and `docs/RULES.md` (if changed since yesterday).
-- [ ] Open `docs/OPERATING_MODEL.md` header; confirm the pipeline: **Signals → Suggestions → Approvals → Actions → Audit → Learn**.
+**⚠️ CRITICAL: Manager follows same tool-first rules as agents. Training data is outdated.**
 
-## 1) Repo & CI Guardrails (2–4 min)
+**🚨 NEW (2025-10-24): Read CRITICAL_MCP_ENFORCEMENT.md FIRST**
+
+- [ ] **Read Critical Enforcement Doc**:
+  ```bash
+  # MANDATORY - Read before reviewing any engineer PRs
+  cat docs/runbooks/CRITICAL_MCP_ENFORCEMENT.md
+  ```
+  **Why**: Engineer nearly reversed production fixes by not using MCP tools. This doc prevents that.
+
+**MCP TOOL PRIORITY** (Effective 2025-10-21):
+
+1. **Shopify Dev MCP** → FIRST for Polaris + Shopify APIs
+2. **Context7 MCP** → For other libraries (React Router, Prisma, etc.)
+3. **Fly MCP** → For deployments and infrastructure
+4. **Web Search** → LAST RESORT ONLY
+
+- [ ] **Shopify Dev MCP** (FIRST for Polaris/Shopify):
+  - Reviewing Polaris components? → `mcp_shopify_learn_shopify_api(api: "polaris-app-home")` then `search_docs_chunks`
+  - Reviewing Shopify Admin GraphQL? → `mcp_shopify_learn_shopify_api(api: "admin")` then `validate_graphql_codeblocks`
+  - Validating Integrations PRs? → Use `validate_graphql_codeblocks` for ALL Shopify GraphQL
+
+- [ ] **Context7 MCP** (SECOND for non-Shopify libraries):
+  - About to review Prisma code? → `mcp_context7_get-library-docs("/prisma/docs", "topic")`
+  - About to make React Router 7 decisions? → `mcp_context7_get-library-docs("/react-router/react-router", "topic")`
+  - About to configure TypeScript? → `mcp_context7_get-library-docs("/microsoft/TypeScript", "topic")`
+  - About to fix Google Analytics? → `mcp_context7_get-library-docs("/websites/developers_google_analytics...", "topic")`
+  - About to configure OpenAI SDK? → `mcp_context7_get-library-docs("/openai/openai-node", "topic")`
+  - About to work with LlamaIndex? → `mcp_context7_get-library-docs("/run-llama/LlamaIndexTS", "topic")`
+
+- [ ] **Fly MCP** (for deployments):
+  - Check app status: `mcp_fly_fly-status("hotdash-staging")`
+  - View logs: `mcp_fly_fly-logs("hotdash-staging")`
+  - Machine status: `mcp_fly_fly-machine-status("machine-id")`
+
+- [ ] **Log Tool Usage in Manager Feedback**:
+
+  ```md
+  ## HH:MM - Shopify Dev MCP: Polaris validation
+
+  - Topic: [what I'm investigating/fixing]
+  - Key Learning: [specific requirement discovered]
+  - Applied to: [decision made / files changed]
+  ```
+
+- [ ] **Web Search** (LAST RESORT ONLY): If no MCP has the info
+  - Example: `web_search("GA4 custom dimensions event scope official docs")`
+
+**Why This Matters (Learned 2025-10-20)**:
+
+- Manager's training data is 6-12 months old (same as agents)
+- Today's P0 fixes: 3 issues, 13 failed deploys, 39 minutes wasted by guessing
+- Tool-first approach: 3 issues, 3 deploys, 9 minutes total (30 min savings)
+- **Lead by example**: CEO audits Manager's tool usage same as Manager audits agents
+
+**Real Examples**: See RULES.md "Real-World Examples" section for today's Prisma/GA/Supabase P0 fixes
+
+## 1) Align to the Star (2-3 min)
+
+- [ ] **Read Core Docs** (skim diffs if changed since yesterday):
+  1. `docs/NORTH_STAR.md` — Vision, outcomes, Growth Engine section (agent orchestration, handoff patterns, security, Action Queue, telemetry)
+  2. `docs/OPERATING_MODEL.md` — Pipeline (Signals → Suggestions → Approvals → Actions → Audit → Learn), Growth Engine orchestration (front-end agents, sub-agents, specialist agents, PII Broker, ABAC)
+  3. `docs/RULES.md` — MCP tools (Shopify Dev first for Polaris), Growth Engine rules (MCP evidence JSONL, heartbeat, CI guards, telemetry config)
+  4. `.cursor/rules/10-growth-engine-pack.mdc` — CI merge blockers (guard-mcp, idle-guard, dev-mcp-ban)
+
+- [ ] **Growth Engine Checklist**:
+  - [ ] Understand agent handoff patterns (Customer-Front → Sub-agents → HITL)
+  - [ ] Understand security model (PII Broker, ABAC, no-ask execution boundaries)
+  - [ ] Understand evidence requirements (MCP JSONL, heartbeat, Dev MCP ban)
+  - [ ] Understand Phase assignments (9-12 dependencies mapped)
+
+## 2) Repo & CI Guardrails (2–4 min)
 
 - [ ] **Status checks green on `main`**: _Docs Policy, Danger, Gitleaks, Validate AI Agent Config_.
 - [ ] **Push Protection & Secret Scanning** enabled (Settings → Code security & analysis).
@@ -21,42 +90,130 @@
   ```
   _If any fail: stop, fix, commit before continuing._
 
-## 2) Tools & MCP Health (2–3 min)
+## 3) Tools & MCP Health (2–3 min)
 
 - [ ] `shopify version` OK; `supabase --version` OK.
 - [ ] Chatwoot API reachable (`npm run ops:check-chatwoot-health`).
 - [ ] **Agents SDK/HITL** config intact: `app/agents/config/agents.json` has `ai-customer.human_review: true` and reviewers.
 - [ ] (If social enabled) Publer environment secret present (never hard-coded).
 
-## 3) Manager-Controlled Git — Daily Flow (new)
+## 4) Git Coordination — Daily Branch Model (MANDATORY)
 
-- [ ] Run: `node scripts/policy/check-feedback.mjs --date 2025-10-15`
-- [ ] For each agent with a WORK COMPLETE block today:
-  - Create/checkout branch: `agent/<agent>/<YYYYMMDD>-<task>`
-  - Add only files in Allowed paths; commit with evidence reference
-  - Push and create PR (`gh pr create ...`)
-- [ ] Merge when CI green; update direction to next task
+**Manager owns ALL git operations. Daily branch = shared workspace for all 17 agents.**
 
-## 3) Project status review and Agent direction (3–5 min)
+- [ ] **Create/Checkout Daily Branch**:
 
-### 3.1 At-a-glance (30–45 sec)
+  ```bash
+  git fetch origin
+  # Current branch: agent-launch-20251023
+  git checkout agent-launch-20251023
+  git pull origin agent-launch-20251023
+
+  # For future days, create new daily branch:
+  # git checkout main
+  # git pull origin main
+  # git checkout -b agent-launch-YYYYMMDD
+  # git push origin agent-launch-YYYYMMDD
+  ```
+
+- [ ] **Announce Branch** (database + optional markdown):
+
+  ```typescript
+  await logDecision({
+    scope: "build",
+    actor: "manager",
+    action: "branch_announced",
+    rationale:
+      "Daily branch: agent-launch-20251023 - all agents should checkout and commit",
+    evidenceUrl: "docs/RULES.md",
+  });
+  ```
+
+- [ ] **Monitor Commits Throughout Day**:
+
+  ```bash
+  # Check who's committing what
+  git log --oneline --all --graph -20
+  # Check for conflicts
+  git status
+  ```
+
+- [ ] **Coordinate File Conflicts**:
+  - If Agent A needs file owned by Agent B → Assign sequentially
+  - Log coordination via `logDecision()`:
+    ```typescript
+    await logDecision({
+      scope: "build",
+      actor: "manager",
+      action: "coordination",
+      rationale: "Engineer waiting for Data to finish prisma/schema.prisma",
+      evidenceUrl: "prisma/schema.prisma",
+    });
+    ```
+
+## 5) Project status review and Agent direction (3–5 min)
+
+### 5.1 At-a-glance (30–45 sec)
 
 - [ ] **Milestone** on track? (tasks ≤ 2-day molecules)
 - [ ] **CI** green on active PRs (Docs Policy, Danger, Gitleaks, AI Config)
 - [ ] **Main** releasable (build/smoke pass)
 
-### 3.2 Feedback sweep **first** (60–90 sec)
+### 5.1.1 KB Integration Check (OPTIONAL - 30 sec)
 
-For each active agent:
+**KB tool is available for searching existing solutions and documentation when needed.**
 
-- [ ] Open `feedback/<agent>/<YYYY-MM-DD>.md`
-- [ ] Extract **blockers**, unanswered questions, unexpected findings
-- [ ] Tag each blocker with **owner** and **ETA** (you or agent)
-- [ ] If a decision is needed, add a short **Issue comment** on the task (not in feedback)
+- [ ] **Test KB Tool** (if needed):
+  ```bash
+  # Verify KB tool is working
+  set -a && source vault/dev-kb/supabase.env && source vault/occ/openai/api_key_staging.env && set +a
+  npm run dev-kb:query -- "What are the current project tasks and their status?"
+  ```
 
-### 3.3 Issues & PRs (gate sanity) (60–90 sec)
+- [ ] **KB Search** (optional, when context needed):
+  ```bash
+  # Search KB for existing solutions or context
+  npx tsx scripts/agent/kb-search.ts <TASK-ID> "<TASK-TITLE>" <AGENT-NAME>
+  ```
+
+**Use KB when**: Looking for existing solutions, common issues, security considerations, or integration points.
+
+### 5.2 Feedback sweep **first** (10–30 sec) [DATABASE-DRIVEN]
+
+**CRITICAL (2025-10-23)**: Query database instead of reading 17 markdown files
+
+```bash
+# Core 3 queries (< 10 sec total)
+npx tsx --env-file=.env scripts/manager/query-blocked-tasks.ts
+npx tsx --env-file=.env scripts/manager/query-agent-status.ts
+npx tsx --env-file=.env scripts/manager/query-completed-today.ts
+
+# Additional queries (as needed)
+npx tsx --env-file=.env scripts/manager/query-questions.ts  # Questions waiting for answers
+# npx tsx --env-file=.env scripts/manager/query-agent-grades.ts  # Self-grades & retrospectives
+```
+
+- [ ] Review blocked tasks output - note `blockedBy` dependencies
+- [ ] Tag each blocker with **owner** and **ETA**
+- [ ] Use `query-task-details.ts <TASK-ID>` for full context on specific blockers
+- [ ] If a decision is needed, add a short **Issue comment** on the task
+
+**Time Savings**: 60-90 sec → 10-30 sec (80% reduction)
+
+### 5.3 Issues & PRs (gate sanity) (60–90 sec)
 
 For each **Issue (label: task)** and its linked PR:
+
+- [ ] **🚨 MCP ENFORCEMENT (CRITICAL - Check FIRST)**:
+  - [ ] MCP Evidence JSONL files exist in `artifacts/<agent>/<date>/mcp/` directory
+  - [ ] Evidence files created BEFORE MCP usage (not after)
+  - [ ] MCP Evidence JSONL present OR "non-code change" stated
+  - [ ] Codebase-retrieval used to understand current state (for code changes)
+  - [ ] View tool used to read existing files (for code changes)
+  - [ ] Validation used (Shopify/Polaris/library code)
+  - [ ] NO red flag phrases: "fixed based on experience", "applied standard pattern", "cleaned up code"
+  - [ ] PR explains why change won't break existing fixes
+  - **If ANY missing → REJECT immediately** (see docs/runbooks/CRITICAL_MCP_ENFORCEMENT.md)
 
 - [ ] **Scope Gate:** Problem + Acceptance Criteria present in Issue
 - [ ] **Sandbox:** Issue lists **Allowed paths**; PR body repeats them
@@ -65,37 +222,91 @@ For each **Issue (label: task)** and its linked PR:
 - [ ] **Ship Gate (if merging today):** rollback noted; changelog if user-visible
 - [ ] Missing anything? Comment on the PR with the gap and reassign
 
-### 3.4 Prioritize blockers (30–45 sec)
+### 5.4 Prioritize blockers (30–45 sec) [DATABASE-DRIVEN]
 
+From `query-blocked-tasks.ts` output:
+
+- [ ] Review blocker summary (groups agents by what they're blocked on)
 - [ ] Rank top 3 blockers (env/data/API/review)
 - [ ] Decide per blocker: **unblock now**, **de-scope**, or **timebox & escalate**
-- [ ] Record the decision in the **Issue comment** (link from feedback)
+- [ ] Record the decision in the **Issue comment**
+- [ ] Log resolution via `logDecision()` when unblocked:
+  ```typescript
+  await logDecision({
+    scope: "build",
+    actor: "manager",
+    action: "blocker_cleared",
+    rationale: "BLOCKER-XXX: Applied DATA-017 migration",
+    evidenceUrl: "feedback/manager/2025-10-22.md",
+  });
+  ```
 
-### 3.5 Update agent direction (45–60 sec)
+### 5.5 Update agent direction (10–30 sec) [DATABASE-DRIVEN]
+
+**NEW (2025-10-22)**: Assign tasks via database instead of updating 17 markdown files
+
+```bash
+# Quick assign for single task
+AGENT=engineer TASK_ID=ENG-040 TITLE="New feature" DESC="Build X" \
+  CRITERIA="Working|Tests pass" PATHS="app/components/**" PRIORITY=P1 HOURS=3 \
+  npx tsx --env-file=.env scripts/manager/assign-task.ts
+
+# Or use task service directly for bulk assignments
+npx tsx --env-file=.env scripts/manager/bulk-assign-tasks.ts
+```
 
 For each active agent:
 
-- [ ] Open `docs/directions/<agent>.md` file must follow template `docs/directions/agenttemplate.md`
-- [ ] **Set today’s objective** (≤ 2-day molecule) and **constraints**
-- [ ] Reflect answers/decisions from step **3.2/3.4** into the direction file
-- [ ] **Archive/remove** completed items (leave “done” note + PR link)
-- [ ] Confirm the **task → Issue → PR** chain is explicit
+- [ ] Query their current status (`query-agent-status.ts`)
+- [ ] Assign next task via database (instant, no commit needed)
+- [ ] Set priority (P0 for blockers, P1 for active work)
+- [ ] Set dependencies if task is blocked by another
+- [ ] Agents see new tasks IMMEDIATELY (no git pull needed)
 
-### 3.6 Sandboxes & safety (quick pass)
+**Time Savings**: 45-60 sec → 10-30 sec per agent update
+
+### 5.6 Sandboxes & safety (quick pass)
 
 - [ ] Diffs stay **within Allowed paths** (Danger enforces)
 - [ ] No new `.md` outside allow-list (Docs Policy enforces)
 - [ ] No secrets in code/logs; push protection **ON**
 - [ ] Dev mode: **no customer messaging, payments, or production Shopify mutations**
 
-### 3.7 Today plan (30 sec)
+### 5.7 Today plan (30 sec)
 
 - [ ] Assign/resize 10–15 molecules **per agent**; confirm DoD + Allowed paths
-- [ ] Post a one-liner plan in `feedback/manager/<YYYY-MM-DD>.md`
+- [ ] Log day start via `logDecision()`:
+  ```typescript
+  await logDecision({
+    scope: "build",
+    actor: "manager",
+    action: "day_started",
+    rationale:
+      "17 agents active, 3 blockers identified, priority: clear DATA-017",
+    evidenceUrl: "docs/directions/manager.md",
+  });
+  ```
 
 > **Note:** Approvals/HITL is **out of scope in build/dev mode**. If the UI needs sample approvals to render, use **fixture entries** with `provenance.mode="dev:test"`, a `feedback_ref`, and **Apply disabled**.
 
-## 4 Drift Guard (2–4 min)
+### 5.8 Real-Time Monitoring (throughout day)
+
+**Agents log IMMEDIATELY when tasks complete or blockers clear - check database proactively!**
+
+- [ ] **Every 1-2 hours**: Run quick status check
+  ```bash
+  npx tsx --env-file=.env scripts/manager/query-agent-status.ts
+  npx tsx --env-file=.env scripts/manager/query-blocked-tasks.ts
+  ```
+- [ ] **When notified of completion**: Check specific task details
+  ```bash
+  npx tsx --env-file=.env scripts/manager/query-task-details.ts TASK-ID
+  ```
+- [ ] **If blocker cleared**: Update dependent agents' direction files immediately
+
+**Why this matters**: Agents log in real-time, manager can unblock dependencies without waiting for next direction cycle
+
+## 6) Drift Guard (2–4 min)
 
 - [ ] Run docs policy again on your working branch:
   ```bash
@@ -108,7 +319,7 @@ For each active agent:
   ```
 - [ ] Glance for any stray `.md` or cross‑agent edits in repo and Bounce them.
 
-## 5 Quick Health Lights (Tiles should be green)
+## 7) Quick Health Lights (Tiles should be green)
 
 - [ ] Tile P95 < **3s** (prod).
 - [ ] Nightly rollup error rate < **0.5%** (last 24h).
@@ -123,12 +334,24 @@ For each active agent:
 
 ## 7 Start the Day (2 min)
 
-- [ ] Create/resize **Tasks** (≤ 2-day molecules) and set in the Issue:
-      **owner**, **DoD**, and **Allowed paths** (fnmatch).
-- [ ] Update `docs/directions/<agent>.md` with **today’s objective** + **constraints**,
+- [ ] Create/resize **Tasks** (≤ 2-day molecules) via database:
+      **owner**, **DoD**, **description** (direction), and **Allowed paths** (fnmatch).
+- [ ] Update task descriptions in database with **today's objective** + **constraints**,
       and link the **Issue** (and PR if open).
-- [ ] Move any blockers from yesterday’s `feedback/<agent>/<YYYY-MM-DD>.md`
+- [ ] Move any blockers from `query-blocked-tasks.ts` output
       into the **Issue** as a comment with **resolver + ETA**.
-- [ ] (Optional) Post a one-liner plan in `feedback/manager/<YYYY-MM-DD>.md`.
+- [ ] Log day start via `logDecision()`:
+  ```typescript
+  await logDecision({
+    scope: "build",
+    actor: "manager",
+    taskId: "MANAGER-STARTUP",
+    status: "completed",
+    action: "startup_complete",
+    rationale:
+      "Manager startup checklist complete, all 17 agents have direction",
+    evidenceUrl: "docs/runbooks/manager_startup_checklist.md",
+  });
+  ```
 - [ ] Dev mode only: if UI needs sample approvals, use **fixtures** with
       `provenance.mode="dev:test"`, a `feedback_ref`, and **Apply disabled**.

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" role="img">
+  <title>CX Escalations modal overlay template</title>
+  <desc>Template scaffolding for conversation log, suggested reply, and decision controls in the CX Escalations modal.</desc>
+  <g data-layer="screenshot" aria-label="Screenshot drop zone"/>
+  <g data-layer="callouts" fill="none" stroke="#8A8CD9" stroke-width="2" stroke-dasharray="8 6">
+    <rect id="callout-header" x="280" y="120" width="880" height="120" rx="12"/>
+    <rect id="callout-log" x="280" y="260" width="880" height="260" rx="12"/>
+    <rect id="callout-reply" x="280" y="540" width="420" height="220" rx="12"/>
+    <rect id="callout-actions" x="720" y="540" width="440" height="220" rx="12"/>
+  </g>
+  <g data-layer="focus-path" stroke="#3F51B5" stroke-width="2" marker-end="url(#arrowhead)">
+    <path d="M 340 580 L 340 620"/>
+    <path d="M 340 720 L 1020 720"/>
+  </g>
+  <g data-layer="labels" font-family="Segoe UI, sans-serif" font-size="24" fill="#2C2C54" font-weight="600">
+    <text x="260" y="100">1</text>
+    <text x="260" y="240">2</text>
+    <text x="260" y="520">3</text>
+    <text x="700" y="520">4</text>
+  </g>
+  <defs>
+    <marker id="arrowhead" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 0 L 12 6 L 0 12 z" fill="#3F51B5"/>
+    </marker>
+  </defs>
+</svg>

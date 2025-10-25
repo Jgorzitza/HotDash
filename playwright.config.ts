@@ -9,7 +9,7 @@ if (!process.env.DASHBOARD_USE_MOCK) {
   process.env.DASHBOARD_USE_MOCK = mockValue;
 }
 
-const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? "http://127.0.0.1:4173";
+const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? "http://127.0.0.1:3000";
 
 console.log(`🎭 Playwright Configuration:
   Mock Mode: ${mockValue} (${shouldUseMock ? 'LOCAL/MOCK' : 'LIVE'})
@@ -73,14 +73,13 @@ export default defineConfig({
   ],
 
   webServer: {
-    command: `npm run build && NODE_ENV=test PORT=4173 DASHBOARD_USE_MOCK=${mockValue} npm run start`,
+    command: `npm run dev:vite`,
     url: baseURL,
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
     env: {
       ...process.env,
       NODE_ENV: "test",
-      PORT: "4173",
       DASHBOARD_USE_MOCK: mockValue,
     },
   },

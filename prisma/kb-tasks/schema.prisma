@@ -1,0 +1,79 @@
+// Prisma schema for KB Database - Task/Feedback System
+// This keeps development/agent coordination data separate from production
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../node_modules/@prisma/kb-client"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("SUPABASE_DEV_KB_DATABASE_URL")
+  directUrl = env("SUPABASE_DEV_KB_DIRECT_URL")
+  schemas   = ["public"]
+}
+
+// Agent Decision/Task Tracking
+model DecisionLog {
+  id               Int       @id @default(autoincrement())
+  scope            String    @db.VarChar
+  actor            String    @db.VarChar
+  action           String    @db.VarChar
+  rationale        String?
+  evidenceUrl      String?   @map("evidence_url")
+  taskId           String?   @map("task_id") @db.VarChar
+  status           String?   @db.VarChar
+  progressPct      Int?      @map("progress_pct")
+  blockerDetails   String?   @map("blocker_details")
+  blockedBy        String?   @map("blocked_by") @db.VarChar
+  durationEstimate Int?      @map("duration_estimate")
+  durationActual   Int?      @map("duration_actual")
+  nextAction       String?   @map("next_action")
+  payload          Json?
+  createdAt        DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt        DateTime? @default(now()) @map("updated_at") @db.Timestamptz(6)
+
+  @@index([actor], map: "idx_decision_log_actor")
+  @@index([createdAt], map: "idx_decision_log_created_at")
+  @@index([scope], map: "idx_decision_log_scope")
+  @@index([status], map: "idx_decision_log_status")
+  @@index([taskId], map: "idx_decision_log_task_id")
+  @@schema("public")
+}
+
+// Task Assignments
+model TaskAssignment {
+  id                 Int       @id @default(autoincrement())
+  assignedBy         String
+  assignedTo         String
+  taskId             String    @unique
+  title              String
+  description        String
+  acceptanceCriteria Json
+  allowedPaths       Json
+  priority           String
+  phase              String?
+  estimatedHours     Decimal?  @db.Decimal(5, 2)
+  dependencies       Json?
+  blocks             Json?
+  status             String    @default("assigned")
+  assignedAt         DateTime  @default(now())
+  startedAt          DateTime?
+  completedAt        DateTime?
+  cancelledAt        DateTime?
+  completionNotes    String?
+  cancellationReason String?
+  evidenceUrl        String?
+  issueUrl           String?
+  prUrl              String?
+  payload            Json?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @default(now()) @updatedAt
+
+  @@index([assignedTo, status, priority])
+  @@index([status, priority])
+  @@index([assignedBy, assignedAt])
+  @@index([phase, status])
+  @@schema("public")
+}
+

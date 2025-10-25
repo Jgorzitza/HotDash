@@ -1,0 +1,1 @@
+{"version":3,"file":"ApprovalCard.d.ts","sourceRoot":"","sources":["../../../../../app/components/ApprovalCard.tsx"],"names":[],"mappings":"AAWA,OAAO,KAAK,EAAE,QAAQ,EAAE,MAAM,6BAA6B,CAAC;AAE5D,UAAU,iBAAiB;IACzB,QAAQ,EAAE,QAAQ,CAAC;IACnB,SAAS,EAAE,MAAM,IAAI,CAAC;CACvB;AAED,wBAAgB,YAAY,CAAC,EAAE,QAAQ,EAAE,SAAS,EAAE,EAAE,iBAAiB,qBAyFtE"}

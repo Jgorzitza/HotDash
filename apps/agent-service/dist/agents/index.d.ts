@@ -16,10 +16,26 @@ export declare const orderSupportAgent: Agent<unknown, "text">;
  */
 export declare const productQAAgent: Agent<unknown, "text">;
 /**
+ * Shipping Support Agent
+ *
+ * Handles all shipping-related inquiries: tracking, delivery estimates, shipping methods.
+ * Provides tracking information and helps with shipping issues.
+ * Never sends public replies without approval.
+ */
+export declare const shippingSupportAgent: Agent<unknown, "text">;
+/**
+ * Technical Support Agent
+ *
+ * Handles product setup, troubleshooting, and warranty claims.
+ * Provides technical guidance and creates repair tickets when needed.
+ * Never sends public replies without approval.
+ */
+export declare const technicalSupportAgent: Agent<unknown, "text">;
+/**
  * Triage Agent
  *
  * First point of contact - classifies intent and routes to specialist agents.
- * Decides whether conversation is about orders or product questions.
+ * Enhanced with more specialized routing options.
  * Hands off to appropriate specialist for handling.
  */
 export declare const triageAgent: Agent<unknown, "text">;

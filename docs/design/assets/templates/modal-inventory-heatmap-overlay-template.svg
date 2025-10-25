@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" role="img">
+  <title>Inventory Heatmap modal overlay template</title>
+  <desc>Template prepared for inventory alert focus, velocity analysis, and action tray annotations.</desc>
+  <g data-layer="screenshot" aria-label="Screenshot drop zone"/>
+  <g data-layer="callouts" fill="none" stroke="#F2994A" stroke-width="2" stroke-dasharray="8 6">
+    <rect id="callout-summary" x="300" y="120" width="840" height="200" rx="12"/>
+    <rect id="callout-velocity" x="300" y="340" width="840" height="200" rx="12"/>
+    <rect id="callout-recommendation" x="300" y="560" width="840" height="140" rx="12"/>
+    <rect id="callout-actions" x="300" y="720" width="840" height="100" rx="12"/>
+  </g>
+  <g data-layer="focus-path" stroke="#C96F14" stroke-width="2" marker-end="url(#arrowhead)">
+    <path d="M 320 760 L 320 800 L 1040 800"/>
+  </g>
+  <g data-layer="labels" font-family="Segoe UI, sans-serif" font-size="24" fill="#B35800" font-weight="600">
+    <text x="280" y="100">1</text>
+    <text x="280" y="320">2</text>
+    <text x="280" y="540">3</text>
+    <text x="280" y="700">4</text>
+  </g>
+  <defs>
+    <marker id="arrowhead" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 0 L 12 6 L 0 12 z" fill="#C96F14"/>
+    </marker>
+  </defs>
+</svg>

@@ -39,7 +39,6 @@ class Logger {
   private async sendToEdgeFunction(entry: LogEntry): Promise<void> {
     if (!this.supabaseUrl || !this.serviceKey) {
       // Fallback to console logging if Supabase not configured
-      console.log(`[${entry.level}] ${entry.message}`, entry.metadata);
       return;
     }
 
@@ -59,12 +58,10 @@ class Logger {
           `Logger edge function error: ${response.status} ${errorText}`,
         );
         // Fallback to console
-        console.log(`[${entry.level}] ${entry.message}`, entry.metadata);
       }
     } catch (error) {
       console.error("Failed to send log to edge function:", error);
       // Fallback to console
-      console.log(`[${entry.level}] ${entry.message}`, entry.metadata);
     }
   }
 

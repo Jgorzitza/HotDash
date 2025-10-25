@@ -2,6 +2,7 @@ import express from 'express';
 import { queryHandler } from './handlers/query.js';
 import { refreshHandler } from './handlers/refresh.js';
 import { insightHandler } from './handlers/insight.js';
+import { knowledgeBaseHandler, knowledgeBaseStatsHandler } from './handlers/knowledge-base.js';
 import { metrics } from './metrics.js';
 import { rateLimiter } from './rate-limiter.js';
 
@@ -54,6 +55,42 @@ const rateLimitMiddleware = (req: express.Request, res: express.Response, next: 
 
 // Tool definitions
 const TOOLS = [
+  {
+    name: 'query_knowledge_base',
+    description: 'Query the AI-powered knowledge base system for relevant information using semantic search. Returns documents with relevance scores, snippets, and highlights.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        q: {
+          type: 'string',
+          description: 'Search query text to find relevant information in the knowledge base',
+        },
+        topK: {
+          type: 'number',
+          description: 'Number of top results to return (default: 5, max: 20)',
+          default: 5,
+        },
+        category: {
+          type: 'string',
+          description: 'Filter results by category (optional)',
+        },
+        tags: {
+          type: 'array',
+          items: { type: 'string' },
+          description: 'Filter results by tags (optional)',
+        },
+      },
+      required: ['q'],
+    },
+  },
+  {
+    name: 'knowledge_base_stats',
+    description: 'Get statistics about the knowledge base including document counts, categories, tags, and last updated information.',
+    inputSchema: {
+      type: 'object',
+      properties: {},
+    },
+  },
   {
     name: 'query_support',
     description: 'Query knowledge base for support information using semantic search. Returns relevant documentation, FAQs, and policy information with citations.',
@@ -124,6 +161,14 @@ async function executeTool(name: string, args: any) {
     let result;
     
     switch (name) {
+      case 'query_knowledge_base':
+        result = await knowledgeBaseHandler(args as { q: string; topK?: number; category?: string; tags?: string[] });
+        break;
+
+      case 'knowledge_base_stats':
+        result = await knowledgeBaseStatsHandler();
+        break;
+
       case 'query_support':
         result = await queryHandler(args as { q: string; topK?: number });
         break;

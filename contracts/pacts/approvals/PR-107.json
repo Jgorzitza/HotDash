@@ -1,0 +1,252 @@
+{
+  "provider": "Supabase (approvals table)",
+  "consumer": "Hot Dash Dashboard",
+  "prNumber": 107,
+  "dateCreated": "2025-10-20",
+  "status": "stub",
+  "version": "1.0.0",
+  "description": "Approval workflow service contracts for HITL approval queue",
+  "interactions": [
+    {
+      "description": "Get all pending approvals",
+      "providerState": "approvals table exists with pending_review state rows",
+      "request": {
+        "method": "FUNCTION_CALL",
+        "function": "getPendingApprovals",
+        "parameters": []
+      },
+      "response": {
+        "type": "Approval[]",
+        "schema": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string", "format": "uuid" },
+              "kind": { "enum": ["cx_reply", "inventory", "growth", "misc"] },
+              "state": { "enum": ["draft", "pending_review", "approved", "applied", "audited", "learned"] },
+              "summary": { "type": "string" },
+              "created_by": { "type": "string" },
+              "reviewer": { "type": "string", "nullable": true },
+              "evidence": { "type": "object" },
+              "impact": { "type": "object" },
+              "risk": { "type": "object" },
+              "rollback": { "type": "object" },
+              "actions": { "type": "array" },
+              "receipts": { "type": "array", "nullable": true },
+              "created_at": { "type": "string", "format": "date-time" },
+              "updated_at": { "type": "string", "format": "date-time" },
+              "validation_errors": { "type": "array", "items": { "type": "string" }, "nullable": true }
+            },
+            "required": ["id", "kind", "state", "summary", "created_by", "evidence", "impact", "risk", "rollback", "actions", "created_at", "updated_at"]
+          }
+        },
+        "example": []
+      }
+    },
+    {
+      "description": "Get approval by ID",
+      "providerState": "approvals table exists",
+      "request": {
+        "method": "FUNCTION_CALL",
+        "function": "getApprovalById",
+        "parameters": [
+          { "name": "id", "type": "string", "example": "550e8400-e29b-41d4-a716-446655440000" }
+        ]
+      },
+      "response": {
+        "type": "Approval | null",
+        "examples": {
+          "found": {
+            "id": "550e8400-e29b-41d4-a716-446655440000",
+            "kind": "cx_reply",
+            "state": "pending_review",
+            "summary": "Reply to customer inquiry about shipping",
+            "created_by": "ai-customer",
+            "evidence": {
+              "what_changes": "Draft reply to customer email",
+              "samples": [{ "label": "Draft reply", "content": "Thank you for contacting us..." }]
+            },
+            "impact": {
+              "expected_outcome": "Customer satisfaction improved"
+            },
+            "risk": {
+              "what_could_go_wrong": "Reply may not address full question"
+            },
+            "rollback": {
+              "steps": ["Email not sent yet - no rollback needed"]
+            },
+            "actions": [
+              {
+                "endpoint": "/api/chatwoot/send-reply",
+                "payload": { "conversationId": 123, "message": "..." }
+              }
+            ],
+            "created_at": "2025-10-20T12:00:00Z",
+            "updated_at": "2025-10-20T12:00:00Z"
+          },
+          "not_found": null
+        }
+      }
+    },
+    {
+      "description": "Approve request with optional grades",
+      "providerState": "approval exists with pending_review state",
+      "request": {
+        "method": "FUNCTION_CALL",
+        "function": "approveRequest",
+        "parameters": [
+          { "name": "id", "type": "string", "example": "550e8400-e29b-41d4-a716-446655440000" },
+          {
+            "name": "grades",
+            "type": "object",
+            "optional": true,
+            "properties": {
+              "tone": { "type": "number", "min": 1, "max": 5, "example": 4 },
+              "accuracy": { "type": "number", "min": 1, "max": 5, "example": 5 },
+              "policy": { "type": "number", "min": 1, "max": 5, "example": 5 }
+            }
+          }
+        ]
+      },
+      "response": {
+        "type": "{ success: boolean }",
+        "examples": {
+          "success": { "success": true },
+          "error": { "success": false }
+        }
+      },
+      "sideEffects": [
+        "Updates approval state to 'approved'",
+        "Sets reviewer field to current user",
+        "Stores grades if provided (cx_reply only)",
+        "Updates updated_at timestamp"
+      ]
+    },
+    {
+      "description": "Reject request with reason",
+      "providerState": "approval exists with pending_review state",
+      "request": {
+        "method": "FUNCTION_CALL",
+        "function": "rejectRequest",
+        "parameters": [
+          { "name": "id", "type": "string", "example": "550e8400-e29b-41d4-a716-446655440000" },
+          { "name": "reason", "type": "string", "example": "Does not follow brand voice guidelines" }
+        ]
+      },
+      "response": {
+        "type": "{ success: boolean }",
+        "examples": {
+          "success": { "success": true },
+          "error": { "success": false }
+        }
+      },
+      "sideEffects": [
+        "Updates approval state to 'rejected'",
+        "Stores rejection reason",
+        "Sets reviewer field to current user",
+        "Updates updated_at timestamp"
+      ]
+    },
+    {
+      "description": "Get approvals with filters",
+      "providerState": "approvals table exists",
+      "request": {
+        "method": "FUNCTION_CALL",
+        "function": "getApprovals",
+        "parameters": [
+          {
+            "name": "filters",
+            "type": "object",
+            "optional": true,
+            "properties": {
+              "state": { "type": "string", "example": "pending_review" },
+              "kind": { "type": "string", "example": "cx_reply" },
+              "limit": { "type": "number", "default": 50, "example": 10 },
+              "offset": { "type": "number", "default": 0, "example": 0 }
+            }
+          }
+        ]
+      },
+      "response": {
+        "type": "{ approvals: Approval[]; total: number; error: string | null }",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "approvals": { "type": "array", "items": { "$ref": "#/definitions/Approval" } },
+            "total": { "type": "number" },
+            "error": { "type": "string", "nullable": true }
+          },
+          "required": ["approvals", "total", "error"]
+        },
+        "examples": {
+          "success": {
+            "approvals": [],
+            "total": 0,
+            "error": null
+          },
+          "error": {
+            "approvals": [],
+            "total": 0,
+            "error": "Database connection failed"
+          }
+        }
+      },
+      "notes": [
+        "Error handling: Returns error in response.error field (does not throw)",
+        "Pagination: Uses limit/offset pattern",
+        "Filters are optional: Omit for all approvals"
+      ]
+    },
+    {
+      "description": "Get approval counts by state",
+      "providerState": "approvals table exists",
+      "request": {
+        "method": "FUNCTION_CALL",
+        "function": "getApprovalCounts",
+        "parameters": []
+      },
+      "response": {
+        "type": "Record<string, number>",
+        "schema": {
+          "type": "object",
+          "additionalProperties": { "type": "number" }
+        },
+        "example": {
+          "pending_review": 5,
+          "approved": 12,
+          "applied": 8,
+          "rejected": 2
+        }
+      },
+      "notes": [
+        "Groups approvals by state",
+        "Returns counts for all states present in database",
+        "Used for tab badges in approval queue UI"
+      ]
+    }
+  ],
+  "metadata": {
+    "timeout": "10s (Supabase default)",
+    "retry": "NO (state mutations should not retry)",
+    "rateLimit": "None (database queries)",
+    "authentication": "Supabase RLS (Row Level Security)",
+    "errorHandling": "Returns error in response object (getApprovals) or { success: false }"
+  },
+  "implementationStatus": {
+    "currentState": "stub",
+    "blockers": [
+      "Supabase approvals table schema not created",
+      "RLS policies not configured",
+      "Service functions return hardcoded values"
+    ],
+    "nextSteps": [
+      "Create Supabase migration for approvals table",
+      "Configure RLS policies for approvals access",
+      "Implement service functions with Supabase client",
+      "Add error handling (try-catch + ServiceError)",
+      "Create API routes for HTTP endpoints",
+      "Add integration tests"
+    ]
+  }
+}

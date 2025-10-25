@@ -15,12 +15,61 @@
   - **Blockers** with **owner + ETA**
   - Links to any relevant logs/evidence (screenshots, test output)
 
-## 2a) Manager-Controlled Git  Close Out
+## 2a) Daily Branch Merge to Main (MANDATORY)
 
-- [ ] Run: `node scripts/policy/check-feedback.mjs --date 2025-10-15`
-- [ ] For any agent with WORK COMPLETE but no PR yet, create branch/PR now
-- [ ] For open PRs, ensure evidence links to the feedback file
-- [ ] After merge, update directions to next task
+**Manager reviews all commits on daily branch, then merges to main.**
+
+- [ ] **Review All Commits on Daily Branch**:
+
+  ```bash
+  git log manager-reopen-20251020 --oneline --graph -30
+  # Verify: All commits follow feat(agent-name): format
+  # Verify: No file ownership conflicts between agents
+  # Verify: Each commit references work in feedback files
+  ```
+
+- [ ] **Test Merge to Main**:
+
+  ```bash
+  git checkout manager-reopen-20251020
+  git fetch origin main
+  git merge origin/main --no-commit --no-ff  # Test only
+  # If conflicts: resolve them, commit resolution
+  # If no conflicts: git merge --abort (will merge via PR)
+  ```
+
+- [ ] **Create PR (if main protected) OR Direct Merge**:
+
+  ```bash
+  # Option A: Main is protected (use PR)
+  git push origin manager-reopen-20251020
+  gh pr create --base main --head manager-reopen-20251020 \
+    --title "Daily Snapshot: $(date +%Y-%m-%d)" \
+    --body "Daily work from all 17 agents. Evidence in feedback/{agent}/$(date +%Y-%m-%d).md files."
+  # Then merge PR after CI passes
+
+  # Option B: Main not protected (direct merge)
+  git checkout main
+  git merge manager-reopen-20251020 --no-ff -m "Daily snapshot: $(date +%Y-%m-%d)"
+  git push origin main
+  ```
+
+- [ ] **Verify Merge Success**:
+
+  ```bash
+  git checkout main
+  git pull origin main
+  git log --oneline -10  # Confirm all daily branch commits are in main
+  ```
+
+- [ ] **Tag Daily Snapshot** (for rollback capability):
+
+  ```bash
+  git tag daily-snapshot-$(date +%Y-%m-%d) main
+  git push origin daily-snapshot-$(date +%Y-%m-%d)
+  ```
+
+- [ ] **For Tomorrow**: Update branch name in all 17 direction files if creating new daily branch
 
 ---
 
@@ -52,18 +101,77 @@ _Missing any artifact? Comment on the PR with the gap and reassign._
 
 ---
 
-## 4) Direction & Feedback Closure
+## 4) Direction & Feedback Closure [DATABASE-DRIVEN]
+
+**Query database for agent status** (< 10 seconds):
+
+```bash
+# Check final status
+npx tsx --env-file=.env scripts/manager/query-agent-status.ts
+npx tsx --env-file=.env scripts/manager/query-completed-today.ts
+npx tsx --env-file=.env scripts/manager/query-blocked-tasks.ts
+```
 
 For each **active agent**:
 
-- [ ] Read today’s `feedback/<agent>/<YYYY‑MM‑DD>.md` → extract answers, blockers, decisions.
-- [ ] Update `docs/directions/<agent>.md` with **tomorrow’s objective**, **constraints**, and links
+- [ ] Review query results → extract blockers and status
+- [ ] Only read markdown `feedback/<agent>/<YYYY‑MM‑DD>.md` for blocked tasks (deep context)
+- [ ] Update `docs/directions/<agent>.md` with **tomorrow's objective**, **constraints**, and links
       to the **Issue** (and PR if open).
-- [ ] **Archive/remove** completed items and feedback that has been actioned from directions and feedback files
-- [ ] Ensure the last entry in the agent’s feedback states: **status → next intent**.
+- [ ] **Archive/remove** completed items from directions
+- [ ] Verify agents logged final status via `logDecision()` (check query output)
+ - [ ] Run direction reconciliation (catches completions logged after assignments):
+   ```bash
+   # Broad scan (past 14 days) and deep row take to catch stragglers
+   DAYS=14 TAKE=5000 npx tsx --env-file=.env scripts/manager/reconcile-direction-completions.ts
+   # Optionally target a specific task if still stale in direction
+   TASK_ID=<TASK-ID> npx tsx --env-file=.env scripts/manager/reconcile-direction-completions.ts
+   # Regenerate workboard one‑pager
+   npx tsx --env-file=.env scripts/manager/workboard.ts
+   ```
 
-_Notes:_ Dev agents write only to their feedback log and code under Allowed paths.
-Do **not** create or edit other docs.
+_Notes:_ Agents report via `logDecision()` (database) with structured fields (taskId, status, progressPct).
+
+## 4.1) KB Integration Audit (NEW - Effective 2025-10-25)
+
+**Verify KB search compliance** (< 30 seconds):
+
+```bash
+# Check KB search compliance
+npx tsx --env-file=.env scripts/manager/query-kb-search-compliance.ts
+```
+
+For each **active agent**:
+
+- [ ] **Verify KB searches completed** before task execution
+- [ ] **Check KB search results** for quality and relevance
+- [ ] **Review recommendations** from KB searches
+- [ ] **Identify agents** who skipped KB search (violations)
+- [ ] **Log KB compliance** via `logDecision()`:
+  ```typescript
+  await logDecision({
+    scope: "build",
+    actor: "manager",
+    action: "kb_compliance_audit",
+    rationale: "KB search compliance audit completed",
+    payload: {
+      agentsAudited: ["engineer", "data", "analytics"],
+      complianceRate: "95%",
+      violations: ["agent-name: task-id"],
+      recommendations: ["Improve KB search quality", "Review search queries"]
+    }
+  });
+  ```
+
+**KB Integration Benefits**:
+
+- **Prevents Redoing Work**: Agents find existing solutions before implementing
+- **Context Recovery**: Access lost knowledge from documentation
+- **Issue Prevention**: Identify common problems and their solutions
+- **Security Awareness**: Review security considerations before implementation
+- **Integration Planning**: Understand system connections before building
+
+**Enforcement**: KB search is MANDATORY before task execution. No exceptions.
 
 ---
 
@@ -75,6 +183,7 @@ Do **not** create or edit other docs.
   git commit -am "chore: planning TTL sweep" && git push
   ```
 - [ ] Glance for any stray `.md` or cross‑agent edits in today’s PRs (reject/clean if found).
+ - [ ] Near launch: **no new doc‑only tasks** unless explicitly required. Prefer code/tests with small, safe diffs.
 
 ---
 
@@ -83,10 +192,11 @@ Do **not** create or edit other docs.
 - [ ] No secrets in local logs/console paste. Close terminals with creds; stop tunnels.
 - [ ] Ensure `.env*` are **not staged**; `.gitignore` covers them.
 - [ ] Inventory any newly rotated secrets in the private Security note (if applicable).
+ - [ ] Production safety: enforce additive‑only changes (no schema resets, no destructive infra ops).
 
 ---
 
-## 7) CEO Summary (paste in `feedback/manager/<YYYY‑MM‑DD>.md`)
+## 7) CEO Summary (log via `logDecision()` and/or paste in `feedback/manager/<YYYY‑MM‑DD>.md`)
 
 **Today’s Outcomes**
 
@@ -99,17 +209,19 @@ Do **not** create or edit other docs.
 - Primary objective: …
 - Success criteria (from North Star): …
 
-**Agent Performance (quick grading)**
+**Agent Performance (from database queries)**
 
-- <agent> — **Score (1–5)**
+From `query-completed-today.ts` and `query-agent-status.ts` output:
+
+- <agent> — **Score (1–5)** (based on taskId completion rate, duration accuracy)
   - 2–3 things done well:
-    1. …
-    2. …
+    1. Used structured logDecision() with all fields
+    2. Completed X tasks on time
   - 1–2 things to change:
-    1. …
+    1. Missing progressPct updates in some entries
   - **One thing to stop entirely:** …
 
-(Repeat per active agent; tie feedback to DoD / Allowed paths / feedback discipline.)
+(Use database queries for metrics; only read markdown for context)
 
 ### 8) Run Drift Checklist (Manager-only, required)
 
@@ -118,6 +230,7 @@ Before finalizing shutdown:
 - [ ] Execute `docs/runbooks/drift_checklist.md` **in full** (after all agents have shut down).
 - [ ] Confirm: HEAD secrets scan is clean; docs policy shows 0 violations; planning TTL sweep committed;
       required checks on `main` still enforced; directions ↔ feedback are consistent for tomorrow.
+ - [ ] Log `direction_reconciled` with artifact link to reconciliation summary for audit continuity.
 
 ## 9) Finalize
 

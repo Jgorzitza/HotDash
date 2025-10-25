@@ -1,0 +1,114 @@
+# fly.toml app configuration file for HotDash Production
+# Enhanced with IPv6 database configuration and production optimizations
+
+app = 'hotdash-production'
+primary_region = 'ord'
+
+[env]
+  HOST = '0.0.0.0'
+  PORT = '3000'
+  NODE_ENV = 'production'
+  # IPv6 database configuration
+  ECTO_IPV6 = 'true'
+  ERL_AFLAGS = '-proto_dist inet6_tcp'
+  # Database connection optimization
+  DATABASE_POOL_SIZE = '10'
+  DATABASE_TIMEOUT = '30000'
+
+[build]
+  # Production build optimizations
+  [build.args]
+    NODE_ENV = 'production'
+    NODE_OPTIONS = '--max-old-space-size=2048'
+
+[deploy]
+  # Safe database operations - only generate client, no migrations
+  release_command = "npx prisma generate"
+  # Zero-downtime deployment strategy
+  strategy = "rolling"
+  # Wait for health checks before continuing rollout
+  wait_timeout = "5m"
+  # Maximum number of machines to update simultaneously
+  max_unavailable = 0.25
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 2  # High availability for production
+  processes = ['app']
+  
+  # IPv6 configuration
+  [http_service.concurrency]
+    type = "connections"
+    hard_limit = 1000
+    soft_limit = 800
+
+  # Health checks for zero-downtime deployments
+  [[http_service.checks]]
+    grace_period = "10s"
+    interval = "15s"
+    method = "GET"
+    path = "/health"
+    timeout = "5s"
+    tls_skip_verify = false
+    # Restart unhealthy machines
+    [http_service.checks.restart]
+      policy = "on-failure"
+      max_retries = 3
+
+  [[http_service.checks]]
+    grace_period = "15s"
+    interval = "30s"
+    method = "GET"
+    path = "/api/monitoring/health"
+    timeout = "10s"
+    tls_skip_verify = false
+    # Monitor comprehensive health
+    [http_service.checks.restart]
+      policy = "on-failure"
+      max_retries = 2
+
+[[vm]]
+  memory = '2gb'  # Increased for production
+  cpu_kind = 'shared'
+  cpus = 2  # Increased for production workload
+  # IPv6 networking
+  [vm.network]
+    ipv6 = true
+
+# Production-specific environment variables
+[secrets]
+  # These will be set via fly secrets set
+  # DATABASE_URL = "postgresql://..."
+  # SHOPIFY_API_KEY = "..."
+  # SHOPIFY_API_SECRET = "..."
+  # SUPABASE_URL = "..."
+  # SUPABASE_ANON_KEY = "..."
+
+# IPv6 networking configuration
+[[services]]
+  protocol = "tcp"
+  internal_port = 3000
+  
+  [[services.ports]]
+    port = 80
+    handlers = ["http"]
+    force_https = true
+  
+  [[services.ports]]
+    port = 443
+    handlers = ["http", "tls"]
+
+# Machine configuration for high availability
+[[machines]]
+  memory = '2gb'
+  cpu_kind = 'shared'
+  cpus = 2
+  
+  # IPv6 networking for database connections
+  [machines.env]
+    ECTO_IPV6 = 'true'
+    ERL_AFLAGS = '-proto_dist inet6_tcp'
+    DATABASE_POOL_SIZE = '10'

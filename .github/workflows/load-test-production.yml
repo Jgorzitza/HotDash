@@ -1,0 +1,139 @@
+name: Production Load Test
+
+on:
+  schedule:
+    # Weekly on Sunday at 3 AM UTC (off-peak)
+    - cron: '0 3 * * 0'
+  workflow_dispatch:
+    inputs:
+      max_users:
+        description: 'Maximum concurrent users'
+        required: true
+        default: '1000'
+        type: number
+      duration_minutes:
+        description: 'Test duration in minutes'
+        required: true
+        default: '19'
+        type: number
+
+jobs:
+  load-test:
+    name: Run Production Load Test
+    runs-on: ubuntu-latest
+    environment: production
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Install k6
+        run: |
+          sudo gpg -k
+          sudo gpg --no-default-keyring --keyring /usr/share/keyrings/k6-archive-keyring.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C5AD17C747E3415A3642D57D77C6C491D6AC1D69
+          echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
+          sudo apt-get update
+          sudo apt-get install k6
+      
+      - name: Verify k6 installation
+        run: k6 version
+      
+      - name: Pre-test health check
+        run: |
+          echo "🔍 Checking production health before load test..."
+          curl -f https://hotdash-production.fly.dev/health || exit 1
+          curl -f https://hotdash-production.fly.dev/api/monitoring/health || exit 1
+          echo "✅ Production is healthy"
+      
+      - name: Run load test
+        id: load-test
+        run: |
+          echo "🚀 Starting load test..."
+          echo "Target: https://hotdash-production.fly.dev"
+          echo "Max users: ${{ inputs.max_users || 1000 }}"
+          echo "Duration: ~${{ inputs.duration_minutes || 19 }} minutes"
+          
+          k6 run artifacts/devops/2025-10-24/load-test-script.js \
+            --out json=artifacts/devops/2025-10-24/load-test-results.json
+        continue-on-error: true
+      
+      - name: Post-test health check
+        if: always()
+        run: |
+          echo "🔍 Checking production health after load test..."
+          curl -f https://hotdash-production.fly.dev/health || exit 1
+          curl -f https://hotdash-production.fly.dev/api/monitoring/health || exit 1
+          echo "✅ Production is still healthy"
+      
+      - name: Parse results
+        if: always()
+        id: parse-results
+        run: |
+          if [ -f artifacts/devops/2025-10-24/load-test-results.json ]; then
+            echo "📊 Parsing load test results..."
+            
+            # Extract key metrics
+            P95=$(jq -r '.metrics.http_req_duration.values["p(95)"]' artifacts/devops/2025-10-24/load-test-results.json)
+            ERROR_RATE=$(jq -r '.metrics.http_req_failed.values.rate' artifacts/devops/2025-10-24/load-test-results.json)
+            TOTAL_REQUESTS=$(jq -r '.metrics.http_reqs.values.count' artifacts/devops/2025-10-24/load-test-results.json)
+            REQUEST_RATE=$(jq -r '.metrics.http_reqs.values.rate' artifacts/devops/2025-10-24/load-test-results.json)
+            
+            echo "p95=$P95" >> $GITHUB_OUTPUT
+            echo "error_rate=$ERROR_RATE" >> $GITHUB_OUTPUT
+            echo "total_requests=$TOTAL_REQUESTS" >> $GITHUB_OUTPUT
+            echo "request_rate=$REQUEST_RATE" >> $GITHUB_OUTPUT
+            
+            # Check if test passed
+            if (( $(echo "$P95 < 3000" | bc -l) )) && (( $(echo "$ERROR_RATE < 0.005" | bc -l) )); then
+              echo "test_passed=true" >> $GITHUB_OUTPUT
+              echo "✅ Load test PASSED"
+            else
+              echo "test_passed=false" >> $GITHUB_OUTPUT
+              echo "❌ Load test FAILED"
+            fi
+          else
+            echo "❌ Results file not found"
+            echo "test_passed=false" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Create summary
+        if: always()
+        run: |
+          echo "## Load Test Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [ "${{ steps.parse-results.outputs.test_passed }}" == "true" ]; then
+            echo "### ✅ Test PASSED" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "### ❌ Test FAILED" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Metrics:**" >> $GITHUB_STEP_SUMMARY
+          echo "- P95 Response Time: ${{ steps.parse-results.outputs.p95 }}ms (target: <3000ms)" >> $GITHUB_STEP_SUMMARY
+          echo "- Error Rate: $(echo "${{ steps.parse-results.outputs.error_rate }} * 100" | bc -l | xargs printf "%.2f")% (target: <0.5%)" >> $GITHUB_STEP_SUMMARY
+          echo "- Total Requests: ${{ steps.parse-results.outputs.total_requests }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Request Rate: $(echo "${{ steps.parse-results.outputs.request_rate }}" | xargs printf "%.2f") req/s" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Test Configuration:**" >> $GITHUB_STEP_SUMMARY
+          echo "- Max Concurrent Users: ${{ inputs.max_users || 1000 }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Duration: ~${{ inputs.duration_minutes || 19 }} minutes" >> $GITHUB_STEP_SUMMARY
+          echo "- Target: https://hotdash-production.fly.dev" >> $GITHUB_STEP_SUMMARY
+      
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: load-test-results-${{ github.run_id }}
+          path: |
+            artifacts/devops/2025-10-24/load-test-results.json
+            artifacts/devops/2025-10-24/load-test-script.js
+          retention-days: 90
+      
+      - name: Notify on failure
+        if: failure()
+        run: |
+          echo "❌ Load test failed or encountered errors"
+          echo "Review the artifacts and logs for details"
+          exit 1
+

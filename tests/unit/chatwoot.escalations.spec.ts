@@ -91,6 +91,21 @@ describe("getEscalations", () => {
     expect(mockListOpenConversations).toHaveBeenCalledTimes(2);
   });
 
+  it("supports CHATWOOT_ACCESS_TOKEN as alias", async () => {
+    delete process.env.CHATWOOT_TOKEN;
+    process.env.CHATWOOT_ACCESS_TOKEN = "alias-token";
+
+    mockListOpenConversations.mockResolvedValueOnce([]);
+
+    const result = await getEscalations("alias-shop");
+    expect(result.data).toEqual([]);
+    expect(mockListOpenConversations).toHaveBeenCalled();
+
+    // cleanup for next test
+    delete process.env.CHATWOOT_ACCESS_TOKEN;
+    process.env.CHATWOOT_TOKEN = "token";
+  });
+
   it("selects ship_update template when shipping keywords detected", async () => {
     const createdAt = Math.floor(Date.now() / 1000) - 90 * 60;
     mockListOpenConversations

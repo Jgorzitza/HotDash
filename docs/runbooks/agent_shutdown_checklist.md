@@ -5,10 +5,42 @@
 
 ---
 
-## 0) Save State (≤ 1 min)
+## 0) Save State (≤ 1 min) [DATABASE-DRIVEN]
 
 - [ ] Do NOT commit/push. Manager will handle git operations.
-- [ ] Ensure your feedback file contains the latest evidence and the completion block if applicable.
+- [ ] **Log KB search compliance** (if task was started today):
+  ```typescript
+  await logDecision({
+    scope: "build",
+    actor: "<your-agent>",
+    action: "kb_search_completed",
+    rationale: "KB search completed before task execution",
+    taskId: "{TASK-ID}",
+    payload: {
+      searchResults: "Found existing solutions",
+      recommendations: ["Review security considerations", "Check integration points"],
+      sources: ["docs/example.md", "docs/patterns.md"]
+    }
+  });
+  ```
+- [ ] Log final status via `logDecision()` (this is the source of truth):
+  ```typescript
+  await logDecision({
+    scope: "build",
+    actor: "<your-agent>",
+    taskId: "{TASK-ID}",
+    status: "completed", // or 'in_progress', 'blocked'
+    progressPct: 100, // or current %
+    action: "shutdown",
+    rationale: "Shutdown - {TASK-ID} {status}, {evidence summary}",
+    evidenceUrl: "artifacts/<agent>/2025-10-22/final-status.md",
+    durationActual: 4.5,
+  nextAction: "Resume testing tomorrow", // or 'Task complete'
+  });
+  ```
+  - Include `taskId` for DB‑assigned tasks so Manager can auto‑reconcile direction.
+  - Do not leave stale `in_progress` if you actually finished — set `status: "completed"`.
+- [ ] (Optional) Ensure markdown feedback file has final notes if needed
 - [ ] Ensure PR body includes:
   - `Refs #<issue>` or `Fixes #<issue>` (when DoD is fully met)
   - A line: `Allowed paths: <pattern(s)>`
@@ -25,61 +57,56 @@
 
 ---
 
-## 2) Feedback — Final Entry for Today (2–4 min)
+## 2) Final Progress Report (≤ 2 min) [DATABASE-DRIVEN]
 
-Open `feedback/<agent>/<YYYY‑MM‑DD>.md` and append this block:
+**PRIMARY: Log shutdown status via `logDecision()`**:
 
-```md
-### Shutdown — <HH:MM> (local time)
+```typescript
+import { logDecision } from "~/services/decisions.server";
 
-**Status**
-
-- Task / Issue: #<id> — PR: #<id or draft> — Branch: agent/<agent>/<molecule>
-- DoD completion: <percent or checklist state>
-- What changed since last entry: <1–3 bullets>
-
-**Evidence**
-
-- Tests/logs/screens: <links or short notes>
-- Tool calls (MCP/adapters) used: <list>
-
-**Blockers**
-
-- <concise description> → **owner**: <me/manager/other> — **ETA**: <date/time>
-
-**Next‑start plan (first 1–2 actions)**
-
-1. …
-2. …
-
-**Self‑grade (1–5)**
-
-- Progress vs DoD: <1–5>
-- Evidence quality: <1–5>
-- Alignment (North Star / Rules / Allowed paths): <1–5>
-- Tool discipline (MCP‑first, no freehand, no secrets): <1–5>
-- Communication (feedback clarity & cadence): <1–5>
-
-**Retrospective**
-
-- 2–3 things I did well today:
-  1. …
-  2. …
-- 1–2 things to do differently tomorrow:
-  1. …
-- **One thing I will stop entirely:** …
+await logDecision({
+  scope: "build",
+  actor: "<your-agent>",
+  taskId: "{TASK-ID}",
+  status: "in_progress", // or 'completed' if done
+  progressPct: 75, // Current progress
+  action: "shutdown",
+  rationale:
+    "Shutdown - {TASK-ID} at 75%, tests passing, ready to resume tomorrow",
+  evidenceUrl: "artifacts/<agent>/2025-10-22/shutdown-status.md",
+  durationActual: 6.5, // Total hours today
+  nextAction: "Resume integration testing tomorrow morning",
+  blockerDetails: "None", // or describe blockers
+  blockedBy: null, // or dependency task ID
+});
 ```
 
-> Keep it concise but specific. The Manager will rely on this to set tomorrow’s direction and unblock you immediately.
+Shutdown guardrails (near launch):
+- Do not create doc‑only tasks unless explicitly assigned; focus on code/tests.
+- Do not run destructive DB/infra commands — all operations must be additive‑only.
+
+**OPTIONAL: Markdown backup** (if you want detailed notes):
+
+Open `feedback/<agent>/<YYYY‑MM‑DD>.md` and append shutdown notes if desired.
+
+**Manager Visibility**:
+
+- Manager runs `query-agent-status.ts` to see your shutdown status instantly
+- Manager runs `query-blocked-tasks.ts` to see if you're blocked
+- No need to read your entire markdown file
+
+> **Why this matters**: Manager sees your status in < 1 second instead of reading your file.
 
 ---
 
-## 3) Handoff to Manager (≤ 1 min)
+## 3) Handoff to Manager (≤ 1 min) [DATABASE-DRIVEN]
 
-- [ ] Verify your feedback file is up to date.
-- [ ] Post a one-liner in the Issue comment:
-      "Shutdown complete — see latest feedback entry (includes WORK COMPLETE block if applicable)."
+- [ ] Verify you logged shutdown via `logDecision()` (step 2 above)
+- [ ] Manager will query your status via `query-agent-status.ts` (< 1 sec)
+- [ ] (Optional) Post in Issue comment if urgent blocker needs attention
 - [ ] Manager will create/refresh PR and handle CI/review/merge.
+
+**Manager sees your status instantly via database queries** - no need to announce.
 
 ---
 
@@ -90,10 +117,13 @@ Open `feedback/<agent>/<YYYY‑MM‑DD>.md` and append this block:
 
 ---
 
-## 5) Signal Manager
+## 5) Signal Manager [DATABASE-DRIVEN]
 
-- [ ] Post a one‑liner in the **Issue comment**: “Shutdown complete — see latest feedback entry for status/next‑start plan.”
-- [ ] @mention the Manager if a blocker needs immediate attention.
+- [ ] Your `logDecision()` call automatically signals Manager (they query the database)
+- [ ] Only @mention Manager in Issue if **urgent blocker** needs immediate attention
+- [ ] Otherwise, Manager will see your status in next query (< 1 second)
+
+**Database = automatic signaling** - Manager checks `query-agent-status.ts` during shutdown.
 
 ---
 

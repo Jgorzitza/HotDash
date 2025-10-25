@@ -1,0 +1,254 @@
+name: Code Review Checks
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: read
+
+jobs:
+  pr-validation:
+    name: PR Validation
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.draft == false
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Check PR size
+        id: pr-size
+        run: |
+          CHANGED_LINES=$(git diff --shortstat origin/${{ github.base_ref }}...HEAD | awk '{print $4+$6}')
+          echo "changed_lines=$CHANGED_LINES" >> $GITHUB_OUTPUT
+          
+          if [ "$CHANGED_LINES" -gt 500 ]; then
+            echo "⚠️ PR is large ($CHANGED_LINES lines changed)"
+            echo "Consider breaking into smaller PRs for easier review"
+            echo "large_pr=true" >> $GITHUB_OUTPUT
+          else
+            echo "✅ PR size is reasonable ($CHANGED_LINES lines changed)"
+            echo "large_pr=false" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Check for TypeScript 'any' types
+        id: check-any
+        continue-on-error: true
+        run: |
+          if git diff origin/${{ github.base_ref }}...HEAD -- "*.ts" "*.tsx" | grep -E "^\+.*: any|^\+.*<any>"; then
+            echo "⚠️ New 'any' types found"
+            echo "has_any=true" >> $GITHUB_OUTPUT
+          else
+            echo "✅ No new 'any' types"
+            echo "has_any=false" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Check for console.log
+        id: check-console
+        continue-on-error: true
+        run: |
+          if git diff origin/${{ github.base_ref }}...HEAD -- "app/**/*.ts" "app/**/*.tsx" | grep -E "^\+.*console\.(log|debug|info)"; then
+            echo "⚠️ New console.log statements found"
+            echo "has_console=true" >> $GITHUB_OUTPUT
+          else
+            echo "✅ No new console.log statements"
+            echo "has_console=false" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Check for missing error handling
+        id: check-error-handling
+        continue-on-error: true
+        run: |
+          if git diff origin/${{ github.base_ref }}...HEAD -- "app/**" | grep -E "^\+.*await fetch|^\+.*\.then\(" | grep -v -E "catch|try"; then
+            echo "⚠️ Async operations without error handling detected"
+            echo "missing_error_handling=true" >> $GITHUB_OUTPUT
+          else
+            echo "✅ Error handling looks good"
+            echo "missing_error_handling=false" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Check test coverage
+        id: check-tests
+        continue-on-error: true
+        run: |
+          APP_CHANGED=$(git diff --name-only origin/${{ github.base_ref }}...HEAD | grep -E "^(app|packages|scripts)/" | wc -l)
+          TESTS_CHANGED=$(git diff --name-only origin/${{ github.base_ref }}...HEAD | grep -E "^tests/|\.test\." | wc -l)
+          
+          if [ "$APP_CHANGED" -gt 0 ] && [ "$TESTS_CHANGED" -eq 0 ]; then
+            echo "⚠️ App code changed but no tests updated"
+            echo "missing_tests=true" >> $GITHUB_OUTPUT
+          else
+            echo "✅ Tests updated with code changes"
+            echo "missing_tests=false" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Post review comment
+        if: steps.pr-size.outputs.large_pr == 'true' || steps.check-any.outputs.has_any == 'true' || steps.check-console.outputs.has_console == 'true' || steps.check-error-handling.outputs.missing_error_handling == 'true' || steps.check-tests.outputs.missing_tests == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const warnings = [];
+            
+            if ('${{ steps.pr-size.outputs.large_pr }}' === 'true') {
+              warnings.push('⚠️ **Large PR**: ${{ steps.pr-size.outputs.changed_lines }} lines changed. Consider breaking into smaller PRs.');
+            }
+            
+            if ('${{ steps.check-any.outputs.has_any }}' === 'true') {
+              warnings.push('⚠️ **TypeScript**: New `any` types detected. Consider using specific types for better type safety.');
+            }
+            
+            if ('${{ steps.check-console.outputs.has_console }}' === 'true') {
+              warnings.push('⚠️ **Console Logs**: New `console.log` statements found. Remove before merging or use proper logging.');
+            }
+            
+            if ('${{ steps.check-error-handling.outputs.missing_error_handling }}' === 'true') {
+              warnings.push('⚠️ **Error Handling**: Async operations without error handling detected. Add `.catch()` or `try/catch` blocks.');
+            }
+            
+            if ('${{ steps.check-tests.outputs.missing_tests }}' === 'true') {
+              warnings.push('⚠️ **Tests**: App code changed but no tests updated. Add or update tests.');
+            }
+            
+            if (warnings.length > 0) {
+              const body = `## 🤖 Automated Code Review\n\n${warnings.join('\n\n')}\n\n---\n*See [Code Review Guidelines](docs/development/code-review-guidelines.md) for more information.*`;
+              
+              github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: body
+              });
+            }
+  
+  complexity-check:
+    name: Code Complexity Check
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.draft == false
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Check for large files
+        run: |
+          LARGE_FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD | xargs wc -l 2>/dev/null | awk '$1 > 300 {print $2, "("$1" lines)"}' | grep -v "total" || true)
+          
+          if [ -n "$LARGE_FILES" ]; then
+            echo "⚠️ Large files detected (>300 lines):"
+            echo "$LARGE_FILES"
+            echo ""
+            echo "Consider breaking these files into smaller modules"
+          else
+            echo "✅ No excessively large files"
+          fi
+      
+      - name: Check for long functions
+        run: |
+          echo "Checking for functions longer than 50 lines..."
+          
+          # This is a simple heuristic - could be improved with AST parsing
+          git diff origin/${{ github.base_ref }}...HEAD -- "*.ts" "*.tsx" | \
+            grep -E "^\+.*function|^\+.*const.*=.*\(" | \
+            head -5 || echo "✅ Function length check complete"
+  
+  documentation-check:
+    name: Documentation Check
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.draft == false
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Check for README updates
+        run: |
+          CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
+          
+          # Check if new features added but README not updated
+          if echo "$CHANGED_FILES" | grep -qE "^app/routes/|^app/services/"; then
+            if ! echo "$CHANGED_FILES" | grep -q "README.md"; then
+              echo "⚠️ New routes or services added but README not updated"
+              echo "Consider updating documentation"
+            else
+              echo "✅ README updated with code changes"
+            fi
+          fi
+      
+      - name: Check for migration documentation
+        run: |
+          CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
+          
+          if echo "$CHANGED_FILES" | grep -q "supabase/migrations/"; then
+            if ! git diff origin/${{ github.base_ref }}...HEAD -- "supabase/migrations/" | grep -q "-- Description:"; then
+              echo "⚠️ Migration added without description comment"
+              echo "Add description comment to migration file"
+            else
+              echo "✅ Migration includes description"
+            fi
+          fi
+  
+  security-review:
+    name: Security Review
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.draft == false
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Check for hardcoded URLs
+        run: |
+          if git diff origin/${{ github.base_ref }}...HEAD -- "app/**" | grep -E "^\+.*https?://[^\"']*\.(com|net|org)" | grep -v "shopify.com\|supabase.co\|fly.dev"; then
+            echo "⚠️ Hardcoded URLs detected"
+            echo "Consider using environment variables"
+          else
+            echo "✅ No hardcoded URLs found"
+          fi
+      
+      - name: Check for SQL injection risks
+        run: |
+          if git diff origin/${{ github.base_ref }}...HEAD -- "app/**" | grep -E "^\+.*\`.*\$\{.*\}.*\`" | grep -i "select\|insert\|update\|delete"; then
+            echo "⚠️ Potential SQL injection risk detected"
+            echo "Use parameterized queries or Supabase RPC"
+          else
+            echo "✅ No SQL injection risks detected"
+          fi
+      
+      - name: Check for XSS risks
+        run: |
+          if git diff origin/${{ github.base_ref }}...HEAD -- "app/**" | grep -E "^\+.*dangerouslySetInnerHTML|^\+.*innerHTML"; then
+            echo "⚠️ Potential XSS risk detected"
+            echo "Ensure user input is properly sanitized"
+          else
+            echo "✅ No XSS risks detected"
+          fi
+

@@ -41,7 +41,6 @@ export function initializeGACredentials(): void {
       // Set environment variable to point to temp file
       process.env.GOOGLE_APPLICATION_CREDENTIALS = tmpPath;
 
-      console.log("[GA] Credentials loaded from base64 secret");
       credentialsInitialized = true;
       return;
     } catch (error) {
@@ -55,7 +54,6 @@ export function initializeGACredentials(): void {
 
   if (credentialsPath) {
     if (existsSync(credentialsPath)) {
-      console.log("[GA] Using credentials from file:", credentialsPath);
       credentialsInitialized = true;
       return;
     } else {
@@ -64,7 +62,6 @@ export function initializeGACredentials(): void {
   }
 
   // No credentials provided - will fall back to mock mode
-  console.log("[GA] No credentials configured, will use mock mode");
   credentialsInitialized = true;
 }
 

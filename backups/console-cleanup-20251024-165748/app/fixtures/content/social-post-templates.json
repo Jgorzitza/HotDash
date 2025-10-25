@@ -1,0 +1,124 @@
+{
+  "product_launch": {
+    "platforms": ["facebook", "instagram", "twitter"],
+    "template": "🔥 NEW: {product_name} is here! {brief_description} Shop now: {shop_url}",
+    "variations": [
+      "Introducing {product_name}! {selling_point_1}. Available now.",
+      "Ready for this? {product_name} just dropped. {selling_point_2}.",
+      "Rev up! {product_name} has arrived. {brief_description} Get yours today."
+    ],
+    "hashtags": ["#NewArrival", "#HotRodan", "#ShopNow"],
+    "best_times": ["9am", "12pm", "6pm"],
+    "notes": "Use high-quality product images. Include urgency for limited editions."
+  },
+  "sale_announcement": {
+    "platforms": ["facebook", "instagram", "twitter", "linkedin"],
+    "template": "💥 SALE: {discount_pct}% off {category}! Use code {promo_code} at checkout.",
+    "variations": [
+      "{discount_pct}% off sale starts NOW! Limited time on {category}.",
+      "Flash sale alert! Save {discount_pct}% on {product_name}.",
+      "Pit stop sale 🏁 {discount_pct}% off {category}. Code: {promo_code}",
+      "Full throttle savings! {discount_pct}% off {category} today only."
+    ],
+    "hashtags": ["#Sale", "#HotRodanDeals", "#LimitedTime"],
+    "best_times": ["8am", "12pm", "5pm"],
+    "notes": "Always include end date. Create urgency. Use countdown timers when possible."
+  },
+  "restock_alert": {
+    "platforms": ["instagram", "twitter"],
+    "template": "✨ BACK IN STOCK: {product_name}! Get yours before they're gone again.",
+    "variations": [
+      "{product_name} is BACK! Limited quantities available.",
+      "You asked, we restocked! {product_name} available now.",
+      "They're back in the garage! {product_name} restocked. Don't miss out.",
+      "Restock alert 🚨 {product_name} back in action!"
+    ],
+    "hashtags": ["#BackInStock", "#HotRodan", "#RestockAlert"],
+    "best_times": ["10am", "2pm", "7pm"],
+    "notes": "Post immediately upon restock. Tag customers who asked about product."
+  },
+  "customer_spotlight": {
+    "platforms": ["facebook", "instagram"],
+    "template": "Customer Spotlight: {customer_name} from {location}! {their_story}. Want to be featured? Tag us! 📸",
+    "variations": [
+      "Meet {customer_name}! {their_build_description}. Tag us to share your story!",
+      "{customer_name}'s {vehicle_type} transformation is 🔥 Share your build with us!",
+      "Community feature: {customer_name} built this beauty with our parts. You're next!"
+    ],
+    "hashtags": ["#HotRodanCommunity", "#CustomerSpotlight", "#BuildStory"],
+    "best_times": ["12pm", "6pm"],
+    "notes": "Always get customer permission. Include before/after if available. Tag customer."
+  },
+  "behind_the_scenes": {
+    "platforms": ["instagram", "tiktok", "facebook"],
+    "template": "Behind the scenes: {activity_description}. This is how we {process_name}. ⚙️✨",
+    "variations": [
+      "Ever wondered how we {process_name}? Here's the inside look!",
+      "Workshop Wednesday: {activity_description} in action.",
+      "From the garage: {process_name} process revealed. 🔧"
+    ],
+    "hashtags": ["#BehindTheScenes", "#HotRodanWorkshop", "#ProcessReveal"],
+    "best_times": ["11am", "3pm", "8pm"],
+    "notes": "Show craftsmanship and attention to detail. Educational content performs well."
+  },
+  "seasonal_promotion": {
+    "platforms": ["facebook", "instagram", "twitter", "linkedin"],
+    "template": "{season} is here! {seasonal_hook} {offer_description} Limited time: {end_date}",
+    "variations": [
+      "{season} special: {offer_description}. Get ready for the road ahead!",
+      "Gear up for {season}! {seasonal_hook} {offer_description}",
+      "{season} performance: {offer_description}. Keep your ride in top shape."
+    ],
+    "hashtags": ["#{season}Ready", "#HotRodan", "#SeasonalSale"],
+    "best_times": ["9am", "1pm", "5pm"],
+    "notes": "Plan 2-4 weeks ahead. Align with weather patterns and driving seasons."
+  },
+  "tip_or_tutorial": {
+    "platforms": ["instagram", "tiktok", "facebook", "linkedin"],
+    "template": "Quick tip: {tip_title}. {tip_description} Save this for later! 💡",
+    "variations": [
+      "Did you know? {tip_description}. Try this on your next project!",
+      "Pro tip from the garage: {tip_description} 🔧",
+      "Maintenance Monday: {tip_title}. {tip_description}"
+    ],
+    "hashtags": ["#HotRodTips", "#CarCare", "#DIYGarage"],
+    "best_times": ["10am", "2pm", "7pm"],
+    "notes": "Educational content builds authority. Include clear instructions or link to full tutorial."
+  },
+  "user_generated_content": {
+    "platforms": ["instagram", "facebook", "twitter"],
+    "template": "📸 Repost from @{customer_handle}: {their_caption}. Amazing work! Tag us to be featured.",
+    "variations": [
+      "Check out this build from @{customer_handle}! {build_highlight}. 🔥",
+      "Community love! @{customer_handle} shared this beauty. Thanks for tagging us!",
+      "Repost: @{customer_handle}'s {vehicle_type} is pure fire. Tag us with your builds!"
+    ],
+    "hashtags": ["#HotRodanCommunity", "#Repost", "#CustomerBuild"],
+    "best_times": ["12pm", "6pm", "9pm"],
+    "notes": "Always credit original creator. Get permission before reposting. Engage with comments."
+  },
+  "event_announcement": {
+    "platforms": ["facebook", "instagram", "twitter", "linkedin"],
+    "template": "📅 Event: {event_name} on {date}! {event_description} RSVP: {link}",
+    "variations": [
+      "Join us! {event_name} happening {date}. {event_description}",
+      "Mark your calendar: {event_name} - {date}. {event_highlight} See you there!",
+      "Coming soon: {event_name}. {event_description} Register now: {link}"
+    ],
+    "hashtags": ["#HotRodanEvents", "#CarShow", "#CommunityEvent"],
+    "best_times": ["9am", "12pm", "6pm"],
+    "notes": "Post 2-4 weeks in advance. Send reminders 1 week and 1 day before. Include location details."
+  },
+  "milestone_celebration": {
+    "platforms": ["facebook", "instagram", "twitter", "linkedin"],
+    "template": "🎉 Milestone alert! {milestone_description}. Thanks to our amazing community! {gratitude_message}",
+    "variations": [
+      "We did it! {milestone_description}. Thank you all for the support! 🙏",
+      "Celebrating {milestone_description} with you! Grateful for this community.",
+      "{milestone_description} - this wouldn't be possible without you. Thank you! ❤️"
+    ],
+    "hashtags": ["#Milestone", "#ThankYou", "#HotRodanFamily"],
+    "best_times": ["10am", "2pm", "6pm"],
+    "notes": "Authentic gratitude. Share the journey. Include community impact."
+  }
+}

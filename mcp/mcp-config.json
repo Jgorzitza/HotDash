@@ -3,108 +3,52 @@
     "github-official": {
       "description": "Official GitHub MCP server for repository operations, issues, PRs, and more",
       "command": "docker",
-      "args": [
-        "run",
-        "-i",
-        "--rm",
-        "-e",
-        "GITHUB_PERSONAL_ACCESS_TOKEN",
-        "ghcr.io/github/github-mcp-server"
-      ],
-      "env": {
-        "GITHUB_PERSONAL_ACCESS_TOKEN": "[REDACTED]"
-      },
-      "capabilities": [
-        "repository_management",
-        "issue_tracking",
-        "pull_requests",
-        "code_search",
-        "workflows"
-      ]
+      "args": ["run", "-i", "--rm", "-e", "GITHUB_PERSONAL_ACCESS_TOKEN", "ghcr.io/github/github-mcp-server"],
+      "capabilities": ["repository_management", "issue_tracking", "pull_requests", "code_search", "workflows"]
     },
     "context7": {
       "description": "Context7 MCP server for enhanced context management",
       "type": "http",
       "url": "http://localhost:3001/mcp",
-      "capabilities": [
-        "context_management",
-        "semantic_search",
-        "code_understanding"
-      ]
+      "capabilities": ["context_management", "semantic_search", "code_understanding"]
     },
     "supabase": {
       "description": "Supabase MCP server for database operations and backend services",
       "command": "npx",
-      "args": [
-        "-y",
-        "@supabase/mcp-server-supabase",
-        "--project-ref",
-        "mmbjiyhsvniqxibzgyvx"
-      ],
-      "env": {
-        "SUPABASE_ACCESS_TOKEN": "[REDACTED]"
-      },
-      "capabilities": [
-        "database_operations",
-        "authentication",
-        "storage",
-        "edge_functions",
-        "realtime"
-      ]
+      "args": ["-y", "@supabase/mcp-server-supabase", "--project-ref", "mmbjiyhsvniqxibzgyvx"],
+      "capabilities": ["database_operations", "authentication", "storage", "edge_functions", "realtime"]
     },
     "fly": {
       "description": "Fly.io MCP server for deployment and infrastructure management",
       "type": "http",
       "url": "http://127.0.0.1:8080/mcp",
-      "capabilities": [
-        "deployment",
-        "infrastructure",
-        "monitoring",
-        "scaling"
-      ]
+      "capabilities": ["deployment", "infrastructure", "monitoring", "scaling"]
     },
     "shopify": {
       "description": "Shopify MCP server for e-commerce operations and Liquid templates",
       "command": "npx",
-      "args": [
-        "-y",
-        "@shopify/dev-mcp@latest"
-      ],
-      "env": {
-        "LIQUID_VALIDATION_MODE": "partial"
-      },
-      "capabilities": [
-        "shopify_api",
-        "liquid_templates",
-        "product_management",
-        "order_management",
-        "theme_development"
-      ]
-    },
-    "google-analytics": {
-      "description": "Google Analytics MCP server for analytics data and reporting",
-      "command": "pipx",
-      "args": [
-        "run",
-        "analytics-mcp"
-      ],
-      "env": {
-        "GOOGLE_APPLICATION_CREDENTIALS": "/home/justin/HotDash/hot-dash/vault/occ/google/analytics-service-account.json",
-        "GOOGLE_PROJECT_ID": "hotrodan-seo-reports"
-      },
-      "capabilities": [
-        "analytics_reporting",
-        "metrics_tracking",
-        "user_behavior_analysis",
-        "conversion_tracking"
-      ]
+      "args": ["-y", "@shopify/dev-mcp@latest"],
+      "env": {"LIQUID_VALIDATION_MODE": "partial"},
+      "capabilities": ["shopify_api", "liquid_templates", "product_management", "order_management", "theme_development"]
     },
     "chrome-devtools": {
       "description": "Chrome DevTools MCP server",
       "command": "npx",
-      "args": ["-y", "chrome-devtools-mcp@latest"]
+      "args": ["-y", "chrome-devtools-mcp@latest", "--browserUrl", "http://127.0.0.1:9222"]
+    },
+    "llamaindex": {
+      "description": "LlamaIndex RAG MCP server for knowledge base queries and insights",
+      "type": "http",
+      "url": "http://localhost:4000/mcp",
+      "capabilities": ["kb_query", "index_refresh", "insights"]
+    },
+    "fetch": {
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "mcp/fetch"]
     }
   },
+
+
   "usage_guidelines": {
     "github-official": {
       "when_to_use": [
@@ -179,22 +123,6 @@
         "Query Shopify API"
       ]
     },
-    "google-analytics": {
-      "when_to_use": [
-        "Fetching analytics data",
-        "Generating reports",
-        "Analyzing user behavior",
-        "Tracking conversions",
-        "Monitoring traffic metrics"
-      ],
-      "examples": [
-        "Get page view statistics",
-        "Generate conversion report",
-        "Analyze user demographics",
-        "Track campaign performance"
-      ]
-    }
-,
     "chrome-devtools": {
       "when_to_use": [
         "Inspecting live browser console/network logs during development",

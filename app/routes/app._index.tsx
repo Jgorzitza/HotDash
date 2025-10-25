@@ -1,5 +1,5 @@
-import type { LoaderFunctionArgs } from "react-router";
-import { useLoaderData } from "react-router";
+import type { LoaderFunctionArgs, MetaFunction } from "react-router";
+import { useLoaderData, useFetcher } from "react-router";
 import type { LoaderFunction } from "react-router";
 
 import "../styles/tokens.css";
@@ -11,8 +11,43 @@ import {
   CXEscalationsTile,
   SEOContentTile,
   OpsMetricsTile,
+  IdeaPoolTile,
+  ApprovalsQueueTile,
+  CEOAgentTile,
+  UnreadMessagesTile,
+  // Phase 7-8: Growth analytics tiles (ENG-023 to ENG-026)
+  SocialPerformanceTile,
+  SEOImpactTile,
+  AdsROASTile,
+  GrowthMetricsTile,
 } from "../components/tiles";
+import { GrowthEngineAnalyticsTile } from "../components/tiles/GrowthEngineAnalyticsTile";
+import { SortableTile } from "../components/tiles/SortableTile";
 import type { TileState, TileFact } from "../components/tiles";
+import { BannerAlerts } from "../components/notifications/BannerAlerts";
+import { useBannerAlerts } from "../hooks/useBannerAlerts";
+import { useSSE } from "../hooks/useSSE";
+import { useNotifications } from "../hooks/useNotifications";
+import { ConnectionStatusIndicator } from "../components/indicators/ConnectionStatusIndicator";
+import { useState, useEffect, useCallback, useMemo, useRef } from "react";
+import { appMetrics } from "~/utils/metrics.server";
+
+// @dnd-kit imports for drag & drop tile reordering (ENG-014)
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
 
 import type { EscalationConversation } from "../services/chatwoot/types";
 import { getEscalations } from "../services/chatwoot/escalations";
@@ -33,6 +68,26 @@ import {
 } from "../services/metrics/aggregate";
 import type { ServiceResult } from "../services/types";
 import { ServiceError } from "../services/types";
+import type { IdeaPoolResponse } from "./api.analytics.idea-pool";
+import type { CEOAgentStatsResponse } from "./api.ceo-agent.stats";
+import type { UnreadMessagesResponse } from "./api.chatwoot.unread";
+import {
+  getDefaultPreferences,
+  getUserPreferences,
+} from "../services/userPreferences";
+
+export const meta: MetaFunction = () => {
+  return [
+    { title: "Dashboard - Hot Dash | Shopify Control Center" },
+    { name: "description", content: "Real-time Shopify dashboard with sales analytics, inventory management, customer experience monitoring, and growth automation." },
+    { name: "keywords", content: "shopify dashboard, real-time analytics, inventory management, sales monitoring, ecommerce dashboard" },
+    { property: "og:title", content: "Dashboard - Hot Dash" },
+    { property: "og:description", content: "Real-time Shopify control center with analytics and automation." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary_large_image" },
+    { name: "robots", content: "noindex, nofollow" }, // Dashboard is private
+  ];
+};
 
 interface LoaderData {
   mode: "live" | "mock";
@@ -42,30 +97,76 @@ interface LoaderData {
   escalations: TileState<EscalationConversation[]>;
   seo: TileState<LandingPageAnomaly[]>;
   opsMetrics: TileState<OpsAggregateMetrics>;
+  ideaPool: TileState<IdeaPoolResponse["data"]>;
+  approvalsQueue: TileState<any>;
+  ceoAgent: TileState<CEOAgentStatsResponse["data"]>;
+  unreadMessages: TileState<UnreadMessagesResponse["data"]>;
+  // Phase 7-8: Growth analytics (ENG-023 to ENG-026)
+  socialPerformance: TileState<any>;
+  seoImpact: TileState<any>;
+  adsRoas: TileState<any>;
+  growthMetrics: TileState<any>;
+  // Phase 9-12: Advanced Growth Engine analytics (ENG-024)
+  growthEngineAnalytics: TileState<any>;
+  // ENG-015: User preferences
+  visibleTiles: string[];
 }
 
 export const loader: LoaderFunction = async ({
   request,
 }: LoaderFunctionArgs) => {
+  const t0 = performance.now();
   const url = new URL(request.url);
   const useMock =
     url.searchParams.get("mock") === "1" ||
     process.env.DASHBOARD_USE_MOCK === "1";
 
   if (useMock) {
-    return Response.json(buildMockDashboard());
+    const res = Response.json(buildMockDashboard());
+    const t1 = performance.now();
+    try {
+      appMetrics.httpRequest("GET", url.pathname || "/app", 200, t1 - t0);
+    } catch {}
+    return res;
   }
 
   const context = await getShopifyServiceContext(request);
 
-  const sales = await resolveTile(() => getSalesPulseSummary(context));
-  const fulfillment = await resolveTile(() => getPendingFulfillments(context));
-  const inventory = await resolveTile(() => getInventoryAlerts(context));
-  const seo = await resolveTile(() =>
-    getLandingPageAnomalies({ shopDomain: context.shopDomain }),
-  );
-  const escalations = await resolveEscalations(context.shopDomain);
-  const opsMetrics = await resolveTile(() => getOpsAggregateMetrics());
+  // Fetch core service tiles in parallel
+  const [sales, fulfillment, inventory, seo, escalations, opsMetrics] =
+    await Promise.all([
+      resolveTile(() => getSalesPulseSummary(context)),
+      resolveTile(() => getPendingFulfillments(context)),
+      resolveTile(() => getInventoryAlerts(context)),
+      resolveTile(() =>
+        getLandingPageAnomalies({ shopDomain: context.shopDomain }),
+      ),
+      resolveEscalations(context.shopDomain),
+      resolveTile(() => getOpsAggregateMetrics()),
+    ]);
+
+  // Fetch API tiles in parallel
+  const [
+    ideaPool,
+    approvalsQueue,
+    ceoAgent,
+    unreadMessages,
+    socialPerformance,
+    seoImpact,
+    adsRoas,
+    growthMetrics,
+    growthEngineAnalytics,
+  ] = await Promise.all([
+    resolveApiTile("/api/analytics/idea-pool"),
+    resolveApprovalsQueue(),
+    resolveApiTile("/api/ceo-agent/stats"),
+    resolveApiTile("/api/chatwoot/unread"),
+    resolveApiTile("/api/analytics/social-performance"),
+    resolveApiTile("/api/analytics/seo-impact"),
+    resolveApiTile("/api/analytics/ads-roas"),
+    resolveApiTile("/api/analytics/growth-metrics"),
+    resolveApiTile("/api/analytics/growth-engine"),
+  ]);
 
   await recordDashboardSessionOpen({
     shopDomain: context.shopDomain,
@@ -73,7 +174,25 @@ export const loader: LoaderFunction = async ({
     requestId: request.headers.get("x-request-id"),
   });
 
-  return Response.json({
+  let visibleTiles = DEFAULT_TILE_ORDER;
+  try {
+    const preferences = await getUserPreferences(
+      context.shopDomain,
+      context.operatorEmail,
+    );
+
+    if (preferences?.visible_tiles?.length) {
+      visibleTiles = normalizeVisibleTiles(preferences.visible_tiles);
+    } else {
+      const defaults = getDefaultPreferences();
+      visibleTiles = normalizeVisibleTiles(defaults.visible_tiles);
+    }
+  } catch (error) {
+    console.error("Failed to load dashboard preferences", error);
+    visibleTiles = DEFAULT_TILE_ORDER;
+  }
+
+  const payload = {
     mode: "live",
     sales,
     fulfillment,
@@ -81,7 +200,23 @@ export const loader: LoaderFunction = async ({
     escalations,
     seo,
     opsMetrics,
-  });
+    ideaPool,
+    approvalsQueue,
+    ceoAgent,
+    unreadMessages,
+    socialPerformance,
+    seoImpact,
+    adsRoas,
+    growthMetrics,
+    growthEngineAnalytics,
+    visibleTiles,
+  } as const;
+  const res = Response.json(payload);
+  const t1 = performance.now();
+  try {
+    appMetrics.httpRequest("GET", url.pathname || "/app", 200, t1 - t0);
+  } catch {}
+  return res;
 };
 
 async function resolveTile<T>(
@@ -135,6 +270,99 @@ async function resolveEscalations(
     if (error instanceof ServiceError) {
       return { status: "error", error: error.message };
     }
+    return {
+      status: "error",
+      error: error instanceof Error ? error.message : "Unknown error",
+    };
+  }
+}
+
+async function resolveApiTile<T extends { data?: unknown; success: boolean }>(
+  apiPath: string,
+): Promise<TileState<T["data"]>> {
+  try {
+    const t0 = performance.now();
+    const response = await fetch(`http://localhost:3000${apiPath}`);
+    if (!response.ok) {
+      throw new Error(`API returned ${response.status}`);
+    }
+    const json = (await response.json()) as T;
+    const t1 = performance.now();
+    try {
+      appMetrics.httpRequest("GET", apiPath, response.status, t1 - t0);
+    } catch {}
+    if (!json.success) {
+      return {
+        status: "error",
+        error: "API request failed",
+      };
+    }
+    return {
+      status: "ok",
+      data: json.data,
+      source: "api",
+      fact: {
+        id: Date.now(),
+        createdAt: new Date().toISOString(),
+      },
+    };
+  } catch (error) {
+    return {
+      status: "error",
+      error: error instanceof Error ? error.message : "Unknown error",
+    };
+  }
+}
+
+async function resolveApprovalsQueue(): Promise<TileState<any>> {
+  try {
+    const { getApprovalCounts, getPendingApprovals } = await import(
+      "~/services/approvals"
+    );
+
+    const [counts, pendingApprovals] = await Promise.all([
+      getApprovalCounts(),
+      getPendingApprovals(),
+    ]);
+
+    // Find oldest pending approval
+    let oldestPendingTime = "None";
+    if (pendingApprovals.length > 0) {
+      const oldest = pendingApprovals.reduce((oldest, current) => {
+        const oldestDate = new Date(oldest.created_at);
+        const currentDate = new Date(current.created_at);
+        return currentDate < oldestDate ? current : oldest;
+      });
+
+      const oldestDate = new Date(oldest.created_at);
+      const now = new Date();
+      const diffMs = now.getTime() - oldestDate.getTime();
+      const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+      const diffDays = Math.floor(diffHours / 24);
+
+      if (diffDays > 0) {
+        oldestPendingTime = `${diffDays}d ago`;
+      } else if (diffHours > 0) {
+        oldestPendingTime = `${diffHours}h ago`;
+      } else {
+        oldestPendingTime = "Just now";
+      }
+    }
+
+    return {
+      status: "ok",
+      data: {
+        pendingCount: counts.pending_review || 0,
+        oldestPendingTime,
+        counts,
+      },
+      source: "database",
+      fact: {
+        id: Date.now(),
+        createdAt: new Date().toISOString(),
+      },
+    };
+  } catch (error) {
     return {
       status: "error",
       error: error instanceof Error ? error.message : "Unknown error",
@@ -279,6 +507,63 @@ function buildMockDashboard(): LoaderData {
 
   const fact = (id: number): TileFact => ({ id, createdAt: now });
 
+  // Phase 3 mock data
+  const ideaPoolData: IdeaPoolResponse["data"] = {
+    ideas: [
+      {
+        id: "idea-1",
+        type: "wildcard",
+        title: "Limited Edition Snow Gear Drop",
+        description: "Launch exclusive winter collection with urgency",
+        target_platforms: ["instagram", "facebook"],
+        suggested_copy: "24-hour flash sale on premium snow gear",
+        suggested_hashtags: ["#WinterSale", "#SnowGear"],
+        evidence: { trending: true },
+        supabase_linkage: { table: "product_suggestions" },
+        projected_metrics: {
+          estimated_reach: 5000,
+          estimated_engagement_rate: 0.08,
+          estimated_clicks: 400,
+          estimated_conversions: 20,
+        },
+        cadence: "one-time",
+        status: "pending_review",
+        priority: "high",
+      },
+    ],
+    total_count: 5,
+    wildcard_count: 1,
+    source: "fixture",
+    feature_flag_enabled: false,
+  };
+
+  const ceoAgentData: CEOAgentStatsResponse["data"] = {
+    actions_today: 3,
+    pending_approvals: 2,
+    last_action: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
+    recent_actions: [
+      {
+        id: "cea-mock-1",
+        type: "data_analysis",
+        description: "Analyzed customer trends for Q4",
+        status: "completed",
+        created_at: now,
+        completed_at: now,
+      },
+    ],
+    source: "mock",
+  };
+
+  const unreadMessagesData: UnreadMessagesResponse["data"] = {
+    unread_count: 3,
+    top_conversation: {
+      customer_name: "Mock Customer",
+      snippet: "I have a question about my recent order...",
+      created_at: now,
+    },
+    source: "mock",
+  };
+
   return {
     mode: "mock",
     sales: {
@@ -317,14 +602,497 @@ function buildMockDashboard(): LoaderData {
       source: "mock",
       fact: fact(6),
     },
+    ideaPool: {
+      status: "ok",
+      data: ideaPoolData,
+      source: "mock",
+      fact: fact(7),
+    },
+    approvalsQueue: {
+      status: "ok",
+      data: {
+        pendingCount: 3,
+        oldestPendingTime: "2h ago",
+        counts: { pending_review: 3, completed: 12, in_progress: 1 },
+      },
+      source: "mock",
+      fact: fact(8),
+    },
+    ceoAgent: {
+      status: "ok",
+      data: ceoAgentData,
+      source: "mock",
+      fact: fact(9),
+    },
+    unreadMessages: {
+      status: "ok",
+      data: unreadMessagesData,
+      source: "mock",
+      fact: fact(10),
+    },
+    socialPerformance: {
+      status: "ok",
+      data: {
+        totalPosts: 24,
+        avgEngagement: 342,
+        topPost: {
+          platform: "Instagram",
+          content: "Winter collection drop",
+          impressions: 5240,
+          engagement: 892,
+        },
+      },
+      source: "mock",
+      fact: fact(11),
+    },
+    seoImpact: {
+      status: "ok",
+      data: {
+        totalKeywords: 142,
+        avgPosition: 12.4,
+        topMover: {
+          keyword: "snow boots",
+          oldPosition: 24,
+          newPosition: 8,
+          change: -16,
+        },
+      },
+      source: "mock",
+      fact: fact(12),
+    },
+    adsRoas: {
+      status: "ok",
+      data: {
+        totalSpend: 4250,
+        totalRevenue: 18900,
+        roas: 4.45,
+        topCampaign: {
+          name: "Winter Collection Launch",
+          platform: "Google Ads",
+          roas: 6.2,
+          spend: 1200,
+        },
+      },
+      source: "mock",
+      fact: fact(13),
+    },
+    growthMetrics: {
+      status: "ok",
+      data: {
+        weeklyGrowth: 18.5,
+        totalReach: 45200,
+        bestChannel: { name: "Social Media", growth: 24.3 },
+      },
+      source: "mock",
+      fact: fact(14),
+    },
+    visibleTiles: DEFAULT_TILE_ORDER, // ENG-015: All tiles visible by default
   };
+}
+
+// Default tile order (ENG-014 + ENG-028)
+const DEFAULT_TILE_ORDER = [
+  "ops-metrics",
+  "sales-pulse",
+  "fulfillment",
+  "inventory",
+  "cx-escalations",
+  "seo-content",
+  "idea-pool",
+  "approvals-queue",
+  "ceo-agent",
+  "unread-messages",
+  // Phase 7-8: Growth analytics (ENG-028)
+  "social-performance",
+  "seo-impact",
+  "ads-roas",
+  "growth-metrics",
+  // Phase 9-12: Advanced Growth Engine analytics (ENG-024)
+  "growth-engine-analytics",
+];
+
+function normalizeVisibleTiles(preferences: string[]): string[] {
+  const allowed = new Set(DEFAULT_TILE_ORDER);
+  const filtered = DEFAULT_TILE_ORDER.filter((tileId) =>
+    preferences.includes(tileId) && allowed.has(tileId),
+  );
+
+  if (filtered.length >= 2) {
+    return filtered;
+  }
+
+  return DEFAULT_TILE_ORDER;
 }
 
 export default function OperatorDashboard() {
   const data = useLoaderData<LoaderData>();
+  const tileOrderFetcher = useFetcher();
+  const notifications = useNotifications();
+
+  // Real-time SSE connection (Phase 5 - ENG-023)
+  const { status: sseStatus, lastMessage, connectionQuality } = useSSE("/api/sse/updates", true);
+
+  // Drag & Drop: Tile order state (ENG-014)
+  const [tileOrder, setTileOrder] = useState<string[]>(DEFAULT_TILE_ORDER);
+  const [visibleTiles, setVisibleTiles] = useState<string[]>(data.visibleTiles);
+  const preferencesChannelRef = useRef<BroadcastChannel | null>(null);
+
+  useEffect(() => {
+    setVisibleTiles(data.visibleTiles);
+  }, [data.visibleTiles]);
+
+  useEffect(() => {
+    if (typeof window === "undefined" || !("BroadcastChannel" in window)) {
+      return;
+    }
+
+    const channel = new BroadcastChannel("hotdash-preferences");
+    preferencesChannelRef.current = channel;
+
+    channel.onmessage = (event) => {
+      const message = event.data as {
+        type?: string;
+        visibleTiles?: string[];
+      };
+
+      if (message?.type === "visibleTilesUpdate" && Array.isArray(message.visibleTiles)) {
+        setVisibleTiles(normalizeVisibleTiles(message.visibleTiles));
+      }
+    };
+
+    return () => {
+      channel.close();
+      preferencesChannelRef.current = null;
+    };
+  }, []);
+
+  // ENG-015: Filter tiles based on visibility preferences
+  const visibleTilesSet = useMemo(() => new Set(visibleTiles), [visibleTiles]);
+  const visibleTileIds = tileOrder.filter((tileId) =>
+    visibleTilesSet.has(tileId),
+  );
+
+  // Track refreshing tiles (Phase 5 - ENG-025)
+  const [refreshingTiles, setRefreshingTiles] = useState<Set<string>>(
+    new Set(),
+  );
+
+  // Handle tile refresh events from SSE
+  useEffect(() => {
+    if (lastMessage?.type === "tile-refresh") {
+      const tileId = (lastMessage.data as { tileId?: string }).tileId;
+      if (tileId) {
+        setRefreshingTiles((prev) => new Set([...prev, tileId]));
+        setTimeout(() => {
+          setRefreshingTiles((prev) => {
+            const next = new Set(prev);
+            next.delete(tileId);
+            return next;
+          });
+        }, 2000);
+      }
+    }
+  }, [lastMessage]);
+
+  // Manual refresh handler
+  const handleRefreshTile = useCallback((tileId: string) => {
+    setRefreshingTiles((prev) => new Set([...prev, tileId]));
+    // TODO: Trigger actual data refresh
+    setTimeout(() => {
+      setRefreshingTiles((prev) => {
+        const next = new Set(prev);
+        next.delete(tileId);
+        return next;
+      });
+    }, 1000);
+  }, []);
+
+  // Configure sensors for drag & drop (ENG-014)
+  // Per Context7 @dnd-kit docs: PointerSensor for mouse/touch, KeyboardSensor for accessibility
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8, // Require 8px movement to start drag (prevents accidental drags)
+      },
+    }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    }),
+  );
+
+  // Handle drag end - reorder tiles and save to preferences (ENG-014)
+  const handleDragEnd = useCallback(
+    (event: DragEndEvent) => {
+      const { active, over } = event;
+
+      if (over && active.id !== over.id) {
+        setTileOrder((items) => {
+          const oldIndex = items.indexOf(active.id as string);
+          const newIndex = items.indexOf(over.id as string);
+          const newOrder = arrayMove(items, oldIndex, newIndex);
+
+          // Save to user preferences via API
+          tileOrderFetcher.submit(
+            { tileOrder: JSON.stringify(newOrder) },
+            { method: "POST", action: "/api/preferences/tile-order" },
+          );
+
+          return newOrder;
+        });
+      }
+    },
+    [tileOrderFetcher],
+  );
+
+  // Monitor system status for banner alerts (Phase 4 - ENG-012)
+  const systemStatus = {
+    queueDepth: data.approvalsQueue.status === "ok" && data.approvalsQueue.data 
+      ? data.approvalsQueue.data.pendingCount || 0 
+      : 0,
+    approvalRate: undefined, // TODO: Get from metrics service
+    serviceHealth: "healthy" as const,
+    connectionStatus:
+      sseStatus === "connected"
+        ? ("online" as const)
+        : sseStatus === "connecting"
+          ? ("reconnecting" as const)
+          : ("offline" as const),
+  };
+  const bannerAlerts = useBannerAlerts(systemStatus);
+
+  // Monitor approvals queue for notifications
+  useEffect(() => {
+    const approvalsData = data.approvalsQueue;
+    if (approvalsData.status === "ok" && approvalsData.data) {
+      const pendingCount = approvalsData.data.pendingCount || 0;
+      
+      // Show notification if there are pending approvals and we haven't shown one recently
+      if (pendingCount > 0) {
+        const lastNotification = localStorage.getItem('last-approval-notification');
+        const now = Date.now();
+        const oneHour = 60 * 60 * 1000; // 1 hour in milliseconds
+        
+        if (!lastNotification || (now - parseInt(lastNotification)) > oneHour) {
+          notifications.addNotification({
+            type: "approval",
+            title: "Pending Approvals",
+            message: `${pendingCount} approval${pendingCount > 1 ? 's' : ''} need your review`,
+            url: "/approvals",
+          });
+          
+          localStorage.setItem('last-approval-notification', now.toString());
+        }
+      }
+    }
+  }, [data.approvalsQueue, notifications]);
+
+  // Tile mapping for dynamic ordering (ENG-014)
+  const tileMap = {
+    "ops-metrics": (
+      <TileCard
+        title="Ops Pulse"
+        tile={data.opsMetrics}
+        render={(metrics) => <OpsMetricsTile metrics={metrics} />}
+        testId="tile-ops-metrics"
+        showRefreshIndicator
+        isRefreshing={refreshingTiles.has("ops-metrics")}
+        onRefresh={() => handleRefreshTile("ops-metrics")}
+        autoRefreshInterval={300}
+      />
+    ),
+    "sales-pulse": (
+      <TileCard
+        title="Sales Pulse"
+        tile={data.sales}
+        render={(summary) => <SalesPulseTile summary={summary} enableModal />}
+        testId="tile-sales-pulse"
+        showRefreshIndicator
+        isRefreshing={refreshingTiles.has("sales-pulse")}
+        onRefresh={() => handleRefreshTile("sales-pulse")}
+        autoRefreshInterval={60}
+      />
+    ),
+    fulfillment: (
+      <TileCard
+        title="Fulfillment Health"
+        tile={data.fulfillment}
+        render={(issues) => <FulfillmentHealthTile issues={issues} />}
+        testId="tile-fulfillment-health"
+        showRefreshIndicator
+        isRefreshing={refreshingTiles.has("fulfillment")}
+        onRefresh={() => handleRefreshTile("fulfillment")}
+        autoRefreshInterval={120}
+      />
+    ),
+    inventory: (
+      <TileCard
+        title="Inventory Heatmap"
+        tile={data.inventory}
+        render={(alerts) => <InventoryHeatmapTile alerts={alerts} />}
+        testId="tile-inventory-heatmap"
+        showRefreshIndicator
+        isRefreshing={refreshingTiles.has("inventory")}
+        onRefresh={() => handleRefreshTile("inventory")}
+        autoRefreshInterval={300}
+      />
+    ),
+    "cx-escalations": (
+      <TileCard
+        title="CX Escalations"
+        tile={data.escalations}
+        render={(conversations) => (
+          <CXEscalationsTile conversations={conversations} enableModal />
+        )}
+        testId="tile-cx-escalations"
+        showRefreshIndicator
+        isRefreshing={refreshingTiles.has("cx-escalations")}
+        onRefresh={() => handleRefreshTile("cx-escalations")}
+        autoRefreshInterval={30}
+      />
+    ),
+    "seo-content": (
+      <TileCard
+        title="SEO & Content Watch"
+        tile={data.seo}
+        render={(anomalies) => <SEOContentTile anomalies={anomalies} />}
+        testId="tile-seo-content"
+        showRefreshIndicator
+        isRefreshing={refreshingTiles.has("seo-content")}
+        onRefresh={() => handleRefreshTile("seo-content")}
+        autoRefreshInterval={600}
+      />
+    ),
+    "idea-pool": (
+      <TileCard
+        title="Idea Pool"
+        tile={data.ideaPool}
+        render={(ideaPool) => <IdeaPoolTile ideaPool={ideaPool} />}
+        testId="tile-idea-pool"
+        showRefreshIndicator
+        isRefreshing={refreshingTiles.has("idea-pool")}
+        onRefresh={() => handleRefreshTile("idea-pool")}
+        autoRefreshInterval={300}
+      />
+    ),
+    "approvals-queue": (
+      <TileCard
+        title="Approvals Queue"
+        tile={data.approvalsQueue}
+        render={(approvalsData) => <ApprovalsQueueTile {...approvalsData} />}
+        testId="tile-approvals-queue"
+        showRefreshIndicator
+        isRefreshing={refreshingTiles.has("approvals-queue")}
+        onRefresh={() => handleRefreshTile("approvals-queue")}
+        autoRefreshInterval={60}
+      />
+    ),
+    "ceo-agent": (
+      <TileCard
+        title="CEO Agent"
+        tile={data.ceoAgent}
+        render={(stats) => <CEOAgentTile stats={stats} />}
+        testId="tile-ceo-agent"
+        showRefreshIndicator
+        isRefreshing={refreshingTiles.has("ceo-agent")}
+        onRefresh={() => handleRefreshTile("ceo-agent")}
+        autoRefreshInterval={120}
+      />
+    ),
+    "unread-messages": (
+      <TileCard
+        title="Unread Messages"
+        tile={data.unreadMessages}
+        render={(unread) => <UnreadMessagesTile unread={unread} />}
+        testId="tile-unread-messages"
+        showRefreshIndicator
+        isRefreshing={refreshingTiles.has("unread-messages")}
+        onRefresh={() => handleRefreshTile("unread-messages")}
+        autoRefreshInterval={60}
+      />
+    ),
+    // Phase 7-8: Growth analytics tiles (ENG-023 to ENG-026)
+    "social-performance": (
+      <TileCard
+        title="Social Performance"
+        tile={data.socialPerformance}
+        render={(socialData) => <SocialPerformanceTile data={socialData} />}
+        testId="tile-social-performance"
+        showRefreshIndicator
+        isRefreshing={refreshingTiles.has("social-performance")}
+        onRefresh={() => handleRefreshTile("social-performance")}
+        autoRefreshInterval={300}
+      />
+    ),
+    "seo-impact": (
+      <TileCard
+        title="SEO Impact"
+        tile={data.seoImpact}
+        render={(seoData) => <SEOImpactTile data={seoData} />}
+        testId="tile-seo-impact"
+        showRefreshIndicator
+        isRefreshing={refreshingTiles.has("seo-impact")}
+        onRefresh={() => handleRefreshTile("seo-impact")}
+        autoRefreshInterval={600}
+      />
+    ),
+    "ads-roas": (
+      <TileCard
+        title="Ads ROAS"
+        tile={data.adsRoas}
+        render={(adsData) => <AdsROASTile data={adsData} />}
+        testId="tile-ads-roas"
+        showRefreshIndicator
+        isRefreshing={refreshingTiles.has("ads-roas")}
+        onRefresh={() => handleRefreshTile("ads-roas")}
+        autoRefreshInterval={300}
+      />
+    ),
+    "growth-metrics": (
+      <TileCard
+        title="Growth Metrics"
+        tile={data.growthMetrics}
+        render={(growthData) => <GrowthMetricsTile data={growthData} />}
+        testId="tile-growth-metrics"
+        showRefreshIndicator
+        isRefreshing={refreshingTiles.has("growth-metrics")}
+        onRefresh={() => handleRefreshTile("growth-metrics")}
+        autoRefreshInterval={600}
+      />
+    ),
+    // Phase 9-12: Advanced Growth Engine analytics (ENG-024)
+    "growth-engine-analytics": (
+      <TileCard
+        title="Growth Engine Analytics"
+        tile={data.growthEngineAnalytics}
+        render={(analyticsData) => (
+          <GrowthEngineAnalyticsTile
+            analytics={analyticsData.analytics}
+            timeframe={analyticsData.timeframe}
+            period={analyticsData.period}
+            generatedAt={analyticsData.generatedAt}
+          />
+        )}
+        testId="tile-growth-engine-analytics"
+        showRefreshIndicator
+        isRefreshing={refreshingTiles.has("growth-engine-analytics")}
+        onRefresh={() => handleRefreshTile("growth-engine-analytics")}
+        autoRefreshInterval={300}
+      />
+    ),
+  };
 
   return (
     <s-page heading="Operator Control Center">
+      {/* Banner Alerts (Phase 4 - ENG-012) */}
+      {bannerAlerts.length > 0 && <BannerAlerts alerts={bannerAlerts} />}
+      
+      {/* Connection Status Indicator (ENG-020) */}
+      <ConnectionStatusIndicator 
+        status={sseStatus} 
+        quality={connectionQuality}
+        lastMessage={lastMessage}
+      />
+
       {data.mode === "mock" && (
         <div
           style={{
@@ -341,51 +1109,41 @@ export default function OperatorDashboard() {
           </p>
         </div>
       )}
-      <div className="occ-tile-grid">
-        <TileCard
-          title="Ops Pulse"
-          tile={data.opsMetrics}
-          render={(metrics) => <OpsMetricsTile metrics={metrics} />}
-          testId="tile-ops-metrics"
-        />
 
-        <TileCard
-          title="Sales Pulse"
-          tile={data.sales}
-          render={(summary) => <SalesPulseTile summary={summary} enableModal />}
-          testId="tile-sales-pulse"
-        />
-
-        <TileCard
-          title="Fulfillment Health"
-          tile={data.fulfillment}
-          render={(issues) => <FulfillmentHealthTile issues={issues} />}
-          testId="tile-fulfillment-health"
-        />
-
-        <TileCard
-          title="Inventory Heatmap"
-          tile={data.inventory}
-          render={(alerts) => <InventoryHeatmapTile alerts={alerts} />}
-          testId="tile-inventory-heatmap"
-        />
-
-        <TileCard
-          title="CX Escalations"
-          tile={data.escalations}
-          render={(conversations) => (
-            <CXEscalationsTile conversations={conversations} enableModal />
-          )}
-          testId="tile-cx-escalations"
-        />
-
-        <TileCard
-          title="SEO & Content Watch"
-          tile={data.seo}
-          render={(anomalies) => <SEOContentTile anomalies={anomalies} />}
-          testId="tile-seo-content"
-        />
-      </div>
+      {/* Drag & Drop enabled tile grid (ENG-014 + ENG-015 visibility filtering) */}
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragEnd={handleDragEnd}
+      >
+        <SortableContext
+          items={visibleTileIds}
+          strategy={verticalListSortingStrategy}
+        >
+          <div className="occ-tile-grid">
+            {visibleTileIds.length > 0 ? (
+              visibleTileIds.map((tileId) => (
+                <SortableTile key={tileId} id={tileId}>
+                  {tileMap[tileId as keyof typeof tileMap]}
+                </SortableTile>
+              ))
+            ) : (
+              <div
+                style={{
+                  padding: "var(--occ-space-6)",
+                  textAlign: "center",
+                  color: "var(--occ-text-secondary)",
+                }}
+              >
+                <p>
+                  No tiles visible. Visit <a href="/settings">Settings</a> to
+                  enable tiles.
+                </p>
+              </div>
+            )}
+          </div>
+        </SortableContext>
+      </DndContext>
     </s-page>
   );
 }

@@ -1,0 +1,100 @@
+---
+globs: prisma/**/*.prisma,fly.toml,package.json,docker-entrypoint.sh,Dockerfile
+---
+# Prisma Database Safety Rules
+
+**Effective**: 2025-10-20  
+**CRITICAL**: Protect agent data from accidental deletion
+
+## Current Safe Configuration (DO NOT CHANGE)
+
+**[fly.toml](mdc:fly.toml)**:
+```toml
+[deploy]
+  release_command = "npx prisma generate"
+```
+
+**[package.json](mdc:package.json)**:
+```json
+"setup": "prisma generate"
+```
+
+**Both configurations are SAFE** - only generate Prisma client, NO database modifications.
+
+## Forbidden Commands in Deployment Files
+
+**NEVER add to [fly.toml](mdc:fly.toml), [package.json](mdc:package.json), or [docker-entrypoint.sh](mdc:docker-entrypoint.sh)**:
+- ❌ `prisma migrate deploy`
+- ❌ `prisma migrate dev`
+- ❌ `prisma db push`
+- ❌ `prisma db push --accept-data-loss`
+- ❌ `prisma migrate resolve`
+- ❌ `prisma db pull`
+
+## Prisma Schema Multi-Schema Configuration
+
+**[prisma/schema.prisma](mdc:prisma/schema.prisma)** current configuration:
+
+```prisma
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  schemas  = ["public", "auth"]
+}
+
+model Session {
+  // fields...
+  @@schema("public")  // REQUIRED when schemas array exists
+}
+
+model DashboardFact {
+  // fields...
+  @@schema("public")  // REQUIRED when schemas array exists
+}
+
+model DecisionLog {
+  // fields...
+  @@schema("public")  // REQUIRED when schemas array exists
+}
+```
+
+**CRITICAL**: When `datasource` has `schemas` array, ALL models MUST have `@@schema("name")` attribute.
+
+**Source**: Context7 Prisma docs (2025-10-20 P0 fix - saved 6 minutes by using tools)
+
+## If Schema Changes Are Needed
+
+**Process** (CEO-gated):
+1. Create migration file locally: `npx prisma migrate dev --create-only`
+2. Document changes in PR with impact analysis:
+   - What tables/columns affected
+   - What agent data is preserved
+   - What data might be lost (if any)
+3. Manager reviews for safety
+4. **CEO approval required** before merge
+5. Manager applies manually: `fly ssh console -a hotdash-staging -C "npx prisma migrate deploy"`
+6. Evidence logged in `feedback/manager/{date}.md`
+
+## Protected Data
+
+**These records MUST be preserved on every deploy**:
+- ✅ Session (Shopify OAuth sessions)
+- ✅ DashboardFact (analytics, usage data)
+- ✅ DecisionLog (audit trail)
+
+**If PR touches [prisma/schema.prisma](mdc:prisma/schema.prisma)**:
+- MUST include impact analysis
+- MUST explain how agent data is preserved
+- MUST have CEO approval before merge
+
+## Enforcement
+
+**Manager REJECTS PRs that**:
+- Add unsafe Prisma commands to [fly.toml](mdc:fly.toml) or [package.json](mdc:package.json)
+- Modify [prisma/schema.prisma](mdc:prisma/schema.prisma) without impact analysis
+- Include `--accept-data-loss` flags
+- Lack CEO approval for schema changes
+
+**Reference**: [docs/RULES.md](mdc:docs/RULES.md) "Database Safety" section (lines 86-141)
+
+**Current deployment config verified safe 2025-10-20 18:30 UTC.**

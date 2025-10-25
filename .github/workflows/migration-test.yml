@@ -1,0 +1,154 @@
+name: Database Migration Testing
+
+on:
+  pull_request:
+    paths:
+      - 'prisma/migrations/**'
+      - 'prisma/schema.prisma'
+  workflow_dispatch:
+
+concurrency:
+  group: migration-test-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  validate:
+    name: Validate migration files
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate Prisma schema
+        run: npx prisma validate
+
+      - name: Check for breaking changes
+        run: |
+          if git diff origin/main...HEAD prisma/schema.prisma | grep -E "^\-.*model|^\-.*field"; then
+            echo "::error::Breaking schema change detected (removed models/fields)"
+            echo "Database migrations must be ADDITIVE ONLY in production"
+            exit 1
+          fi
+          echo "✅ No breaking changes detected"
+
+  dry-run:
+    name: Dry-run migration
+    runs-on: ubuntu-latest
+    needs: validate
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_PASSWORD: test_password
+          POSTGRES_DB: hotdash_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run migrations (dry-run)
+        env:
+          DATABASE_URL: postgresql://postgres:test_password@localhost:5432/hotdash_test
+        run: |
+          echo "Running Prisma migrations in test database..."
+          npx prisma migrate deploy
+          echo "✅ Migrations applied successfully"
+
+      - name: Verify migration
+        env:
+          DATABASE_URL: postgresql://postgres:test_password@localhost:5432/hotdash_test
+        run: |
+          echo "Verifying database schema..."
+          npx prisma db pull --print
+          echo "✅ Schema verified"
+
+      - name: Generate rollback SQL
+        if: always()
+        env:
+          DATABASE_URL: postgresql://postgres:test_password@localhost:5432/hotdash_test
+        run: |
+          mkdir -p artifacts/migrations
+          
+          # Get list of applied migrations
+          MIGRATIONS=$(npx prisma migrate status --schema=prisma/schema.prisma 2>&1 || echo "")
+          
+          echo "# Migration Rollback Guide" > artifacts/migrations/rollback-guide.md
+          echo "" >> artifacts/migrations/rollback-guide.md
+          echo "**Generated**: $(date -u +"%Y-%m-%dT%H:%M:%SZ")" >> artifacts/migrations/rollback-guide.md
+          echo "" >> artifacts/migrations/rollback-guide.md
+          echo "## Applied Migrations" >> artifacts/migrations/rollback-guide.md
+          echo "\`\`\`" >> artifacts/migrations/rollback-guide.md
+          echo "$MIGRATIONS" >> artifacts/migrations/rollback-guide.md
+          echo "\`\`\`" >> artifacts/migrations/rollback-guide.md
+          echo "" >> artifacts/migrations/rollback-guide.md
+          echo "## Rollback Instructions" >> artifacts/migrations/rollback-guide.md
+          echo "" >> artifacts/migrations/rollback-guide.md
+          echo "⚠️ **CRITICAL**: Coordinate with Manager before rolling back migrations" >> artifacts/migrations/rollback-guide.md
+          echo "" >> artifacts/migrations/rollback-guide.md
+          echo "Database migrations in production require CEO approval and manual execution." >> artifacts/migrations/rollback-guide.md
+          echo "See: docs/RULES.md \"Database Safety\" section" >> artifacts/migrations/rollback-guide.md
+
+      - name: Upload migration artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: migration-test-${{ github.run_number }}
+          path: artifacts/migrations/
+          retention-days: 30
+
+  summary:
+    name: Migration test summary
+    runs-on: ubuntu-latest
+    needs: [validate, dry-run]
+    if: always()
+    steps:
+      - name: Generate summary
+        run: |
+          {
+            echo "## Migration Test Summary";
+            echo "";
+            echo "- **Validation**: ${{ needs.validate.result }}";
+            echo "- **Dry-run**: ${{ needs.dry-run.result }}";
+            echo "";
+            if [ "${{ needs.dry-run.result }}" = "success" ]; then
+              echo "✅ **Migrations safe to apply**";
+              echo "";
+              echo "**Next Steps**:";
+              echo "1. Manager reviews migration files";
+              echo "2. Manager applies to Supabase via console/psql";
+              echo "3. DevOps verifies tables exist";
+              echo "4. Engineer unblocked for Phase implementation";
+            else
+              echo "❌ **Migration issues detected - DO NOT APPLY**";
+              echo "";
+              echo "Fix issues before merging to main.";
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+

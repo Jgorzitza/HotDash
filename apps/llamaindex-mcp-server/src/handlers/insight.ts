@@ -1,6 +1,7 @@
 import { execSync } from 'child_process';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { buildTimeoutError, getExecTimeoutMs, resolveWorkflowCliPath } from '../utils/cli.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -26,8 +27,18 @@ export async function insightHandler(args: { window?: string; format?: string })
     };
   }
   
-  // Path to existing llama-workflow CLI
-  const cliPath = path.resolve(__dirname, '../../../../scripts/ai/llama-workflow/dist/cli.js');
+  // Resolve CLI path with fallback + env override
+  let cliPath: string;
+  try {
+    cliPath = resolveWorkflowCliPath();
+  } catch (err: any) {
+    return {
+      content: [
+        { type: 'text', text: `Error resolving CLI path: ${err.message}` },
+      ],
+      isError: true,
+    };
+  }
   
   try {
     // Build command with options
@@ -38,6 +49,8 @@ export async function insightHandler(args: { window?: string; format?: string })
       encoding: 'utf-8',
       maxBuffer: 10 * 1024 * 1024,
       cwd: path.resolve(__dirname, '../../../../'),
+      timeout: getExecTimeoutMs(),
+      killSignal: 'SIGTERM',
     });
     
     return {
@@ -49,6 +62,9 @@ export async function insightHandler(args: { window?: string; format?: string })
       ],
     };
   } catch (error: any) {
+    if (error?.signal === 'SIGTERM' || error?.killed) {
+      return buildTimeoutError('insight_report', getExecTimeoutMs());
+    }
     console.error('[insight-handler] Error:', error.message);
     return {
       content: [
@@ -61,4 +77,3 @@ export async function insightHandler(args: { window?: string; format?: string })
     };
   }
 }
-

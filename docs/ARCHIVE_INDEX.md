@@ -23,3 +23,14 @@ Archived to docs/\_archive/2025-10-15-root-misc/ and artifacts/\* to reduce root
 - Moved hotdash-manager-bundle-\*.zip into artifacts/releases/2025-10-15/
 
 - Moved training/ into docs/\_archive/2025-10-15-root-misc/training/
+
+## Agent Feedback Migration (2025-10-22)
+
+Archived to feedback/archive/2025-10-22-historical-upload/ as part of feedback system migration from markdown to database.
+
+- Moved all historical agent feedback markdown files (46 files total)
+- All data migrated to `decision_log` database table with 100% verification
+- Archive includes README.md with query instructions
+- Agents now use `logDecision()` for all progress reporting (database-driven)
+- Manager uses query scripts instead of reading markdown files
+- Historical data queryable via: query-agent-status.ts, query-blocked-tasks.ts, query-task-details.ts, etc.

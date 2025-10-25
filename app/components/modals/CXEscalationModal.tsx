@@ -1,7 +1,24 @@
 import { useEffect, useMemo, useState } from "react";
 import { useFetcher } from "react-router";
+import {
+  Modal,
+  TextContainer,
+  TextField,
+  RangeSlider,
+  ButtonGroup,
+  Button,
+  Banner,
+  Scrollable,
+  Card,
+  Text,
+  BlockStack,
+  InlineStack,
+  Divider,
+} from "@shopify/polaris";
 
 import type { EscalationConversation } from "../../services/chatwoot/types";
+import { useModalFocusTrap } from "../../hooks/useModalFocusTrap";
+import { useToast } from "../../hooks/useToast";
 
 interface CXEscalationModalProps {
   conversation: EscalationConversation;
@@ -23,12 +40,27 @@ export function CXEscalationModal({
   const [reply, setReply] = useState(conversation.suggestedReply ?? "");
   const [note, setNote] = useState("");
 
+  // Grading sliders (1-5 scale)
+  const [toneGrade, setToneGrade] = useState(3);
+  const [accuracyGrade, setAccuracyGrade] = useState(3);
+  const [policyGrade, setPolicyGrade] = useState(3);
+
+  // Accessibility: Focus trap + Escape key + Initial focus (WCAG 2.4.3, 2.1.1)
+  useModalFocusTrap(open, onClose);
+
+  // Toast notifications for user feedback (Designer P0 requirement)
+  const { showSuccess, showError } = useToast();
+
   const hasSuggestion = Boolean((conversation.suggestedReply ?? "").trim());
 
   useEffect(() => {
     if (open) {
       setReply(conversation.suggestedReply ?? "");
       setNote("");
+      // Reset grades to default (3 = neutral)
+      setToneGrade(3);
+      setAccuracyGrade(3);
+      setPolicyGrade(3);
     }
   }, [open, conversation.suggestedReply]);
 
@@ -36,9 +68,12 @@ export function CXEscalationModal({
     if (!open) return;
     if (fetcher.state !== "idle") return;
     if (fetcher.data?.ok) {
+      showSuccess("Pit stop complete! 🏁");
       onClose();
+    } else if (fetcher.data?.error) {
+      showError(fetcher.data.error);
     }
-  }, [fetcher.state, fetcher.data, onClose, open]);
+  }, [fetcher.state, fetcher.data, onClose, open, showSuccess, showError]);
 
   const isSubmitting = fetcher.state !== "idle";
 
@@ -73,6 +108,12 @@ export function CXEscalationModal({
     if (note.trim()) {
       formData.set("note", note.trim());
     }
+
+    // Add grading data (1-5 scale)
+    formData.set("toneGrade", String(toneGrade));
+    formData.set("accuracyGrade", String(accuracyGrade));
+    formData.set("policyGrade", String(policyGrade));
+
     Object.entries(extra).forEach(([key, value]) => {
       if (value !== undefined) {
         formData.set(key, value);
@@ -90,6 +131,11 @@ export function CXEscalationModal({
     submit("approve_send");
   };
 
+  const handleEdit = () => {
+    // Edit action allows operator to modify the suggested reply before approval
+    // No submission - keeps modal open for editing
+  };
+
   const handleEscalate = () => {
     submit("escalate");
   };
@@ -98,141 +144,166 @@ export function CXEscalationModal({
     submit("mark_resolved");
   };
 
-  if (!open) {
-    return null;
-  }
-
   return (
-    <div className="occ-modal-backdrop" role="presentation">
-      <dialog
-        open
-        className="occ-modal"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby={`cx-escalation-${conversation.id}-title`}
-        data-testid="cx-escalation-dialog"
-      >
-        <div className="occ-modal__header">
-          <div>
-            <h2 id={`cx-escalation-${conversation.id}-title`}>
-              CX Escalation — {conversation.customerName}
-            </h2>
-            <p className="occ-text-meta" style={{ margin: 0 }}>
+    <Modal
+      open={open}
+      onClose={onClose}
+      title={`CX Escalation — ${conversation.customerName}`}
+      primaryAction={{
+        content: "Approve & send",
+        onAction: handleApprove,
+        disabled: !hasSuggestion || !reply.trim() || isSubmitting,
+        loading: isSubmitting,
+      }}
+      secondaryActions={[
+        {
+          content: "Edit",
+          onAction: handleEdit,
+          disabled: isSubmitting,
+        },
+        {
+          content: "Escalate",
+          onAction: handleEscalate,
+          disabled: isSubmitting,
+        },
+        {
+          content: "Mark resolved",
+          onAction: handleResolve,
+          disabled: isSubmitting,
+        },
+      ]}
+    >
+      <Modal.Section>
+        <BlockStack gap="400">
+          <TextContainer>
+            <Text as="p" variant="bodySm" tone="subdued">
               Conversation #{conversation.id} · Status: {conversation.status}
-            </p>
-          </div>
-          <button
-            type="button"
-            className="occ-button occ-button--plain"
-            onClick={onClose}
-            aria-label="Close escalation modal"
-          >
-            Close
-          </button>
-        </div>
+            </Text>
+          </TextContainer>
 
-        <div className="occ-modal__body">
-          <section className="occ-modal__section">
-            <h3>Conversation history</h3>
-            <div className="occ-modal__messages" role="log" aria-live="polite">
-              {messageHistory.length === 0 ? (
-                <p className="occ-text-secondary">
-                  No recent messages available.
-                </p>
-              ) : (
-                messageHistory.map((message) => (
-                  <article
-                    key={message.id}
-                    className="occ-modal__message"
-                    data-author={message.author}
-                  >
-                    <header>
-                      <strong>{message.displayAuthor}</strong>
-                      <span>
-                        {new Date(message.createdAt).toLocaleString()}
-                      </span>
-                    </header>
-                    <p>{message.content}</p>
-                  </article>
-                ))
-              )}
-            </div>
-          </section>
+          {fetcher.data?.error && (
+            <Banner tone="critical" onDismiss={() => {}}>
+              <p>{fetcher.data.error}</p>
+            </Banner>
+          )}
 
-          <section className="occ-modal__section">
-            <h3>Suggested reply</h3>
+          <BlockStack gap="300">
+            <Text as="h3" variant="headingMd">
+              Conversation history
+            </Text>
+            <Card>
+              <Scrollable shadow style={{ maxHeight: "300px" }}>
+                <BlockStack gap="200">
+                  {messageHistory.length === 0 ? (
+                    <Text as="p" tone="subdued">
+                      No recent messages available.
+                    </Text>
+                  ) : (
+                    messageHistory.map((message) => (
+                      <Card key={message.id}>
+                        <BlockStack gap="100">
+                          <InlineStack align="space-between">
+                            <Text as="span" variant="bodyMd" fontWeight="semibold">
+                              {message.displayAuthor}
+                            </Text>
+                            <Text as="span" variant="bodySm" tone="subdued">
+                              {new Date(message.createdAt).toLocaleString()}
+                            </Text>
+                          </InlineStack>
+                          <Text as="p">{message.content}</Text>
+                        </BlockStack>
+                      </Card>
+                    ))
+                  )}
+                </BlockStack>
+              </Scrollable>
+            </Card>
+          </BlockStack>
+
+          <Divider />
+
+          <BlockStack gap="300">
+            <Text as="h3" variant="headingMd">
+              Suggested reply
+            </Text>
             {hasSuggestion ? (
-              <textarea
-                className="occ-textarea"
-                rows={6}
+              <TextField
+                label=""
                 value={reply}
-                onChange={(event) => setReply(event.currentTarget.value)}
-                aria-label="Reply text"
+                onChange={setReply}
+                multiline={6}
+                autoComplete="off"
                 disabled={isSubmitting}
+                helpText="Edit the AI-suggested reply before sending"
               />
             ) : (
-              <p className="occ-text-secondary">
-                No template available. Draft response manually or escalate.
-              </p>
+              <Banner tone="info">
+                <p>No template available. Draft response manually or escalate.</p>
+              </Banner>
             )}
-          </section>
+          </BlockStack>
 
-          <section className="occ-modal__section">
-            <h3>Internal note</h3>
-            <textarea
-              className="occ-textarea"
-              rows={3}
+          <Divider />
+
+          <BlockStack gap="300">
+            <Text as="h3" variant="headingMd">
+              Internal note
+            </Text>
+            <TextField
+              label=""
               value={note}
-              onChange={(event) => setNote(event.currentTarget.value)}
+              onChange={setNote}
+              multiline={3}
               placeholder="Add context for audit trail"
+              autoComplete="off"
               disabled={isSubmitting}
             />
-          </section>
+          </BlockStack>
 
-          {fetcher.data?.error ? (
-            <p className="occ-feedback occ-feedback--error" role="alert">
-              {fetcher.data.error}
-            </p>
-          ) : null}
-        </div>
+          <Divider />
 
-        <div className="occ-modal__footer">
-          <div className="occ-modal__footer-actions">
-            <button
-              type="button"
-              className="occ-button occ-button--primary"
-              onClick={handleApprove}
-              disabled={!hasSuggestion || !reply.trim() || isSubmitting}
-            >
-              Approve &amp; send
-            </button>
-            <button
-              type="button"
-              className="occ-button occ-button--secondary"
-              onClick={handleEscalate}
-              disabled={isSubmitting}
-            >
-              Escalate
-            </button>
-            <button
-              type="button"
-              className="occ-button occ-button--secondary"
-              onClick={handleResolve}
-              disabled={isSubmitting}
-            >
-              Mark resolved
-            </button>
-          </div>
-          <button
-            type="button"
-            className="occ-button occ-button--plain"
-            onClick={onClose}
-            disabled={isSubmitting}
-          >
-            Cancel
-          </button>
-        </div>
-      </dialog>
-    </div>
+          <BlockStack gap="300">
+            <Text as="h3" variant="headingMd">
+              Grade AI Response (1-5 scale)
+            </Text>
+            <BlockStack gap="400">
+              <RangeSlider
+                label="Tone"
+                value={toneGrade}
+                onChange={setToneGrade}
+                min={1}
+                max={5}
+                step={1}
+                output
+                disabled={isSubmitting}
+                helpText="Grade response tone from 1 (poor) to 5 (excellent)"
+              />
+              <RangeSlider
+                label="Accuracy"
+                value={accuracyGrade}
+                onChange={setAccuracyGrade}
+                min={1}
+                max={5}
+                step={1}
+                output
+                disabled={isSubmitting}
+                helpText="Grade response accuracy from 1 (poor) to 5 (excellent)"
+              />
+              <RangeSlider
+                label="Policy Compliance"
+                value={policyGrade}
+                onChange={setPolicyGrade}
+                min={1}
+                max={5}
+                step={1}
+                output
+                disabled={isSubmitting}
+                helpText="Grade policy compliance from 1 (poor) to 5 (excellent)"
+              />
+            </BlockStack>
+          </BlockStack>
+        </BlockStack>
+      </Modal.Section>
+    </Modal>
   );
 }

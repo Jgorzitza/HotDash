@@ -4,6 +4,11 @@ on:
   push:
     branches:
       - main
+      - 'manager-reopen-*'
+  pull_request:
+    branches:
+      - main
+      - 'manager-reopen-*'
   workflow_dispatch:
     inputs:
       reason:
@@ -19,11 +24,69 @@ permissions:
   contents: read
   actions: read
   id-token: write
+  pull-requests: read
 
 jobs:
+  ci-guards:
+    name: CI Guards (MCP Evidence, Heartbeat, Dev MCP Ban)
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Get PR Body
+        id: pr
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            });
+            core.setOutput('body', pr.data.body || '');
+      
+      - name: Verify MCP Evidence
+        env:
+          PR_BODY: ${{ steps.pr.outputs.body }}
+        run: node scripts/ci/verify-mcp-evidence.cjs
+      
+      - name: Verify Heartbeat
+        env:
+          PR_BODY: ${{ steps.pr.outputs.body }}
+        run: node scripts/ci/verify-heartbeat.cjs
+      
+      - name: Dev MCP Ban Check
+        run: |
+          echo "🔍 Checking for Dev MCP imports in production code..."
+          
+          # Search for Dev MCP imports in app/ directory
+          # Fail if found (Dev MCP is for development/staging ONLY)
+          if grep -r "from.*dev.*mcp\|import.*dev.*mcp\|require.*dev.*mcp" app/ --include="*.ts" --include="*.tsx" -i; then
+            echo ""
+            echo "❌ Dev MCP imports detected in production code (app/ directory)"
+            echo ""
+            echo "Dev MCP is for development/staging environments ONLY."
+            echo "Production code must NOT import or use Dev MCP tools."
+            echo ""
+            echo "Please remove Dev MCP imports from app/ directory."
+            echo ""
+            exit 1
+          fi
+          
+          echo "✅ No Dev MCP imports found in production code"
+
+
   pre-deploy:
     name: Pre-deployment checks
     runs-on: ubuntu-latest
+    needs: [ci-guards]
+    if: always() && (needs.ci-guards.result == 'success' || needs.ci-guards.result == 'skipped')
     outputs:
       should_deploy: ${{ steps.check.outputs.should_deploy }}
       commit_sha: ${{ steps.check.outputs.commit_sha }}

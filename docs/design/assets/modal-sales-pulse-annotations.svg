@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="420" viewBox="0 0 640 420" role="img">
+  <title>Sales Pulse modal annotations</title>
+  <desc>Annotated layout showing tooltip placement, metrics hierarchy, and focus flow for the Sales Pulse modal.</desc>
+  <rect x="40" y="40" width="360" height="340" rx="16" fill="#FFFFFF" stroke="#D2D5D8" stroke-width="2"/>
+  <text x="56" y="76" font-family="Segoe UI, sans-serif" font-size="16" font-weight="600" fill="#202223">Sales Pulse — Today</text>
+  <text x="56" y="104" font-family="Segoe UI, sans-serif" font-size="32" font-weight="600" fill="#202223">$18,540</text>
+  <text x="56" y="130" font-family="Segoe UI, sans-serif" font-size="14" fill="#637381">↑ 12% vs 7-day baseline</text>
+  <rect x="56" y="150" width="104" height="32" rx="16" fill="#E3F9E5"/>
+  <text x="68" y="171" font-family="Segoe UI, sans-serif" font-size="13" font-weight="600" fill="#1A7F37">+12% delta</text>
+  <rect x="56" y="196" width="328" height="88" rx="8" fill="#FFFFFF" stroke="#BBBFCC" stroke-dasharray="6 4"/>
+  <text x="68" y="222" font-family="Segoe UI, sans-serif" font-size="14" fill="#202223">Sparkline w/ hover tooltip</text>
+  <rect x="56" y="296" width="328" height="44" rx="8" fill="#FFFFFF" stroke="#BBBFCC" stroke-dasharray="6 4"/>
+  <text x="68" y="324" font-family="Segoe UI, sans-serif" font-size="14" fill="#202223">Open fulfillment issues (list)</text>
+  <rect x="56" y="352" width="140" height="36" rx="8" fill="#2C6ECB"/>
+  <text x="70" y="376" font-family="Segoe UI, sans-serif" font-size="14" font-weight="600" fill="#FFFFFF">View in Shopify</text>
+  <rect x="204" y="352" width="120" height="36" rx="8" fill="none" stroke="#2C6ECB" stroke-width="1.4"/>
+  <text x="216" y="375" font-family="Segoe UI, sans-serif" font-size="14" font-weight="600" fill="#2C6ECB">Log decision</text>
+
+  <!-- Annotations -->
+  <line x1="416" y1="110" x2="384" y2="110" stroke="#2C6ECB" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="430" y="104" font-family="Segoe UI, sans-serif" font-size="13" fill="#2C6ECB">Primary metric announced after heading</text>
+  <text x="430" y="122" font-family="Segoe UI, sans-serif" font-size="13" fill="#637381">Focus step 1: revenue group</text>
+
+  <line x1="416" y1="168" x2="384" y2="168" stroke="#2C6ECB" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="430" y="164" font-family="Segoe UI, sans-serif" font-size="13" fill="#2C6ECB">Tooltip `top-end` on delta chip</text>
+  <text x="430" y="182" font-family="Segoe UI, sans-serif" font-size="13" fill="#637381">Uses status-healthy.svg for iconography</text>
+
+  <line x1="416" y1="226" x2="384" y2="226" stroke="#2C6ECB" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="430" y="220" font-family="Segoe UI, sans-serif" font-size="13" fill="#202223">Hover state references `sales-pulse-sparkline-hover.svg`</text>
+
+  <line x1="416" y1="312" x2="384" y2="312" stroke="#2C6ECB" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="430" y="306" font-family="Segoe UI, sans-serif" font-size="13" fill="#2C6ECB">Skip link drops focus to metrics table</text>
+
+  <line x1="416" y1="368" x2="384" y2="368" stroke="#2C6ECB" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="430" y="362" font-family="Segoe UI, sans-serif" font-size="13" fill="#202223">Focus order: primary CTA → secondary → Close</text>
+  <text x="430" y="380" font-family="Segoe UI, sans-serif" font-size="13" fill="#637381">Buttons respect 44px minimum height</text>
+
+  <text x="40" y="26" font-family="Segoe UI, sans-serif" font-size="14" fill="#202223">Sales Pulse Modal (Annotated)</text>
+
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto" markerUnits="strokeWidth">
+      <path d="M0 0L8 4L0 8z" fill="#2C6ECB"/>
+    </marker>
+  </defs>
+</svg>
