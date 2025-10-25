@@ -19,9 +19,12 @@ jobs:
 
       - name: Determine changed source files
         id: diff
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
-          git fetch origin ${{ github.base_ref }} --depth=1
-          git diff --name-only origin/${{ github.base_ref }}...HEAD > changed.txt
+          git fetch origin $BASE_SHA --depth=1
+          git diff --name-only $BASE_SHA $HEAD_SHA > changed.txt
           grep -E '\.(ts|tsx)$' changed.txt > changed-ts.txt || true
           count=$(wc -l < changed-ts.txt | tr -d ' ')
           echo "count=$count" >> $GITHUB_OUTPUT
