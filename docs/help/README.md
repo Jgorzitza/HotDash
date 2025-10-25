@@ -92,7 +92,88 @@ Each tutorial is scoped to a core launch workflow. Follow the steps in order; ev
 
 ---
 
-## 3. FAQ (20 Quick Answers)
+## 3. Video Tutorial Scripts
+
+Launch week requires short walk-through videos. Use these scripts when recording screen captures; each fits a 90–120 second demo.
+
+### 3.1 Dashboard Overview (Video #1)
+
+1. **Intro (10s):** “Welcome to HotDash. Let’s look at the launch dashboard tiles.”
+2. **Tiles (45s):** Show auto-refresh, reorder tiles, open a drawer to highlight evidence.
+3. **Approvals handoff (20s):** Jump to Approvals queue from the tile.
+4. **Wrap (10s):** Remind operators to use keyboard shortcuts (`J/K`, `A`, `R`) and the `?` help menu.
+
+### 3.2 Approvals Queue Deep Dive (Video #2)
+
+1. **Intro (10s):** “Here’s how approvals flow from suggestion to execution.”
+2. **Filters (20s):** Demonstrate risk filters and search.
+3. **Card review (40s):** Open a HIGH risk suggestion, assess evidence, edit reply, grade tone/accuracy/policy.
+4. **Bulk approve (20s):** Switch to LOW risk view, bulk approve after reviewing snapshots.
+5. **Wrap (10s):** Highlight audit history and grading impact.
+
+### 3.3 Notifications & Integrations (Video #3)
+
+1. **Intro (10s):** “Configure alerts and keep integrations healthy.”
+2. **Notifications (40s):** Walk through channel toggles, quiet hours, send test.
+3. **Integrations (30s):** Show reconnecting Publer and verifying Chatwoot health.
+4. **Wrap (10s):** Point to troubleshooting table for failures.
+
+### 3.4 Inventory Actions (Video #4)
+
+1. **Intro (10s):** “Resolve inventory alerts and generate POs.”
+2. **Alerts (30s):** Open urgent reorder, explain thresholds.
+3. **PO Draft (30s):** Generate draft, mention approvals queue entry.
+4. **Wrap (10s):** Mention bundle rules and lead time settings.
+
+### 3.5 Analytics & ROI (Video #5)
+
+1. **Intro (10s):** “Track outcomes with GA4 attribution.”
+2. **Monitoring (30s):** Filter date ranges, toggle compare.
+3. **Exports (20s):** Export CSV, explain role-based access.
+4. **Wrap (10s):** Tie results back to idea pool ranking.
+
+Scripts live in `docs/help/video-scripts/` if you need to customize future recordings.
+
+---
+
+## 4. API Reference (Operator View)
+
+HotDash exposes select read-only endpoints for operators who automate reporting. All endpoints require the operator token (see `Settings → API Access`). Responses are JSON and respect ABAC roles.
+
+### 4.1 GET `/api/help/faq`
+
+- **Description:** Returns the 20 launch FAQ entries with categories and last-updated timestamps.
+- **Response sample:**
+  ```json
+  {
+    "items": [
+      {"question": "How do I change tile order?", "answer": "Use Customize layout…", "category": "dashboard", "updatedAt": "2025-10-24T18:30:00Z"}
+    ]
+  }
+  ```
+- **Use cases:** Embed FAQ search in internal docs, build chat triage bots.
+
+### 4.2 GET `/api/help/tutorials`
+
+- **Description:** Provides metadata and URLs for each help tutorial section and associated video script.
+- **Response fields:** `id`, `title`, `summary`, `markdownUrl`, `videoScriptUrl`.
+- **Use cases:** Automate linking inside operator LMS or in-product tooltips.
+
+### 4.3 GET `/api/help/troubleshooting`
+
+- **Description:** Returns troubleshooting table entries with symptoms, resolutions, tags, and escalation paths.
+- **Use cases:** Integrate with on-call runbooks, power Slack triage workflows.
+
+### 4.4 POST `/api/help/feedback`
+
+- **Description:** Allows operators to submit help-center feedback. Requires payload `{ "page": "docs/help/README.md", "summary": "...", "details": "..." }`.
+- **Behavior:** Writes to `DecisionLog` in KB database with `actor: "operator"` and notifies Content agent.
+
+Ensure tokens are stored in Shopify environment secrets; never commit tokens to the repo.
+
+---
+
+## 5. FAQ (20 Quick Answers)
 
 1. **How do I change tile order?** Use `Dashboard → Customize layout` and drag tiles, then save.
 2. **Can I pause auto-refresh?** Yes, set `Auto-refresh` to `Manual`; click the refresh icon to update tiles.
@@ -117,7 +198,7 @@ Each tutorial is scoped to a core launch workflow. Follow the steps in order; ev
 
 ---
 
-## 4. Troubleshooting Guide
+## 6. Troubleshooting Guide
 
 | Issue | Symptoms | Resolution |
 | ----- | -------- | ---------- |
@@ -132,7 +213,7 @@ Each tutorial is scoped to a core launch workflow. Follow the steps in order; ev
 
 ---
 
-## 5. Documentation Standards & Maintenance
+## 7. Documentation Standards & Maintenance
 
 - **Structure:** This guide follows the Diátaxis documentation framework (tutorials, how-to, reference, explanation) per [Diátaxis best practices](https://diataxis.fr/complex-hierarchies) to avoid duplicated content and keep navigation predictable.
 - **Polaris Compliance:** UI references align with the official [Polaris Page/Layout/Card guidance](https://polaris-react.shopify.com/components/layout-and-structure/page) to ensure consistency with Shopify Admin.
@@ -146,7 +227,7 @@ Each tutorial is scoped to a core launch workflow. Follow the steps in order; ev
 
 ---
 
-## 6. Change Log
+## 8. Change Log
 
 | Date | Author | Summary |
 | ---- | ------ | ------- |

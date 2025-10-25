@@ -21,6 +21,16 @@ const quickLinks = [
     summary: "Step-by-step guides for Dashboard, Approvals, Notifications, Analytics, Inventory, and Settings."
   },
   {
+    id: "video-scripts",
+    title: "Video Tutorial Scripts",
+    summary: "Five recording scripts for launch videos covering dashboard, approvals, notifications, inventory, and analytics."
+  },
+  {
+    id: "api-reference",
+    title: "API Reference",
+    summary: "Read-only help endpoints and feedback hook for operator automation."
+  },
+  {
     id: "faq",
     title: "FAQ",
     summary: "20 fast answers covering tiles, approvals, integrations, exports, and more."
@@ -122,6 +132,51 @@ export default function HelpPage() {
 
         <Layout.Section>
           <Card>
+            <div id="video-scripts" style={{ padding: "24px", display: "flex", flexDirection: "column", gap: "12px" }}>
+              <Text as="h3" variant="headingMd">
+                Video Tutorial Scripts
+              </Text>
+              <Text as="p" variant="bodyMd">
+                Five launch-week recordings walk through dashboard setup, approvals, notifications, inventory, and analytics. Each script fits a two-minute demo so content and marketing stay aligned.
+              </Text>
+              <ul style={{ margin: 0, paddingInlineStart: "20px" }}>
+                <li>Dashboard Overview: highlight tile reorder, drawers, keyboard shortcuts.</li>
+                <li>Approvals Deep Dive: evidence review, grading, bulk approvals.</li>
+                <li>Notifications & Integrations: quiet hours, send test, reconnect flows.</li>
+                <li>Inventory Actions: urgent reorder flow, PO draft, bundle settings.</li>
+                <li>Analytics & ROI: GA4 comparisons, exports, action impact.</li>
+              </ul>
+              <Text as="p" variant="bodySm" tone="subdued">
+                Script details live in Section 3 and `docs/help/video-scripts/` for future updates.
+              </Text>
+            </div>
+          </Card>
+        </Layout.Section>
+
+        <Layout.Section>
+          <Card>
+            <div id="api-reference" style={{ padding: "24px", display: "flex", flexDirection: "column", gap: "12px" }}>
+              <Text as="h3" variant="headingMd">
+                API Reference
+              </Text>
+              <Text as="p" variant="bodyMd">
+                Operators can query read-only help center endpoints or submit feedback via POST. Tokens are managed in Shopify environment secrets and respect ABAC roles.
+              </Text>
+              <ul style={{ margin: 0, paddingInlineStart: "20px" }}>
+                <li><code>GET /api/help/faq</code> → returns all FAQ entries with metadata.</li>
+                <li><code>GET /api/help/tutorials</code> → surfaces tutorial summaries and script links.</li>
+                <li><code>GET /api/help/troubleshooting</code> → exposes resolution table for automation.</li>
+                <li><code>POST /api/help/feedback</code> → logs operator suggestions into DecisionLog.</li>
+              </ul>
+              <Text as="p" variant="bodySm" tone="subdued">
+                See Section 4 of the help document for payload samples and ABAC notes.
+              </Text>
+            </div>
+          </Card>
+        </Layout.Section>
+
+        <Layout.Section>
+          <Card>
             <div id="faq" style={{ padding: "24px", display: "flex", flexDirection: "column", gap: "12px" }}>
               <Text as="h3" variant="headingMd">
                 FAQ Snapshot
@@ -178,4 +233,3 @@ export default function HelpPage() {
     </Page>
   );
 }
-
