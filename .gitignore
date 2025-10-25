@@ -43,6 +43,8 @@ yarn.lock
 pnpm-lock.yaml
 
 /extensions/*/dist
+apps/**/dist/
+docs/_archive/**
 packages/dev-kb-prisma/
 
 # Secrets and evidence archives
@@ -71,3 +73,8 @@ Thumbs.db
 
 # Manager scratch space
 tmp/
+
+# Allow MCP evidence to be committed for CI
+!artifacts/**/mcp/*.jsonl
+!artifacts/**/heartbeat*.ndjson
+!artifacts/**/logs/*.ndjson

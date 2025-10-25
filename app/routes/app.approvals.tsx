@@ -212,8 +212,8 @@ export default function ApprovalsRoute() {
         {(stateFilter || kindFilter) && (
           <Layout.Section>
             <InlineStack gap="200">
-              {stateFilter && <Badge>state: {stateFilter}</Badge>}
-              {kindFilter && <Badge>kind: {kindFilter}</Badge>}
+              {stateFilter && <Badge>{`state: ${stateFilter}`}</Badge>}
+              {kindFilter && <Badge>{`kind: ${kindFilter}`}</Badge>}
               <Button
                 onClick={() =>
                   setSearchParams((prev) => {
@@ -267,7 +267,7 @@ export default function ApprovalsRoute() {
         {total > 0 && (
           <Layout.Section>
             <InlineStack gap="200" align="space-between" blockAlign="center">
-              <Badge>Total: {total}</Badge>
+              <Badge>{`Total: ${total}`}</Badge>
               <InlineStack gap="200">
                 <Button
                   disabled={page <= 1}
@@ -282,7 +282,7 @@ export default function ApprovalsRoute() {
                   Prev
                 </Button>
                 <Button
-                  disabled={approvals.length < 50}
+                  disabled={Array.isArray(approvals) ? approvals.length < 50 : true}
                   onClick={() =>
                     setSearchParams((prev) => {
                       const p = new URLSearchParams(prev);

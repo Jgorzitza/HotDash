@@ -1,19 +1,19 @@
-/**
- * SEO Diagnostics
- *
- * Diagnostic utilities for SEO analysis
- */
+import type { SEOAnomaly } from "./anomalies";
 
-export interface SEODiagnostic {
-  type: string;
-  severity: "info" | "warning" | "error";
-  message: string;
+export function buildSeoDiagnostics(bundle: {
+  anomalies: {
+    all: SEOAnomaly[];
+  };
+}) {
+  const totals = bundle.anomalies.all.reduce(
+    (acc, a) => {
+      acc[a.severity] = (acc[a.severity] || 0) as number;
+      // @ts-ignore - narrow at runtime
+      acc[a.severity] += 1;
+      return acc;
+    },
+    { critical: 0, warning: 0, info: 0 } as Record<string, number>,
+  );
+  return { totals };
 }
 
-export function runDiagnostics(data: any): SEODiagnostic[] {
-  return [];
-}
-
-export function buildSeoDiagnostics(data: any): SEODiagnostic[] {
-  return [];
-}

@@ -1,0 +1,11 @@
+{
+  "name": "llama-workflow",
+  "version": "1.0.0",
+  "description": "LlamaIndex-based AI workflow for HotDash knowledge ingestion",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "echo noop"
+  }
+}
+
