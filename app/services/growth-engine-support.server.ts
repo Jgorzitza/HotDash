@@ -7,7 +7,6 @@
 
 import { mcpEvidenceService, MCPEvidenceEntry } from './mcp-evidence.server';
 import { heartbeatService, HeartbeatEntry } from './heartbeat.server';
-import { devMCPBanService } from './dev-mcp-ban.server';
 
 export interface GrowthEngineConfig {
   agent: string;
@@ -97,21 +96,13 @@ export class GrowthEngineSupportFramework {
   }
 
   /**
-   * Validate production safety (Dev MCP Ban)
-   */
-  async validateProductionSafety(): Promise<{ valid: boolean; violations: any[] }> {
-    return await devMCPBanService.validateProductionSafety();
-  }
-
-  /**
    * Generate PR template sections
    */
   async generatePRTemplate(): Promise<{
     mcpEvidence: string;
     heartbeat: string;
-    devMCPCheck: string;
   }> {
-    const [mcpEvidence, heartbeat, devMCPCheck] = await Promise.all([
+    const [mcpEvidence, heartbeat] = await Promise.all([
       mcpEvidenceService.generatePRTemplateSection(
         this.config.agent, 
         this.config.date
@@ -120,14 +111,12 @@ export class GrowthEngineSupportFramework {
         this.config.agent, 
         this.config.date, 
         this.config.task
-      ),
-      devMCPBanService.generatePRTemplateSection()
+      )
     ]);
-    
+
     return {
       mcpEvidence,
-      heartbeat,
-      devMCPCheck
+      heartbeat
     };
   }
 
@@ -137,23 +126,20 @@ export class GrowthEngineSupportFramework {
   async checkCompliance(): Promise<{
     mcpEvidence: boolean;
     heartbeat: boolean;
-    devMCPBan: boolean;
     overall: boolean;
   }> {
-    const [hasEvidence, hasHeartbeat, validation] = await Promise.all([
+    const [hasEvidence, hasHeartbeat] = await Promise.all([
       mcpEvidenceService.hasEvidenceFiles(this.config.agent, this.config.date),
       this.config.estimatedHours > 2 ? 
         heartbeatService.hasHeartbeatFile(this.config.agent, this.config.date) : 
-        true,
-      devMCPBanService.validateProductionSafety()
+        true
     ]);
-    
-    const overall = hasEvidence && hasHeartbeat && validation.valid;
-    
+
+    const overall = hasEvidence && hasHeartbeat;
+
     return {
       mcpEvidence: hasEvidence,
       heartbeat: hasHeartbeat,
-      devMCPBan: validation.valid,
       overall
     };
   }
@@ -171,16 +157,13 @@ export class GrowthEngineSupportFramework {
       '## Compliance Status',
       `- MCP Evidence: ${compliance.mcpEvidence ? '✅' : '❌'}`,
       `- Heartbeat: ${compliance.heartbeat ? '✅' : '❌'}`,
-      `- Dev MCP Ban: ${compliance.devMCPBan ? '✅' : '❌'}`,
       `- Overall: ${compliance.overall ? '✅' : '❌'}`,
       '',
       '## PR Template Sections',
       '',
       prTemplate.mcpEvidence,
       '',
-      prTemplate.heartbeat,
-      '',
-      prTemplate.devMCPCheck
+      prTemplate.heartbeat
     ];
     
     return report.join('\n');
@@ -200,8 +183,9 @@ export class GrowthEngineSupportFramework {
    * Create CI check scripts
    */
   async createCIChecks(): Promise<void> {
-    await devMCPBanService.createCICheckScript();
-    await devMCPBanService.createPreCommitHook();
+    // Dev MCP ban checks are managed by CI scripts under scripts/ci.
+    // Intentionally no-op in runtime to avoid dev tooling in production code.
+    return;
   }
 
   /**

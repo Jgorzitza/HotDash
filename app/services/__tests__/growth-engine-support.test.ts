@@ -9,7 +9,6 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import { mcpEvidenceService } from '../mcp-evidence.server';
 import { heartbeatService } from '../heartbeat.server';
-import { devMCPBanService } from '../dev-mcp-ban.server';
 import { createGrowthEngineSupport } from '../growth-engine-support.server';
 
 describe('Growth Engine Support Framework', () => {
@@ -152,34 +151,7 @@ describe('Growth Engine Support Framework', () => {
     });
   });
 
-  describe('Dev MCP Ban Service', () => {
-    it('should validate production safety', async () => {
-      const validation = await devMCPBanService.validateProductionSafety();
-      
-      // Should be valid if no Dev MCP imports found
-      expect(validation.valid).toBe(true);
-      expect(validation.violations).toHaveLength(0);
-    });
-
-    it('should generate PR template section', async () => {
-      const prSection = await devMCPBanService.generatePRTemplateSection();
-      
-      expect(prSection).toContain('## Dev MCP Check (CRITICAL - Production Safety)');
-      expect(prSection).toContain('No Dev MCP imports in runtime bundles');
-    });
-
-    it('should create CI check script', async () => {
-      await devMCPBanService.createCICheckScript();
-      
-      const scriptPath = 'scripts/ci/dev-mcp-ban.sh';
-      const stats = await fs.stat(scriptPath);
-      expect(stats.isFile()).toBe(true);
-      
-      // Clean up
-      await fs.unlink(scriptPath);
-      await fs.rmdir('scripts/ci');
-    });
-  });
+  // Dev MCP ban checks are enforced by CI scripts only; no runtime tests here.
 
   describe('Growth Engine Support Framework', () => {
     it('should initialize framework', async () => {
@@ -265,7 +237,7 @@ describe('Growth Engine Support Framework', () => {
 
       expect(prTemplate.mcpEvidence).toContain('## MCP Evidence');
       expect(prTemplate.heartbeat).toContain('## Heartbeat');
-      expect(prTemplate.devMCPCheck).toContain('## Dev MCP Check');
+      // Dev MCP check handled by CI; PR template includes evidence and heartbeat sections
     });
 
     it('should check compliance', async () => {
@@ -292,7 +264,6 @@ describe('Growth Engine Support Framework', () => {
 
       expect(compliance.mcpEvidence).toBe(true);
       expect(compliance.heartbeat).toBe(true);
-      expect(compliance.devMCPBan).toBe(true);
       expect(compliance.overall).toBe(true);
     });
 

@@ -1,1 +1,2 @@
-{"ts": "2025-10-25T17:42:47Z", "actor": "manager", "action": "heartbeat"}
+{"timestamp":"2025-10-25T19:40:00Z","task":"MANAGER-LANGFUSE-DECISION-001","status":"doing","progress":"CI guard updates"}
+{"timestamp":"2025-10-25T19:55:00Z","task":"MANAGER-LANGFUSE-DECISION-001","status":"done","progress":"Guard validation complete"}

@@ -1,1 +1,2 @@
-{"ts": "2025-10-25T17:42:47Z", "actor": "manager", "action": "mcp_evidence", "files": ["scripts/policy/check-docs.mjs", ".github/workflows/rr7-guard.yml"], "notes": "RR7 guard + docs policy remediation"}
+{"tool":"web-search","doc_ref":"https://github.com/Jgorzitza/HotDash/blob/fix/dev-mcp-ban-pr112/scripts/policy/check-docs.mjs","request_id":"mcp-2025-10-25-01","timestamp":"2025-10-25T19:35:00Z","purpose":"Review updated docs policy guard"}
+{"tool":"web-search","doc_ref":"https://github.com/Jgorzitza/HotDash/blob/fix/dev-mcp-ban-pr112/.github/workflows/rr7-guard.yml","request_id":"mcp-2025-10-25-02","timestamp":"2025-10-25T19:36:00Z","purpose":"Verify RR7 guard enforcement"}
