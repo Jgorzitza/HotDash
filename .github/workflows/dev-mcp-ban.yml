@@ -2,9 +2,9 @@ name: Dev MCP Ban - Production Safety
 
 on:
   pull_request:
-    branches: [main]
+    branches: [main, agent-launch-20251024]
   push:
-    branches: [main]
+    branches: [main, agent-launch-20251024]
 
 jobs:
   dev-mcp-ban:

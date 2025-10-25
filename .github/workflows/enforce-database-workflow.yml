@@ -2,9 +2,9 @@ name: Enforce Database-Driven Workflow
 
 on:
   pull_request:
-    branches: [ main, agent-launch-20251022 ]
+    branches: [ main, agent-launch-20251022, agent-launch-20251024 ]
   push:
-    branches: [ main, agent-launch-20251022 ]
+    branches: [ main, agent-launch-20251022, agent-launch-20251024 ]
 
 jobs:
   enforce-database-workflow:

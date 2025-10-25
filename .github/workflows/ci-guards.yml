@@ -1,4 +1,4 @@
-name: CI Guards (MCP Evidence + Heartbeat + Dev MCP Ban)
+name: CI Guards (MCP Evidence, Heartbeat, Dev MCP Ban)
 
 on:
   pull_request:
