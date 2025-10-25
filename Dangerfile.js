@@ -27,6 +27,7 @@ if (!/Fixes\s+#\d+/.test(pr.body || '')) fail('PR must reference an Issue, e.g.,
 const allowedMatch = /Allowed paths?:\s*([^\n]+)/i.exec(pr.body || '');
 if (allowedMatch) {
   const defaultAllowed = [
+    'Dangerfile.js',
     '.github/workflows/**',
     'scripts/ci/**',
     'docs/**',
@@ -37,9 +38,31 @@ if (allowedMatch) {
 
   const patterns = allowedMatch[1]
     .split(/[\s,]+/).map(s=>s.trim()).filter(Boolean)
-    .concat(defaultAllowed)
-    .map(s=>s.replace(/\./g,'\\.').replace(/\*\*/g,'.*').replace(/\*/g,'[^/]*').replace(/\?/g,'.'));
-  const regs = patterns.map(p=>new RegExp('^'+p+'$'));
+    .concat(defaultAllowed);
+
+  const patternToRegex = (glob) => {
+    let regex = '';
+    for (let i = 0; i < glob.length; i += 1) {
+      const char = glob[i];
+      if (char === '*') {
+        if (glob[i + 1] === '*') {
+          regex += '.*';
+          i += 1;
+        } else {
+          regex += '[^/]*';
+        }
+      } else if (char === '?') {
+        regex += '.';
+      } else if (/[-/\\^$+?.()|[\]{}]/.test(char)) {
+        regex += `\\${char}`;
+      } else {
+        regex += char;
+      }
+    }
+    return new RegExp(`^${regex}$`);
+  };
+
+  const regs = patterns.map(patternToRegex);
   const code = changed.filter(f=>!f.endsWith('.md'));
   const bad = code.filter(f=>!regs.some(r=>r.test(f)));
   if (bad.length) fail('Files outside Allowed paths:\n' + bad.map(f=>'- '+f).join('\n'));
