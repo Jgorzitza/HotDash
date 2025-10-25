@@ -2,15 +2,21 @@
 
 **Simple commands to write feedback to the database.**
 
-## Option 1: Use the Script (Easiest)
+## Option 1: Use the Template (Easiest)
 
-### Step 1: Edit the script
+### Step 1: Copy the template to a temp file
 ```bash
-# Open the feedback script
-code scripts/agent/log-feedback.ts
+# Copy template to your own temp file
+cp scripts/agent/log-feedback.ts /tmp/my-feedback.ts
 ```
 
-### Step 2: Update your feedback
+### Step 2: Edit YOUR temp file
+```bash
+# Edit your temp file (not the template!)
+code /tmp/my-feedback.ts
+```
+
+Update your feedback:
 ```typescript
 const feedback = await logDecision({
   scope: "build",
@@ -24,12 +30,12 @@ const feedback = await logDecision({
 });
 ```
 
-### Step 3: Run it
+### Step 3: Run YOUR temp file
 ```bash
-npx tsx --env-file=.env scripts/agent/log-feedback.ts
+npx tsx --env-file=.env /tmp/my-feedback.ts
 ```
 
-**Done!** ✅
+**Done!** ✅ Your temp file is automatically cleaned up later.
 
 ---
 
@@ -226,14 +232,23 @@ npx tsx --env-file=.env scripts/agent/get-my-direction.ts
 
 **Simplest command:**
 ```bash
-# 1. Edit the script
-code scripts/agent/log-feedback.ts
+# 1. Copy template to temp file
+cp scripts/agent/log-feedback.ts /tmp/my-feedback.ts
 
-# 2. Run it
-npx tsx --env-file=.env scripts/agent/log-feedback.ts
+# 2. Edit YOUR temp file
+code /tmp/my-feedback.ts
+
+# 3. Run YOUR temp file
+npx tsx --env-file=.env /tmp/my-feedback.ts
 ```
 
 **That's it!** Your feedback is now in the database.
+
+**Why use /tmp?**
+- Each agent has their own temp file
+- No conflicts when multiple agents log feedback
+- Temp files are automatically cleaned up
+- Template stays clean for next use
 
 ---
 
